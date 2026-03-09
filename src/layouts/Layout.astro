@@ -1,23 +1,100 @@
+---
+import '../styles/site.css';
+import siteLogoCrest from '../../../assets/crest-logo-white.png';
+
+interface Props {
+	title?: string;
+	description?: string;
+	path?: string;
+}
+
+const {
+	title = 'Spearings Butchers | Macclesfield Since 1945',
+	description = 'Traditional family butchers in Macclesfield, serving local meat, handmade pies, deli produce, and cheese since 1945.',
+	path = '/',
+} = Astro.props;
+
+const navigation = [
+	{ href: '/our-story', label: 'Our Story' },
+	{ href: '/products', label: 'Products' },
+	{ href: '/pies', label: 'Pies' },
+	{ href: '/visit', label: 'Visit' },
+];
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#102015" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Jost:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
 	</head>
 	<body>
+		<header class="site-header">
+			<div class="container nav-wrap">
+				<a href="/" class="brand" aria-label="Spearings Butchers Home">
+					<span class="brand-logo-shell">
+						<img
+							class="brand-logo"
+							src={siteLogoCrest.src}
+							alt="Spearings Quality Family Butcher logo"
+						/>
+					</span>
+				</a>
+
+				<nav class="site-nav" aria-label="Primary navigation">
+					{
+						navigation.map((item) => (
+							<a href={item.href} class={path === item.href ? 'active' : undefined}>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+
+				<a href="/pies" class="btn btn-gold btn-sm">Order Pies</a>
+			</div>
+		</header>
+
 		<slot />
+
+		<footer class="site-footer">
+			<div class="container footer-inner">
+				<div class="footer-brand">
+					<span class="brand-logo-shell brand-logo-shell-footer">
+						<img
+							class="brand-logo brand-logo-footer"
+							src={siteLogoCrest.src}
+							alt="Spearings Quality Family Butcher logo"
+						/>
+					</span>
+					<div>
+						<strong>Spearings Butchers</strong>
+						<small>Macclesfield since 1945</small>
+					</div>
+				</div>
+
+				<nav class="footer-nav" aria-label="Footer navigation">
+					{
+						navigation.map((item) => (
+							<a href={item.href}>{item.label}</a>
+						))
+					}
+				</nav>
+
+				<p class="footer-copy">
+					&copy; 2026 Spearings Butchers Ltd. 12 Park Green, Macclesfield SK11 7NA.
+				</p>
+			</div>
+		</footer>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

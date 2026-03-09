@@ -6,9 +6,21 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "catalog:import": "node scripts/import-products.mjs",
+    "catalog:match-images": "node scripts/match-product-images.mjs",
+    "catalog:mirror-images": "node scripts/mirror-product-images.mjs",
+    "supabase:start": "supabase start",
+    "supabase:status": "supabase status",
+    "supabase:reset": "supabase db reset"
   },
   "dependencies": {
-    "astro": "^5.17.1"
+    "@supabase/supabase-js": "^2.57.4",
+    "astro": "^5.17.1",
+    "csv-parse": "^6.1.0"
+  },
+  "devDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.59.0",
+    "supabase": "^2.77.1"
   }
 }

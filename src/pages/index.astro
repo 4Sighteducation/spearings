@@ -1,11 +1,371 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { formatPrice, getCatalog, getProductsByCategory } from '../lib/catalog';
+import siteLogoBanner from '../../../assets/banner-logo-1536w.png';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const { categories, products } = await getCatalog();
+const pieCount = getProductsByCategory(products, 'pies').length;
+const pieProducts = getProductsByCategory(products, 'pies').slice(0, 4);
+
+const categoryLinks = {
+  meat: '/products#meat',
+  pies: '/pies',
+  deli: '/products#deli',
+  cheese: '/products#cheese',
+};
+
+const categoryDescriptions: Record<string, string> = {
+  meat: 'Locally sourced, matured and prepared to ensure maximum taste. We display the source of our meat behind the counter.',
+  pies: 'Handmade daily and famous across Macclesfield - from classic pork pies to our legendary Macclesfield pasty.',
+  deli: 'Cooked meats, savouries, sauces, chutneys, and homemade treats including our delicious vanilla slices.',
+  cheese: 'A wide range of cheeses from local producers across the North West and the UK.',
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="Spearings Butchers | Macclesfield Since 1945"
+  description="Traditional family butchers in Macclesfield since 1945. Locally sourced quality meat, handmade pies, deli favourites and regional cheeses."
+  path="/"
+>
+  <main>
+    <section class="hero">
+      <div class="container hero-brand-wrap">
+        <div class="hero-brand-banner reveal-up">
+          <img src={siteLogoBanner.src} alt="Spearings Quality Family Butcher banner logo" />
+        </div>
+      </div>
+
+      <div class="container hero-inner">
+        <div class="stack home-hero-copy reveal-up reveal-delay-1">
+
+          <div class="hero-badge">
+            <span class="badge-year">Since 1945</span>
+            <span class="gold-rule"></span>
+            <span>Traditional family butchers in Macclesfield</span>
+          </div>
+
+          <h1>Quality local meat, famous pies, and <em>proper family service</em></h1>
+
+          <p class="hero-lead">
+            Spearings has been serving Macclesfield for 80 years with locally sourced meat,
+            handmade pies, and the kind of personal service you only get from a family butcher.
+          </p>
+
+          <div class="hero-actions">
+            <a href="/pies" class="btn btn-gold">Order Pies Online</a>
+            <a href="/products" class="btn btn-ghost">Browse Our Range</a>
+          </div>
+
+          <ul class="hero-pillars">
+            <li>Locally sourced meat from farms we know and trust</li>
+            <li>Handmade pies, baked fresh every day</li>
+            <li>Four generations of family butchery in Macclesfield</li>
+          </ul>
+        </div>
+
+        <div class="hero-media reveal-up reveal-delay-2">
+          <div class="media-frame media-main">
+            <img src="/images/shop-interior.jpg" alt="Inside Spearings butcher shop" />
+          </div>
+
+          <div class="media-frame media-float">
+            <img src="/images/shop-history.jpg" alt="Historic Spearings shop photograph" />
+          </div>
+
+          <div class="media-badge">
+            <span class="media-badge-year">Family run</span>
+            <span class="media-badge-num">80 years</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip">
+      <div class="container trust-grid">
+        <article class="trust-item reveal-up">
+          <div class="trust-num">1945</div>
+          <div>
+            <strong>Established</strong>
+            <p>Founded by Denis Spearing when he returned from the war.</p>
+          </div>
+        </article>
+
+        <article class="trust-item reveal-up reveal-delay-1">
+          <div class="trust-num">4</div>
+          <div>
+            <strong>Generations</strong>
+            <p>Still family-run, now led by Marshall's daughters.</p>
+          </div>
+        </article>
+
+        <article class="trust-item reveal-up reveal-delay-2">
+          <div class="trust-num">{pieCount}</div>
+          <div>
+            <strong>Handmade pies</strong>
+            <p>Baked fresh daily and available for delivery to your door.</p>
+          </div>
+        </article>
+
+        <article class="trust-item reveal-up reveal-delay-3">
+          <div class="trust-num">Local</div>
+          <div>
+            <strong>Sourced with care</strong>
+            <p>We support local farmers and always display provenance behind the counter.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-cream">
+      <div class="container story-grid">
+        <div class="stack reveal-up">
+          <p class="eyebrow">Our Story</p>
+          <h2>Serving Macclesfield since 1945.</h2>
+          <p class="body-lead">
+            Denis William Spearing returned from the war, put down £100, and opened a butcher's
+            shop on Cross Street. Eighty years later, his family is still behind the counter at
+            12 Park Green.
+          </p>
+          <p>
+            From those beginnings came a passion for quality that has never wavered - farming
+            their own livestock at Kinderfield's Farm in Sutton, and building the handmade pie
+            reputation that customers travel miles for today.
+          </p>
+          <a href="/our-story" class="card-link">Read the family story</a>
+        </div>
+
+        <div>
+          <div class="story-image-frame">
+            <img src="/images/shopfront-history.png" alt="Historic Spearings storefront" />
+          </div>
+          <div class="story-caption">
+            <span class="caption-year">Established</span>
+            <span class="caption-num">1945</span>
+            <span class="caption-place">Park Green, Macclesfield</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark">
+      <div class="container">
+        <div class="section-header-center reveal-up">
+          <p class="eyebrow eyebrow-gold">Our Products</p>
+          <h2>Quality you can see, taste, and trust.</h2>
+        </div>
+
+        <div class="product-grid">
+          {
+            categories.map((category) => (
+              <article class="product-card reveal-up">
+                <div class="product-icon">{category.name}</div>
+                <h3>{category.name}</h3>
+                <p>
+                  {categoryDescriptions[category.slug] ??
+                    `Quality ${category.name.toLowerCase()} selected and prepared at the shop.`}
+                </p>
+                <a
+                  href={categoryLinks[category.slug as keyof typeof categoryLinks] ?? '/products'}
+                  class="card-link"
+                >
+                  {category.slug === 'pies' ? 'Order Pies Online' : `View ${category.name}`}
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream">
+      <div class="container pie-grid">
+        <div class="pie-menu-card reveal-up">
+          <div class="pie-menu-header">
+            <span class="pie-menu-rule"></span>
+            <div class="pie-menu-title">
+              <p class="eyebrow">Famous Pies</p>
+              <h2>Handmade daily, delivered to your door.</h2>
+            </div>
+            <span class="pie-menu-rule"></span>
+          </div>
+
+          <div class="pie-list">
+            {pieProducts.map((product) => (
+              <div class="pie-item">
+                <div>
+                  <strong>{product.name}</strong>
+                  <div class="pie-desc">
+                    {product.shortDescription ??
+                      'A Spearings classic, handmade fresh every day at the shop.'}
+                  </div>
+                </div>
+                <div class="pie-price">{formatPrice(product)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="order-panel stack reveal-up reveal-delay-1">
+          <p class="eyebrow">Order Online</p>
+          <h2>Our pies, <em>delivered to you</em>.</h2>
+          <p>
+            Take your pick from a wide range of hot and cold options, handmade daily and
+            delivered straight to your door. Perfect for family meals, parties, or just because
+            you deserve a proper pie.
+          </p>
+          <ul class="bullet-list">
+            <li>Choose from the full pie range online</li>
+            <li>Collection or delivery available</li>
+            <li>Ideal for family meals, parties, and events</li>
+          </ul>
+          <a href="/pies" class="btn btn-green">Order Pies</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-deep">
+      <div class="container testimonial-grid">
+        <blockquote class="testimonial reveal-up">
+          <p>"Great traditional butchers, friendly service and the Macclesfield pasty is superb."</p>
+          <footer>Local customer review</footer>
+        </blockquote>
+
+        <blockquote class="testimonial reveal-up reveal-delay-1">
+          <p>"Really delicious meats and very friendly and helpful staff."</p>
+          <footer>Local customer review</footer>
+        </blockquote>
+
+        <blockquote class="testimonial reveal-up reveal-delay-2">
+          <p>"Finally had a Spearings pork pie and I'm happier than I have any right to be."</p>
+          <footer>Local customer review</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="section section-cream">
+      <div class="container visit-grid">
+        <div class="visit-card stack reveal-up">
+          <p class="eyebrow">Visit The Shop</p>
+          <h2>Find us at 12 Park Green, Macclesfield.</h2>
+          <p>
+            Pop in and see us - whether it's your weekly shop, a last-minute dinner decision,
+            or you just want to browse what's on the counter. We're always happy to help.
+          </p>
+          <a href="/visit" class="card-link">Plan your visit</a>
+        </div>
+
+        <div class="visit-card detail-list reveal-up reveal-delay-1">
+          <div>
+            <strong>Address</strong>
+            <span>12 Park Green, Macclesfield, Cheshire, SK11 7NA</span>
+          </div>
+          <div>
+            <strong>Phone</strong>
+            <span>01625 424395</span>
+          </div>
+          <div>
+            <strong>Email</strong>
+            <span>admin@spearings.co.uk</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </Layout>
+
+<style>
+  .hero-brand-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-brand-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(46rem, 94vw);
+    margin: 0 auto clamp(2rem, 5vw, 3rem);
+    padding: 1rem 1.4rem;
+    background: rgba(255, 253, 247, 0.96);
+    border: 1px solid rgba(201, 154, 26, 0.35);
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.24);
+    border-radius: 20px;
+  }
+
+  .hero-brand-banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  .home-hero-copy h1 {
+    max-width: 9.25ch;
+    font-size: clamp(2.3rem, 4.4vw, 3.95rem);
+    line-height: 1.03;
+    text-wrap: balance;
+  }
+
+  .home-hero-copy h1 em {
+    display: block;
+    margin-top: 0.12em;
+    font-size: 0.9em;
+  }
+
+  .home-hero-copy .hero-lead {
+    max-width: 35rem;
+    font-size: 1.14rem;
+  }
+
+  .home-hero-copy .badge-year {
+    font-size: 1.12rem;
+    letter-spacing: 0.11em;
+  }
+
+  .home-hero-copy .hero-badge > :last-child {
+    font-size: 1.02rem;
+  }
+
+  .media-frame {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .media-frame img {
+    border-radius: 0;
+    display: block;
+    width: 100%;
+  }
+
+  .media-frame.media-float {
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .media-badge {
+    border-radius: 10px;
+  }
+
+  .story-image-frame {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .story-image-frame img {
+    border-radius: 0;
+    display: block;
+    width: 100%;
+  }
+
+  .product-card {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .testimonial {
+    border-radius: 12px;
+  }
+</style>

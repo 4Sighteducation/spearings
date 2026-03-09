@@ -1,0 +1,110 @@
+---
+import CategoryBrowser from '../components/CategoryBrowser.astro';
+import Layout from '../layouts/Layout.astro';
+import { getCatalog, getProductsByCategory } from '../lib/catalog';
+
+const { categories, products } = await getCatalog();
+
+const categoryDescriptions: Record<string, string> = {
+  meat: 'Traditional cuts, roasting joints, sausages, bacon, and everyday essentials - locally sourced and prepared at the shop.',
+  pies: 'The pie range Spearings is famous for, from everyday favourites to larger celebration pies. Available to order online.',
+  deli: 'Cooked meats, savouries, sauces, chutneys, and homemade treats like our delicious vanilla slices and fresh bread.',
+  cheese: 'A wide selection of regional cheeses from local producers across the North West and the UK.',
+};
+
+const sections = categories.map((category) => ({
+  category,
+  description:
+    categoryDescriptions[category.slug] ??
+    'Quality produce from the Spearings counter.',
+  products: getProductsByCategory(products, category.slug),
+}));
+---
+
+<Layout
+  title="Products | Spearings Butchers"
+  description="Browse the full Spearings range - quality meat, handmade pies, deli favourites and regional cheeses. All available to view before you visit."
+  path="/products"
+>
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <div class="page-hero-copy stack reveal-up reveal-delay-1">
+          <div class="page-hero-badge">
+            <span class="badge-year">Full Range</span>
+            <span>Browse everything before you visit</span>
+          </div>
+          <h1>Meat, pies, deli, and cheese - <em>all under one roof</em></h1>
+          <p class="body-lead">
+            At Spearings, we're proud to serve our community with the highest quality local
+            produce. From prime cuts of meat to handmade pies, regional cheeses, and deli
+            essentials - browse the full range here.
+          </p>
+          <div class="notice-banner">
+            Our full range is here to browse online. Pies can be ordered online, while meat, deli,
+            and cheese are available in the shop.
+          </div>
+          <p class="small-note">
+            Use the category tabs or sections below to jump straight to the department you want.
+          </p>
+        </div>
+
+        <div class="page-visual reveal-up reveal-delay-2">
+          <div class="page-image-frame">
+            <img src="/images/counter-display.jpg" alt="Selection of Spearings produce on display" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream">
+      <div class="container stats-grid">
+        <article class="stat-card reveal-up">
+          <strong>{categories.length}</strong>
+          <span>departments to explore</span>
+        </article>
+        <article class="stat-card reveal-up reveal-delay-1">
+          <strong>{products.length}</strong>
+          <span>products in the range</span>
+        </article>
+        <article class="stat-card reveal-up reveal-delay-2">
+          <strong>{getProductsByCategory(products, 'pies').length}</strong>
+          <span>handmade pies available to order</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="catalogue" class="section section-cream">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Our Products</p>
+          <h2>Browse by department.</h2>
+          <p class="body-lead">
+            Simple, honest food from a proper family butcher. Have a look through what we
+            offer, then come and see us at 12 Park Green.
+          </p>
+        </div>
+
+        <CategoryBrowser sections={sections} />
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .page-image-frame {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .page-image-frame img {
+    border-radius: 0;
+    display: block;
+    width: 100%;
+  }
+
+  .stat-card {
+    border-radius: 12px;
+  }
+</style>

@@ -1,0 +1,1914 @@
+{
+  "summary": {
+    "totalProducts": 238,
+    "downloaded": 238,
+    "failed": 0,
+    "missingSourceUrl": 0
+  },
+  "results": [
+    {
+      "productSlug": "4-quail",
+      "productName": "4 Quail",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64cb7fa2923ec66dd9265ff6_64a98abf3ad9b2d8948556c8_Quail4.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/4-quail.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "apple-sauce",
+      "productName": "Apple Sauce",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbec56c811fd71a8b1a28d_0701-Luxury-Bramley-Apple-Sauce.png",
+      "status": "downloaded",
+      "localPath": "/product-images/apple-sauce.png",
+      "error": null
+    },
+    {
+      "productSlug": "autumn-fruit-chutney",
+      "productName": "Autumn Fruit Chutney",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc047702fea82689f90efb_0503-Autumn-Fruit-Chutney-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/autumn-fruit-chutney.png",
+      "error": null
+    },
+    {
+      "productSlug": "bacon-ribs",
+      "productName": "Bacon Ribs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64cb7fa293daf9d341703111_64ca9e32e5febf3b34b238a4_bacon%252520ribs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/bacon-ribs.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "barnsley-chops-856b0",
+      "productName": "Barnsley Chops",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff5ee316f6748607208_barnsley%2520chops.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/barnsley-chops-856b0.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "bavette-steak-c2870",
+      "productName": "Bavette Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc52f1fc7debc86bfba_Bavette-Steak-1024x486.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/bavette-steak-c2870.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "beef-burgers-d8392",
+      "productName": "Beef Burgers",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3771dc019f2cbcc442_Grass-Fed-Organic-Burgers.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-burgers-d8392.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "beef-dripping-packets-72360",
+      "productName": "Beef Dripping (Packets)",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3bd5afbe69824e8ec7_dripping.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-dripping-packets-72360.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "beef-pie-large",
+      "productName": "Beef Pie - Large",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc86d35995512c6d8979df_Untitled%20(35).png",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-pie-large.png",
+      "error": null
+    },
+    {
+      "productSlug": "beef-pie-medium",
+      "productName": "Beef Pie - Medium",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc865c2e66522862eca5fa_Untitled%20(33).png",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-pie-medium.png",
+      "error": null
+    },
+    {
+      "productSlug": "beef-pie-small",
+      "productName": "Beef Pie - Small",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc85ca0cfc1c9b6d4fa64c_Untitled%20(31).png",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-pie-small.png",
+      "error": null
+    },
+    {
+      "productSlug": "beef-pie-xl",
+      "productName": "Beef Pie - XL",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc8758ed009bfff2b85da8_Untitled%20(37).png",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-pie-xl.png",
+      "error": null
+    },
+    {
+      "productSlug": "beef-sausages-08ab4",
+      "productName": "Beef Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e30d80b9bf1fb7ffc67_healthy-halal-meat-online-beef-sausages-delivery.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-sausages-08ab4.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "beef-short-ribs-4515c",
+      "productName": "Beef Short Ribs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64cab5e7a08e5e83883eaf99_64a56d6465cdb3718a085e9c_raw-beef-short-ribs-bone-dark-surface.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-short-ribs-4515c.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "beef-skirt-0cea8",
+      "productName": "Beef Skirt",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc70e545201084edc09_Beef%2520Skirt.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/beef-skirt-0cea8.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "belly-pork-666b7",
+      "productName": "Belly Pork",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024b11a3d5015792204f_pork-belly-bone-in.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/belly-pork-666b7.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "black-pepper-garlic-sausage-irish-6df82",
+      "productName": "Black Pepper & Garlic Sausage (Irish)",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3056f7b732d1078cfe_CFTNTGBP_Raw.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/black-pepper-garlic-sausage-irish-6df82.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "black-pudding-54fd5",
+      "productName": "Black Pudding",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc8168a926ddaf9de81fff_9bd1f83e-ece5-424a-99b5-9d8a57510c36.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/black-pudding-54fd5.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "blacksticks-blue-38ff9",
+      "productName": "Blacksticks Blue",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e4110577e8841e3ea16_BLACKSTICKS-TOP-1200x1203.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/blacksticks-blue-38ff9.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "boiled-ham-7be8c",
+      "productName": "Boiled Ham",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dcff25ae53ac5bd1eabe44_Nigels-Cooked-Ham-with-breadcrumbs.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/boiled-ham-7be8c.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "braising-steak-0ccaa",
+      "productName": "Braising Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc54cbf454723efa377_84298-52594-braising-steak.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/braising-steak-0ccaa.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "breast-of-lamb-64973",
+      "productName": "Breast Of Lamb",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff5ebf988cbabd54e8f_free-range-breast-of-lamb-98-p.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/breast-of-lamb-64973.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "breast-on-bone-b5525",
+      "productName": "Breast On Bone",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abb81e87e14cc5a8f99_chicken-breast-on-bone_shutterstock_1656042634-scaled.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/breast-on-bone-b5525.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "brie-wedges-5514a",
+      "productName": "Brie Wedges",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e41d12c92ca978c7b13_briecheesewedge_jdzi.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/brie-wedges-5514a.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "brisket-joint-a1450",
+      "productName": "Brisket Joint",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dcd8866eeab31cf481146d_4cdd9db2-e42b-42ea-addb-24058d88ece2.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/brisket-joint-a1450.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "brock-blue-89750",
+      "productName": "Brock Blue",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e48ab528577efcfb575_brock%2520blue.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/brock-blue-89750.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "brown-baps",
+      "productName": "Brown Baps",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe1e675cea4f20e60c8aa_brown-soft-roll-4-pack.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/brown-baps.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "capon-8d9e7",
+      "productName": "Capon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abc23106e4e32339bf0_capon.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/capon-8d9e7.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "caramelised-onion-chutney",
+      "productName": "Caramelised Onion Chutney",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc044d61b4f572fece1a7f_0522-Caramilised-Onion-Chutney-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/caramelised-onion-chutney.png",
+      "error": null
+    },
+    {
+      "productSlug": "cheddar-cheese-6aff6",
+      "productName": "Cheddar Cheese",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64cadef39ff94cbabaf5840b_64c930fda73080d5c4ad9b0e_Somerset-Cheddar_1280x800.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/cheddar-cheese-6aff6.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "cheese-onion",
+      "productName": "Cheese & Onion",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc83341b62dc3a96e30081_Untitled%20(22).png",
+      "status": "downloaded",
+      "localPath": "/product-images/cheese-onion.png",
+      "error": null
+    },
+    {
+      "productSlug": "cheese-wafer-biscuits",
+      "productName": "Cheese Wafer Biscuits",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc05d392f0edeec2cd0f3b_Untitled%20(18).png",
+      "status": "downloaded",
+      "localPath": "/product-images/cheese-wafer-biscuits.png",
+      "error": null
+    },
+    {
+      "productSlug": "cherry-cake",
+      "productName": "Cherry Cake",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdd76e9a91b6706556357_Cherry-Cake-1200-4.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/cherry-cake.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-drumsticks-8dc66",
+      "productName": "Chicken Drumsticks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98ab9f4bb3aa034658f60_chickendrumsticks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-drumsticks-8dc66.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-fillets-b9438",
+      "productName": "Chicken Fillets",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98ab953a8cd97b6edac20_chickenfillets.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-fillets-b9438.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-ham-and-leek",
+      "productName": "Chicken, Ham and Leek",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc84b1e636d414d59e5c35_Untitled%20(28).png",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-ham-and-leek.png",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-leg-d44ac",
+      "productName": "Chicken Leg",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98aba0fdcdb0cb2cfd2d8_chicklegs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-leg-d44ac.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-liver-31b59",
+      "productName": "Chicken Liver",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e381f23feb607f8d4db_Chicken-Liver.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-liver-31b59.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-mushroom",
+      "productName": "Chicken & Mushroom",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc84b1e636d414d59e5c35_Untitled%20(28).png",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-mushroom.png",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-supremes-bd5a5",
+      "productName": "Chicken Supremes",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98ab948fbf45c6d2a2b6b_Chicken-Supreme1-1024x768.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-supremes-bd5a5.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-thighs-ce449",
+      "productName": "Chicken Thighs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98ab902bee661d59ac2d9_chickthighs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-thighs-ce449.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chicken-wings-80d46",
+      "productName": "Chicken Wings",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abb7dba1d1588eb8804_chickwings.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chicken-wings-80d46.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chilli-jam",
+      "productName": "Chilli Jam",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc0507eaa6ce6a0edd6c6d_0121-Chiili-Jam-600x600.png",
+      "status": "downloaded",
+      "localPath": "/product-images/chilli-jam.png",
+      "error": null
+    },
+    {
+      "productSlug": "chippolatas-a9871",
+      "productName": "Chippolatas",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3010577e8841e3ce89_GF_Sausage_GlutenFree_web-1.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/chippolatas-a9871.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "chocolate-eclair",
+      "productName": "Chocolate Eclair",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdcea36aac837fc4d8007_DSC_5256-e1488034184153.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/chocolate-eclair.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "christmas-cake",
+      "productName": "Christmas Cake",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdecece04d5883061be65_easy-retro-Christmas-cake-1.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/christmas-cake.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "cooked-chicken-f1616",
+      "productName": "Cooked Chicken",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3c0a3558ea4f3a6ae7_cooked%2520chicken.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/cooked-chicken-f1616.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "cooked-chicken-portions-c64c1",
+      "productName": "Cooked Chicken Portions",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3c9d803250aa5459eb_cooked%2520chicken%2520portions.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/cooked-chicken-portions-c64c1.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "cornish-yarg-e5002",
+      "productName": "Cornish YARG",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e476ed61b5208134964_cornish-yarg-cheese.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/cornish-yarg-e5002.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "cranberry-sauce",
+      "productName": "Cranberry Sauce",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc029aba1a8a181e2b204c_0707-Cranberry-Sauce-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/cranberry-sauce.png",
+      "error": null
+    },
+    {
+      "productSlug": "cropwell-bishop-blue-stilton-8dfde",
+      "productName": "Cropwell Bishop Blue Stilton",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e41bfcdbee3b4341242_cropwell_bishop_b_3_sj6hlbxkhrwsplmk.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/cropwell-bishop-blue-stilton-8dfde.webp",
+      "error": null
+    },
+    {
+      "productSlug": "cumberland-sausages-a181c",
+      "productName": "Cumberland Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e309fd9c2bbc367cf9f_cumberland-scaled.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/cumberland-sausages-a181c.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "derbyshire-oatcakes",
+      "productName": "Derbyshire Oatcakes",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe22ac811fd71a8a4c9fd_Derbyshire-Oatcake.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/derbyshire-oatcakes.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "diced-leg-lamb-2cf23",
+      "productName": "Diced Leg Lamb",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff5de6e86b98d934e4b_diced%2520leglamb.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/diced-leg-lamb-2cf23.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "diced-pork-12d3e",
+      "productName": "Diced Pork",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024b64c6b63672985a9d_diced%2520pork.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/diced-pork-12d3e.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "diced-shoulder-09129",
+      "productName": "Diced Shoulder",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff5f926d08bddaecbb8_Diced-Lamb-Shoulder-1.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/diced-shoulder-09129.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "diced-venison-98887",
+      "productName": "Diced Venison",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abf28069a8bf0ae484b_diced%2520venison.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/diced-venison-98887.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "dijon-mustard",
+      "productName": "Dijon Mustard",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc02ad76cd459eff598559_1004-Dijon-Mustard-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/dijon-mustard.png",
+      "error": null
+    },
+    {
+      "productSlug": "dragon-sausage-8d4cd",
+      "productName": "Dragon Sausage",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e32f0ae4a0c26128cfd_WELSH-DRAGON-min.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/dragon-sausage-8d4cd.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "dry-cured-middle-bacon-09c70",
+      "productName": "Dry Cured Middle Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e33c347e260a5745c7d_SmokedMiddleBacon.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/dry-cured-middle-bacon-09c70.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "duck-breast-9b36d",
+      "productName": "Duck Breast",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abcd558b9f04015ebc0_duck%2520breast.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/duck-breast-9b36d.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "duck-legs-984a8",
+      "productName": "Duck Legs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abd410ff20685682cec_duck-leg.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/duck-legs-984a8.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "english-smooth-mustard",
+      "productName": "English Smooth Mustard",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbebfc4179764099d7caf7_1001-English-Mustard.png",
+      "status": "downloaded",
+      "localPath": "/product-images/english-smooth-mustard.png",
+      "error": null
+    },
+    {
+      "productSlug": "farmhouse-cake",
+      "productName": "Farmhouse Cake",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbde8e6e26164c7811dc40_garden_2614.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/farmhouse-cake.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "farmhouse-cheshire-b1914",
+      "productName": "Farmhouse Cheshire",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dcd8567750b16680e26a44_9261b79f-cb5a-49f7-ab15-7037cac1ed63.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/farmhouse-cheshire-b1914.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "fat-ball-cage",
+      "productName": "Fat Ball Cage",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbed797a3bd16fe7624547_harrisons-fat-ball-feeder-cage-standard_1st_3396_large.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/fat-ball-cage.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "feta-3bfa5",
+      "productName": "Feta",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dcd865f8ff97f0d634ff18_cadedede-942d-4e67-ba6d-9e6b994bb94f.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/feta-3bfa5.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "fillet-of-lamb-ec2d3",
+      "productName": "Fillet Of Lamb",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbd9941a23fce4fe7e75a3_Fillet-of-Lamb-e1500912823181.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/fillet-of-lamb-ec2d3.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "fillet-steak-4c23f",
+      "productName": "Fillet Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbd83c38e01a13572c1cac_800x800-owt-fillet-steak.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/fillet-steak-4c23f.webp",
+      "error": null
+    },
+    {
+      "productSlug": "free-range-large-eggs",
+      "productName": "Free Range Large Eggs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbed368a6ae341f10028aa_download.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/free-range-large-eggs.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "fresh-ducks-3af82",
+      "productName": "Fresh Ducks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abc93be72508a39d98f_whole-duck.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/fresh-ducks-3af82.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "fresh-turkeys-438f3",
+      "productName": "Fresh Turkeys",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abef4bb3aa03465927d_Turkey_raw%25402x.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/fresh-turkeys-438f3.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "frying-steak-792b3",
+      "productName": "Frying Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc6fe52d431ff9de683_FRYING%2520STEAK.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/frying-steak-792b3.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "gammon-joints-5972c",
+      "productName": "Gammon Joints",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e33a2f970245b88313a_green-gammon-main-image.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/gammon-joints-5972c.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "gammon-steaks-bac4d",
+      "productName": "Gammon Steaks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e34a2f970245b8831e8_gammonsteaks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/gammon-steaks-bac4d.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "garstang-crumbly-lancashire-102ca",
+      "productName": "Garstang Crumbly Lancashire",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e49b3d3c4c2fc7742d0_Garstang-Lancashire-1.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/garstang-crumbly-lancashire-102ca.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "gazeebo-feeder",
+      "productName": "Gazeebo Feeder",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbed4ca987bd31084b9844_images.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/gazeebo-feeder.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "goats-cheese-13d65",
+      "productName": "Goats Cheese",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e4268851c5137e6494d_goats%2520cheese.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/goats-cheese-13d65.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "goose-4f7c0",
+      "productName": "Goose",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abef4bb3aa03465933c_goose-web-square-scaled.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/goose-4f7c0.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "gordon-rhodes-apple-apricot-bay-leaf-stuffing",
+      "productName": "Gordon Rhodes Apple, Apricot & Bay Leaf Stuffing",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc0612c6f09e585d19e3ec_Untitled%20(19).png",
+      "status": "downloaded",
+      "localPath": "/product-images/gordon-rhodes-apple-apricot-bay-leaf-stuffing.png",
+      "error": null
+    },
+    {
+      "productSlug": "granary-loaf",
+      "productName": "Granary Loaf",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe1047eda85d52730cf7a_JBP_3534.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/granary-loaf.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "grandma-singletons-832f1",
+      "productName": "Grandma Singletons",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e49ef7e59466e8582af_grandma%2520singletons.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/grandma-singletons-832f1.webp",
+      "error": null
+    },
+    {
+      "productSlug": "guest-cheese-fe1fb",
+      "productName": "Guest Cheese",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e42d5afbe69824e9542_guest%2520Cheese.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/guest-cheese-fe1fb.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "guineafowl-855c5",
+      "productName": "Guineafowl",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abe3ad9b2d8948554d1_guinea-fowl.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/guineafowl-855c5.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "haggis",
+      "productName": "Haggis",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64f1e1cb1ff97c258a99758b_macsween_traditional_haggis_various_sizes_.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/haggis.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "haggis-2bf43",
+      "productName": "Haggis",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3e0a3558ea4f3a6c2c_largehaggis.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/haggis-2bf43.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ham-end-6654d",
+      "productName": "Ham End",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3dca9d080769c0ce28_hamends.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/ham-end-6654d.webp",
+      "error": null
+    },
+    {
+      "productSlug": "ham-ends",
+      "productName": "Ham Ends",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3dca9d080769c0ce28_hamends.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/ham-ends.webp",
+      "error": null
+    },
+    {
+      "productSlug": "ham-shanks-d5994",
+      "productName": "Ham Shanks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e34fcfced990f11860f_hamshanks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ham-shanks-d5994.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ham-with-cloves-8ee16",
+      "productName": "Ham with Cloves",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e40ef7e59466e857453_hamcloves.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ham-with-cloves-8ee16.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "homecured-streaky-bacon-be812",
+      "productName": "Homecured Streaky Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e34b9f49da96129b6aa_drycuredstreaky.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/homecured-streaky-bacon-be812.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "honey-goats-cheese-191fb",
+      "productName": "Honey Goats Cheese",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e469d803250aa5467db_honey%2520goats%2520cheese.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/honey-goats-cheese-191fb.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "horseradish",
+      "productName": "Horseradish",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc02f23bd839a6f797314e_0703-Creamed-Horseradish-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/horseradish.png",
+      "error": null
+    },
+    {
+      "productSlug": "kebabs-31e23",
+      "productName": "Kebabs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3734050af259978f19_kebabs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/kebabs-31e23.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lamb-chump-chops-c6209",
+      "productName": "Lamb Chump Chops",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff56388b8af3be2990f_Lamb-Chump-Chops-22501.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lamb-chump-chops-c6209.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lamb-cutlets-d6379",
+      "productName": "Lamb Cutlets",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff687ae1507100a4858_Lamb_Cutlets_37.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lamb-cutlets-d6379.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lamb-koftas-b7ae4",
+      "productName": "Lamb Koftas",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e37ee91134f3eb55411_free-range-lamb-koftas-22-p.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lamb-koftas-b7ae4.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lamb-neck-rings-72025",
+      "productName": "Lamb Neck Rings",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff6588bd3b2257cfbe5_Lamb%252BNeck%252BRings.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lamb-neck-rings-72025.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lamb-steaks-7e168",
+      "productName": "Lamb Steaks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbd914ca66b00cd2cb28a8_Lamb-Chump-Steak.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/lamb-steaks-7e168.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "lambs-heart-e5dd8",
+      "productName": "Lambs Heart",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3893dcec3c3932e779_lamb-heart.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lambs-heart-e5dd8.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lambs-kidney-e94fa",
+      "productName": "Lambs Kidney",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3834050af259978f70_lamb-kidney.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lambs-kidney-e94fa.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lambs-liver-023a8",
+      "productName": "Lambs Liver",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e38a2f970245b88381f_lambs%2520liver-474x474.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lambs-liver-023a8.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lancashire-chees-36807",
+      "productName": "Lancashire Cheese",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64cadefc22309a8c9ba7291f_64c930ac6bf793372221b121_Lancashire_cheese.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lancashire-chees-36807.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lardons-12d7c",
+      "productName": "Lardons",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e350d06a05074d89d94_lardons.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lardons-12d7c.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "large-chicken-54955",
+      "productName": "Large Chicken",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abd48fbf45c6d2a2e47_whole-chicken-in-tin.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/large-chicken-54955.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lean-shin-beef-7106e",
+      "productName": "Lean Shin Beef",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc84cbf454723efa5b1_Beef-shin.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lean-shin-beef-7106e.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "leg-joint-df70b",
+      "productName": "Leg Joint",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024c3036f38e45cc1719_porklegbin.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/leg-joint-df70b.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "leg-of-lamb-bf57f",
+      "productName": "Leg Of Lamb",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff606707cb5ceb48975_legof%2520lamb.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/leg-of-lamb-bf57f.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lemon-bun",
+      "productName": "Lemon Bun",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdcaa1386946f9c332a1b_lemonbun_800x.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/lemon-bun.webp",
+      "error": null
+    },
+    {
+      "productSlug": "lemon-cheese",
+      "productName": "Lemon Cheese",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc018dc6f09e585d1420b2_0206-Lemon-Cheese-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/lemon-cheese.png",
+      "error": null
+    },
+    {
+      "productSlug": "lemon-crumble-cake",
+      "productName": "Lemon Crumble Cake",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdd2fc42ae7062191039f_lemon-crumb-cake-2.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/lemon-crumble-cake.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "lemon-curd",
+      "productName": "Lemon Curd",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc01afc9fd321241c584fc_0201-Lemon-Curd.png",
+      "status": "downloaded",
+      "localPath": "/product-images/lemon-curd.png",
+      "error": null
+    },
+    {
+      "productSlug": "loin-lamb-chops-a3b5d",
+      "productName": "Loin Lamb Chops",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc803cafbf93965fa14830_0001468_loin-lamb-chops_882.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/loin-lamb-chops-a3b5d.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "loin-steaks-1a0ce",
+      "productName": "Loin Steaks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024d7c7fc8bae49026c3_porkloinsteaks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/loin-steaks-1a0ce.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "lye-cross-a5d52",
+      "productName": "Lye Cross",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e44317d87b753d111b9_lyre%2520cross.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/lye-cross-a5d52.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "marinated-ribs-3c273",
+      "productName": "Marinated Ribs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024cbdf3454cb7a5ab0c_Marinated-Pork-Ribs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/marinated-ribs-3c273.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "marinated-steak-bdb0f",
+      "productName": "Marinated Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024d7c7fc8bae49027e2_marinated%2520pork%2520steaks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/marinated-steak-bdb0f.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "marinated-thighs-7cd67",
+      "productName": "Marinated Thighs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abbca450f6d9ba6d8c8_bbqchickenthighs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/marinated-thighs-7cd67.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "marinated-wings-a6162",
+      "productName": "Marinated Wings",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abb8fea82aa6a186da4_Marinated-Chicken-Wings.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/marinated-wings-a6162.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "marmalade",
+      "productName": "Marmalade",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc0939ba1a8a181e33da88_0301-Medium-Cut-Marmalade-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/marmalade.png",
+      "error": null
+    },
+    {
+      "productSlug": "mature-cheddar-colliers-7bf45",
+      "productName": "Mature Cheddar (Colliers)",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e4310577e8841e3ec82_Colliersmature.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/mature-cheddar-colliers-7bf45.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "meat-potato",
+      "productName": "Meat & Potato",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc844b5d6c06f472f7e354_Untitled%20(27).png",
+      "status": "downloaded",
+      "localPath": "/product-images/meat-potato.png",
+      "error": null
+    },
+    {
+      "productSlug": "medium-chickens-512fc",
+      "productName": "Medium Chickens",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abc5ffd73e8690494b3_mediumchicken.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/medium-chickens-512fc.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "middle-neck-42c09",
+      "productName": "Middle Neck",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff620a1350f440938e6_free-range-lamb-middle-neck-116-p.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/middle-neck-42c09.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "mild-cheddar-04e6b",
+      "productName": "Mild Cheddar",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e4310577e8841e3ecdc_MILD%252BCHEDDAR%252B1KG%252B4.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/mild-cheddar-04e6b.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "mild-lancashire-leigh-toaster-ad0b8",
+      "productName": "Mild Lancashire (Leigh Toaster)",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dba71e027a9bf8c14a4f79_Lancashire%20Kirkhamsresized.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/mild-lancashire-leigh-toaster-ad0b8.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "milk-roll",
+      "productName": "Milk Roll",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe1679d36729bcfa1e038_Milk-roll-400g.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/milk-roll.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "minced-beef-8e8b4",
+      "productName": "Minced Beef",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc80e545201084edc62_Lean-Beef-Mince-1-a.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/minced-beef-8e8b4.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "minced-lamb-9d9c7",
+      "productName": "Minced Lamb",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff7d1f5786c16c14ec1_Lamb-Mince-3-a.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/minced-lamb-9d9c7.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "minced-pork-3f2d0",
+      "productName": "Minced Pork",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024c3036f38e45cc165b_minced%2520pork.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/minced-pork-3f2d0.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "mint-jelly",
+      "productName": "Mint Jelly",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc01f0f86eef77c95e8b0d_0901-Mint-Jelly.png",
+      "status": "downloaded",
+      "localPath": "/product-images/mint-jelly.png",
+      "error": null
+    },
+    {
+      "productSlug": "mint-sauce",
+      "productName": "Mint Sauce",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc04183f5cd9386b4d3ae5_Untitled%20(17).png",
+      "status": "downloaded",
+      "localPath": "/product-images/mint-sauce.png",
+      "error": null
+    },
+    {
+      "productSlug": "minty-lamb-ribs-c5dc4",
+      "productName": "Minty Lamb Ribs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff780fe0135f9f77dca_Minted%252BLamb%252BRibs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/minty-lamb-ribs-c5dc4.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "minty-lamb-steaks-4265e",
+      "productName": "Minty Lamb Steaks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff8d1f5786c16c14f18_minted-lamb-leg-steaks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/minty-lamb-steaks-4265e.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "montagnolo",
+      "productName": "Montagnolo",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dba7c4fe41775e65f5a289_21-Montagnolo-shutterstock_614859215.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/montagnolo.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "mrs-rhodes-tasty-lancashire-d9c22",
+      "productName": "Mrs Rhodes Tasty Lancashire",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dba900df2cf6ea9d84a608_lancashire-large-product-page-resized-touched_1200x.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/mrs-rhodes-tasty-lancashire-d9c22.webp",
+      "error": null
+    },
+    {
+      "productSlug": "mums-eggs",
+      "productName": "Mums Eggs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbed1cbcb06643add77c06_brown-eggs-how-long-do-farm-fresh-eggs-last-storing-farm-fresh-eggs-scaled.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/mums-eggs.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "ox-cheeks-52cc6",
+      "productName": "Ox Cheeks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc597672a80b195438f_Oxcheeks.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ox-cheeks-52cc6.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ox-heart-1deeb",
+      "productName": "Ox Heart",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e39317d87b753d0fdf7_oxheart.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ox-heart-1deeb.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ox-kidney-56853",
+      "productName": "Ox Kidney",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e39fcfced990f118a21_oxkidney.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ox-kidney-56853.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ox-liver-43dca",
+      "productName": "Ox Liver",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e39ca9d080769c0c53a_oxliver.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ox-liver-43dca.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ox-tail-568b6",
+      "productName": "Ox Tail",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbd7fba7d18185d351075c_oxtail.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/ox-tail-568b6.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "ox-tongue-210df",
+      "productName": "Ox Tongue",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbfb207e68e8f614f8200e_2659.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/ox-tongue-210df.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pancetta-c0880",
+      "productName": "Pancetta",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3671dc019f2cbcc100_pancetta.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pancetta-c0880.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "parkin",
+      "productName": "Parkin",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbddd97eda85d5272d1fcc_7d094e3168b1ae2524bd380a7dbbe744.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/parkin.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "parmigiano-reggiano-a2867",
+      "productName": "Parmigiano Reggiano",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e480a3558ea4f3a77dd_parmiggiano.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/parmigiano-reggiano-a2867.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pate-a35db",
+      "productName": "Pate",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3f628dcb533fe22665_pate.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pate-a35db.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "paxo-sage-onion-stuffing",
+      "productName": "Paxo Sage & Onion Stuffing",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc0129ba1a8a181e2993ab_homemade-paxo-cranny.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/paxo-sage-onion-stuffing.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "peanut-sunflower-feeder",
+      "productName": "Peanut & Sunflower Feeder",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe8dc523fa99082a5d7c1_7511001_-_peanut_-_20cm_-_cut_out.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/peanut-sunflower-feeder.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "philadelphia-1356d",
+      "productName": "Philadelphia",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e49673dcc1e5d26d9d6_philadelphia.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/philadelphia-1356d.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "picalilli",
+      "productName": "Picalilli",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbec68ce04d5883073a88a_0605-Chunky-Picalilli-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/picalilli.png",
+      "error": null
+    },
+    {
+      "productSlug": "pickled-onions",
+      "productName": "Pickled Onions",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc024fb9981b77ee63c1ea_1113-Pickled-Onions-in-Malt-Vinegar-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pickled-onions.png",
+      "error": null
+    },
+    {
+      "productSlug": "pickled-ox-tongue-a0320",
+      "productName": "Pickled Ox Tongue",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e39ca9d080769c0c57a_Pickled-Beef-Tongue-19.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pickled-ox-tongue-a0320.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pickled-shallots",
+      "productName": "Pickled Shallots",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbeb9a7eda85d5273d896d_1102-Pickled-Shallots.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pickled-shallots.png",
+      "error": null
+    },
+    {
+      "productSlug": "pigeon-breasts-d2889",
+      "productName": "Pigeon Breasts",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abe5ffd73e86904987d_pigeonbreast.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pigeon-breasts-d2889.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pigs-heart-11b2a",
+      "productName": "Pigs Heart",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3ac03337dc4d2e7add_pigs%2520heart.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pigs-heart-11b2a.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pigs-kidney-a72b5",
+      "productName": "Pigs Kidney",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3b6ab438ad3dbba0f9_pigs%2520kidney.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pigs-kidney-a72b5.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pigs-liver-2ab9d",
+      "productName": "Pigs Liver",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3bc03337dc4d2e7b36_PorkLiver.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/pigs-liver-2ab9d.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pigs-trotters-88a75",
+      "productName": "Pigs Trotters",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3b3178de565c303d30_m1717_1_Pig%2520Trotters.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pigs-trotters-88a75.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pikelets",
+      "productName": "Pikelets",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdf20ca66b00cd2d31e99_pikelets.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pikelets.png",
+      "error": null
+    },
+    {
+      "productSlug": "plain-pork-sausages-d9b63",
+      "productName": "Plain Pork Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e30942d1d68cd23c3a0_newplainsausage.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/plain-pork-sausages-d9b63.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "plain-ribs-23877",
+      "productName": "Plain Ribs",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024cc11009bfb1d39d66_plain%2520pork%2520ribs.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/plain-ribs-23877.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-and-apple-burgers-cee38",
+      "productName": "Pork And Apple Burgers",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e38fcfced990f118942_SP104-Pork-Apple-Burgers-Raw1-scaled.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-and-apple-burgers-cee38.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-apple-sausages-c981c",
+      "productName": "Pork & Apple Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3118f6497d1ff5b39a_Pork_Pork-Apple_Sausages_IMG_0293.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-apple-sausages-c981c.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-chive-sausages-3a837",
+      "productName": "Pork & Chive Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e30ee91134f3eb54fe1_porkchive.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-chive-sausages-3a837.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-chops-aaac4",
+      "productName": "Pork Chops",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbd9d186a027d63b978950_Pork-Loin-Chops-e1567018681949.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-chops-aaac4.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-dripping-pots-2c834",
+      "productName": "Pork Dripping (Pots)",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3e87618c89554065dd_porkdrippingpots.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-dripping-pots-2c834.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-fillet-775d1",
+      "productName": "Pork Fillet",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024c4a57286e7b47ed5f_Pork-Fillet-Loin.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-fillet-775d1.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-leek-sausages-39241",
+      "productName": "Pork & Leek Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e31b9f49da96129b284_pork_and_leek_sausages_1.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-leek-sausages-39241.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "pork-pie-large",
+      "productName": "Pork Pie - Large",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc86a4fad4ead0c51401bc_Untitled%20(34).png",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-pie-large.png",
+      "error": null
+    },
+    {
+      "productSlug": "pork-pie-medium",
+      "productName": "Pork Pie - Medium",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc865c2e66522862eca5fa_Untitled%20(33).png",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-pie-medium.png",
+      "error": null
+    },
+    {
+      "productSlug": "pork-pie-small",
+      "productName": "Pork Pie - Small",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc8625d12c1cc492e45a6c_Untitled%20(32).png",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-pie-small.png",
+      "error": null
+    },
+    {
+      "productSlug": "pork-pie-xl",
+      "productName": "Pork Pie - XL",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc8758ed009bfff2b85da8_Untitled%20(37).png",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-pie-xl.png",
+      "error": null
+    },
+    {
+      "productSlug": "pork-steak-0359d",
+      "productName": "Pork Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024dfae66900b40493c9_Pork-steaks-scaled.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/pork-steak-0359d.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "potato-cakes",
+      "productName": "Potato Cakes",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdf8fa987bd31083aacdd_potato-cakes_540x.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/potato-cakes.webp",
+      "error": null
+    },
+    {
+      "productSlug": "potted-meat-e977f",
+      "productName": "Potted Meat",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3ef0ae4a0c26129cfe_potted-meat.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/potted-meat-e977f.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "premium-wild-bird-seed",
+      "productName": "Premium Wild Bird Seed",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbed5b8ea8d901610983f7_Premium-Seed-Mix.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/premium-wild-bird-seed.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-beef-casserole",
+      "productName": "Pureety Beef Casserole",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbffe9877b0d54a5f92f17_Beef-Casserole-Recipe-Seasoning-1.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-beef-casserole.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-char-sui-glaze",
+      "productName": "Pureety Char Sui Glaze",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc0003f4d1acc5ace3bf55_Chinese-Char-Sui-Marinade-Glaze-1.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-char-sui-glaze.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-chicken-casserole",
+      "productName": "Pureety Chicken Casserole",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbff8f1c8ed08e4c8df226_NEW-Chicken-Casserole-Angled-copy.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-chicken-casserole.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-chilli-con-carne",
+      "productName": "Pureety Chilli Con Carne",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbfef036aac837fc76b7c2_NEW-Chilli-Con-Carne-Angled-copy.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-chilli-con-carne.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-fajita-seasoning",
+      "productName": "Pureety Fajita Seasoning",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc00c4f546d537f26d1624_Fajita-Recipe-Seasoning-1_1200x1200.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-fajita-seasoning.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-garden-mint-glaze",
+      "productName": "Pureety Garden Mint Glaze",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbfe58bcb06643adec44a1_garden-mint-1.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-garden-mint-glaze.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-garlic-butter-glaze",
+      "productName": "Pureety Garlic Butter Glaze",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc00498a6ae341f1174c21_Garlic-Butter-1.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-garlic-butter-glaze.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-lamb-casserole",
+      "productName": "Pureety Lamb Casserole",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbffd61c8ed08e4c8e4267_Lamb-Casserole-Recipe-Seasoning.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-lamb-casserole.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-moroccan-tagine",
+      "productName": "Pureety Moroccan Tagine",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbff78a987bd31086275e6_Moroccan-Tagine-Recipe-Seasoning-1.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-moroccan-tagine.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-paella-seasoning",
+      "productName": "Pureety Paella Seasoning",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc005e7a3bd16fe777eac2_NEW-Paella-Angled-copy-copy.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-paella-seasoning.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-potato-seasoning",
+      "productName": "Pureety Potato Seasoning",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc00a597b7479a58bf859f_Original-Potato-Seasoning-1.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-potato-seasoning.png",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-salt-pepper-glaze",
+      "productName": "Pureety Salt & Pepper Glaze",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc0033f4d1acc5ace3fbe2_Spicy-Salt-Pepper-Marinade-Glaze-1-1391x1536_1024x1024.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-salt-pepper-glaze.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-sticky-bbq-glaze",
+      "productName": "Pureety Sticky BBQ Glaze",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbffa4d4a0274ea5e4b34f_Sticky-BBQ-Marinade-Glaze-1.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-sticky-bbq-glaze.webp",
+      "error": null
+    },
+    {
+      "productSlug": "pureety-thai-green-curry",
+      "productName": "Pureety Thai Green Curry",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbff1dbcb06643adecff0d_NEW-Thai-Green-Angled-copy.png",
+      "status": "downloaded",
+      "localPath": "/product-images/pureety-thai-green-curry.png",
+      "error": null
+    },
+    {
+      "productSlug": "rabbit-7fda2",
+      "productName": "Rabbit",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abe5ffd73e86904984c_rabbit2.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/rabbit-7fda2.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "red-cabbage",
+      "productName": "Red Cabbage",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc021961b4f572fecb3eca_1104-Red-Cabbage-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/red-cabbage.png",
+      "error": null
+    },
+    {
+      "productSlug": "red-leicester-wedges-8f730",
+      "productName": "Red Leicester Wedges",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dba95a6c2325c4d697626b_red-leicester-cheese.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/red-leicester-wedges-8f730.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "rib-of-beef-0a91a",
+      "productName": "Rib Of Beef",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc4805f80ff25c11f2a_Ribofbeef.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/rib-of-beef-0a91a.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "ribeye-steak-c2b8d",
+      "productName": "Ribeye Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc628b86305f258d244_ribeye%2520steak.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/ribeye-steak-c2b8d.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "rindless-back-bacon-7b670",
+      "productName": "Rindless Back Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e36d7651eb5e3c5625f_Back-Bacon.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/rindless-back-bacon-7b670.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "roast-beef-30724",
+      "productName": "Roast Beef",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3f56f7b732d107a119_roastbeef.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/roast-beef-30724.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "roast-ham-160ff",
+      "productName": "Roast Ham",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e4068851c5137e64745_roastham.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/roast-ham-160ff.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "roast-ox-heart-19052",
+      "productName": "Roast Ox Heart",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3f96d600d1ee50e96d_beef-heart-500x500.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/roast-ox-heart-19052.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "roast-pork-cdfac",
+      "productName": "Roast Pork",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e40c03337dc4d2e7f68_roast%2520pork.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/roast-pork-cdfac.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "rolled-rib-joint-def1a",
+      "productName": "Rolled Rib Joint",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc48275029b2f5087f8_rolledribbeef.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/rolled-rib-joint-def1a.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "rump-steak-fc699",
+      "productName": "Rump Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc6500fa85b4f9b8290_Rump-Steak-Beef-63.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/rump-steak-fc699.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "sausage-meat-990a8",
+      "productName": "Sausage Meat",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e32628dcb533fe21c48_Wild-Boar-Sausagemeat.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/sausage-meat-990a8.webp",
+      "error": null
+    },
+    {
+      "productSlug": "sausage-rolls",
+      "productName": "Sausage Rolls",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc8583af0cee8d7ac71202_Untitled%20(30).png",
+      "status": "downloaded",
+      "localPath": "/product-images/sausage-rolls.png",
+      "error": null
+    },
+    {
+      "productSlug": "seed-feeder",
+      "productName": "Seed Feeder",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe8b8877b0d54a5de3f4e_R401636_2.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/seed-feeder.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "shoulder-joint-bd35a",
+      "productName": "Shoulder Joint",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a8024dfae66900b40493b3_Blackwells-Pork-Shoulder.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/shoulder-joint-bd35a.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "shoulder-of-lamb-4c786",
+      "productName": "Shoulder Of Lamb",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a59ff8ab0f160825624b71_Whole-Shoulder-of-Lamb-scaled.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/shoulder-of-lamb-4c786.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "shoulder-steak-a407f",
+      "productName": "Shoulder Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc65f40c9b20e206096_raw-shoulder-steak.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/shoulder-steak-a407f.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "silverside-joint-71714",
+      "productName": "Silverside Joint",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc467ffbab04ceca94f_Salt-Beef-Silverside-1KG_001_websize.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/silverside-joint-71714.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "sirloin-joints-d37c5",
+      "productName": "Sirloin Joints",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc48d20e90607eb4407_beef-sirloin-joint_2_1.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/sirloin-joints-d37c5.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "sirloin-steak-97c07",
+      "productName": "Sirloin Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc7f1c666939cc964c5_Sirloin.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/sirloin-steak-97c07.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "skin-on-fillets-f745c",
+      "productName": "Skin On Fillets",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abb83280cff039d635c_chicken_breast_skinon.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/skin-on-fillets-f745c.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "small-brown-loaf",
+      "productName": "Small Brown Loaf",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe098f4d1acc5acbd0484_Wholemeal-tin-loaf-400g.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/small-brown-loaf.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "small-white-loaf",
+      "productName": "Small White Loaf",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdffb97b7479a58986d6d_IMG_9465_530x%402x.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/small-white-loaf.webp",
+      "error": null
+    },
+    {
+      "productSlug": "smoked-middle-bacon-589e5",
+      "productName": "Smoked Middle Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e36f6e03eb6d787a460_smoked%2520middle.png",
+      "status": "downloaded",
+      "localPath": "/product-images/smoked-middle-bacon-589e5.png",
+      "error": null
+    },
+    {
+      "productSlug": "smoked-rindless-bacon-d956c",
+      "productName": "Smoked Rindless Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3687618c8955405ea1_essington-farm-oak-smoked-rindless-back-bacon.png",
+      "status": "downloaded",
+      "localPath": "/product-images/smoked-rindless-bacon-d956c.png",
+      "error": null
+    },
+    {
+      "productSlug": "smoked-streaky-bacon-15e13",
+      "productName": "Smoked Streaky Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e36ca9d080769c0c2e9_unsmokedstreakybacon.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/smoked-streaky-bacon-15e13.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "special-occasion-pies",
+      "productName": "Special Occasion Pies",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc87f1fad4ead0c5155e25_Untitled%20(40).png",
+      "status": "downloaded",
+      "localPath": "/product-images/special-occasion-pies.png",
+      "error": null
+    },
+    {
+      "productSlug": "staffordshire-oatcakes",
+      "productName": "Staffordshire Oatcakes",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe2c3994a47c4a034815b_6141506637_8098b818b8.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/staffordshire-oatcakes.webp",
+      "error": null
+    },
+    {
+      "productSlug": "steak-and-kidney",
+      "productName": "Steak and Kidney",
+      "sourceImageUrl": "https://cdn.prod.website-files.com/63b344fefe5f637ead19b171/64dc8542fad4ead0c5126d77_Untitled%20(29).png",
+      "status": "downloaded",
+      "localPath": "/product-images/steak-and-kidney.png",
+      "error": null
+    },
+    {
+      "productSlug": "sweet-chilli-sausages-9dbbc",
+      "productName": "Sweet Chilli Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e32b9f49da96129b451_sweet%2520chilli%2520sausages.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/sweet-chilli-sausages-9dbbc.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "sweet-farmhouse-pickle",
+      "productName": "Sweet Farmhouse Pickle",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbec8d3ba8cf33c2039c5e_0601-Farmhouse-Pickle.png",
+      "status": "downloaded",
+      "localPath": "/product-images/sweet-farmhouse-pickle.png",
+      "error": null
+    },
+    {
+      "productSlug": "t-bone-steak-70acb",
+      "productName": "T Bone Steak",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc77c1c4f92aadec474_TBone-raw-website-.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/t-bone-steak-70acb.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "tasty-lancashire-leigh-toaster-f00a7",
+      "productName": "Tasty Lancashire (Leigh Toaster)",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e453178de565c3044df_Tasty%2520Lancashire.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/tasty-lancashire-leigh-toaster-f00a7.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "tomato-chutney",
+      "productName": "Tomato Chutney",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dc04a1ba1a8a181e2da56b_SUNDRIED-TOM-GARLIC-CHUTNEY-600x600.png",
+      "status": "downloaded",
+      "localPath": "/product-images/tomato-chutney.png",
+      "error": null
+    },
+    {
+      "productSlug": "topside-joint-ca627",
+      "productName": "Topside Joint",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a56bc496298081293fd867_Topside.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/topside-joint-ca627.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "treacle-bacon-f6d6f",
+      "productName": "Treacle Bacon",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e3710577e8841e3db70_blackwells-black-treacle-bacon.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/treacle-bacon-f6d6f.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "true-grit-ff119",
+      "productName": "True Grit",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e5018f6497d1ff5c780_truegrit.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/true-grit-ff119.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "turkey-crown-bf149",
+      "productName": "Turkey Crown",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abfd92cf06a008e2149_rolled-turkey-crown-special-offer-5932-p.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/turkey-crown-bf149.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "vanilla-slice",
+      "productName": "Vanilla Slice",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbdc73570b6c05af6279f5_647503b9c0611d740d0618b0_IMG_2152.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/vanilla-slice.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "venison-steaks-85ba6",
+      "productName": "Venison Steaks",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abfcc68ca17281b2f47_venison-loin.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/venison-steaks-85ba6.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "weekly-special-sausages-bf682",
+      "productName": "Weekly Special Sausages",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e30d12c92ca978c5c71_Special%2520Sausages.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/weekly-special-sausages-bf682.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "wensleydale-cranberries-2a411",
+      "productName": "Wensleydale & Cranberries",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64ca9e45538964976eaaebb0_wensleydale-with-cranberries-cheese.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/wensleydale-cranberries-2a411.jpeg",
+      "error": null
+    },
+    {
+      "productSlug": "white-baps",
+      "productName": "White Baps",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbe1b9a987bd31083d45d5_99692021878362184.jpg",
+      "status": "downloaded",
+      "localPath": "/product-images/white-baps.jpg",
+      "error": null
+    },
+    {
+      "productSlug": "wholegrain-mustard",
+      "productName": "Wholegrain Mustard",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dbebe6a987bd31084a21ca_1003-Wholegrain-Mustard-300x300.png",
+      "status": "downloaded",
+      "localPath": "/product-images/wholegrain-mustard.png",
+      "error": null
+    },
+    {
+      "productSlug": "wookey-hole-40c36",
+      "productName": "Wookey Hole",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64dba85ef2cd7030709e2717_IMG_1176_700x700.webp",
+      "status": "downloaded",
+      "localPath": "/product-images/wookey-hole-40c36.webp",
+      "error": null
+    },
+    {
+      "productSlug": "xmas-deposit-24e88",
+      "productName": "Xmas Deposit",
+      "sourceImageUrl": "https://uploads-ssl.webflow.com/63b344fefe5f637ead19b171/64a98abef4bb3aa03465927d_Turkey_raw%25402x.jpeg",
+      "status": "downloaded",
+      "localPath": "/product-images/xmas-deposit-24e88.jpeg",
+      "error": null
+    }
+  ]
+}

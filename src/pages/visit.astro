@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Visit | Spearings Butchers"
+  description="Find Spearings at 12 Park Green, Macclesfield. Opening times, contact details, and everything you need to plan your visit."
+  path="/visit"
+>
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <div class="page-hero-copy stack reveal-up reveal-delay-1">
+          <div class="page-hero-badge">
+            <span class="badge-year">Visit Us</span>
+            <span>12 Park Green, Macclesfield</span>
+          </div>
+          <h1>Come and see us <em>on Park Green</em></h1>
+          <p class="body-lead">
+            We're open six days a week in the heart of Macclesfield. Pop in for your weekly
+            shop, pick up a pie, or just come and see what's on the counter - we're always
+            happy to help.
+          </p>
+        </div>
+
+        <div class="page-visual reveal-up reveal-delay-2">
+          <div class="page-image-frame map">
+            <img src="/images/delivery-radius.png" alt="Map showing Spearings location in Macclesfield" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream">
+      <div class="container contact-grid">
+        <article class="contact-panel reveal-up">
+          <p class="eyebrow">Opening Times</p>
+          <h2>Shop hours</h2>
+          <div class="detail-list">
+            <div>
+              <strong>Monday, Tuesday, Thursday, Friday</strong>
+              <span>6:30am to 2:00pm</span>
+            </div>
+            <div>
+              <strong>Wednesday</strong>
+              <span>6:30am to 1:00pm</span>
+            </div>
+            <div>
+              <strong>Saturday</strong>
+              <span>6:30am to 1:30pm</span>
+            </div>
+            <div>
+              <strong>Sunday</strong>
+              <span>Closed</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="contact-panel reveal-up reveal-delay-1">
+          <p class="eyebrow">Contact</p>
+          <h2>Get in touch</h2>
+          <ul class="contact-list">
+            <li>12 Park Green, Macclesfield, Cheshire, SK11 7NA</li>
+            <li>01625 424395</li>
+            <li>admin@spearings.co.uk</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-dark">
+      <div class="container dual-panels">
+        <article class="detail-card reveal-up">
+          <p class="eyebrow eyebrow-gold">In The Shop</p>
+          <h2>The full range, right in front of you.</h2>
+          <p>
+            Meat, pies, deli, and cheese - everything is prepared and displayed at the counter.
+            Our staff are always happy to advise on cuts, quantities, and what's best for your
+            meal.
+          </p>
+        </article>
+
+        <article class="detail-card reveal-up reveal-delay-1">
+          <p class="eyebrow eyebrow-gold">Order Pies Online</p>
+          <h2>Can't make it in? Order our pies for delivery.</h2>
+          <p>
+            Our famous handmade pies are available to order online for collection or delivery.
+            Browse the range, place your order, and we'll have them ready for you.
+          </p>
+          <a href="/pies" class="card-link">See pie range</a>
+        </article>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .page-image-frame {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .page-image-frame img {
+    border-radius: 0;
+    display: block;
+    width: 100%;
+  }
+
+  .contact-panel {
+    border-radius: 12px;
+  }
+
+  .detail-card {
+    border-radius: 12px;
+  }
+</style>
