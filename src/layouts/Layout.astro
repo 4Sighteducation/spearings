@@ -1,6 +1,6 @@
 ---
 import '../styles/site.css';
-import siteLogoCrest from '../../../assets/crest-logo-white.png';
+import siteLogoCrest from '../../../assets/crest-logo-black.png';
 
 interface Props {
 	title?: string;
@@ -19,6 +19,15 @@ const navigation = [
 	{ href: '/products', label: 'Products' },
 	{ href: '/pies', label: 'Pies' },
 	{ href: '/visit', label: 'Visit' },
+];
+
+const openingHours = [
+	'Monday 6:30am to 2:00pm',
+	'Tuesday 6:30am to 2:00pm',
+	'Wednesday 6:30am to 1:00pm',
+	'Thursday 6:30am to 2:00pm',
+	'Friday 6:30am to 2:00pm',
+	'Saturday 6:30am to 1:30pm',
 ];
 ---
 
@@ -44,7 +53,7 @@ const navigation = [
 				<a href="/" class="brand" aria-label="Spearings Butchers Home">
 					<span class="brand-logo-shell">
 						<img
-							class="brand-logo"
+							class="brand-logo brand-logo-header brand-logo-header-crest"
 							src={siteLogoCrest.src}
 							alt="Spearings Quality Family Butcher logo"
 						/>
@@ -61,7 +70,37 @@ const navigation = [
 					}
 				</nav>
 
+				<button
+					type="button"
+					class="mobile-nav-toggle"
+					id="mobileNavToggle"
+					aria-expanded="false"
+					aria-controls="mobileNavPanel"
+					aria-label="Open navigation menu"
+				>
+					<span class="mobile-nav-toggle-label">Menu</span>
+					<span class="mobile-nav-toggle-bars" aria-hidden="true">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</button>
+
 				<a href="/pies" class="btn btn-gold btn-sm">Order Pies</a>
+			</div>
+
+			<div class="mobile-nav-shell" id="mobileNavShell" hidden>
+				<nav class="container mobile-nav-panel" id="mobileNavPanel" aria-label="Mobile navigation">
+					{
+						navigation.map((item) => (
+							<a href={item.href} class={path === item.href ? 'active' : undefined}>
+								{item.label}
+							</a>
+						))
+					}
+
+					<a href="/pies" class="btn btn-gold mobile-nav-cta">Order Pies</a>
+				</nav>
 			</div>
 		</header>
 
@@ -69,42 +108,142 @@ const navigation = [
 
 		<footer class="site-footer">
 			<div class="container footer-inner">
-				<div class="footer-brand">
-					<span class="brand-logo-shell brand-logo-shell-footer">
-						<img
-							class="brand-logo brand-logo-footer"
-							src={siteLogoCrest.src}
-							alt="Spearings Quality Family Butcher logo"
-						/>
-					</span>
-					<div>
-						<strong>Spearings Butchers</strong>
-						<small>Macclesfield since 1945</small>
+				<div class="footer-brand-row">
+					<div class="footer-brand">
+						<span class="brand-logo-shell brand-logo-shell-footer">
+							<img
+								class="brand-logo brand-logo-footer"
+								src={siteLogoCrest.src}
+								alt="Spearings Quality Family Butcher logo"
+							/>
+						</span>
+						<div>
+							<strong>Spearings Butchers</strong>
+							<small>Macclesfield since 1945</small>
+						</div>
 					</div>
+
+					<a
+						href="https://www.facebook.com/people/Spearings-Butchers/100063608560341/"
+						class="btn btn-gold btn-sm footer-social"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Follow on Facebook
+					</a>
 				</div>
 
-				<nav class="footer-nav" aria-label="Footer navigation">
-					{
-						navigation.map((item) => (
-							<a href={item.href}>{item.label}</a>
-						))
-					}
-				</nav>
+				<div class="footer-info-grid">
+					<section class="footer-panel">
+						<p class="footer-heading">Opening Times</p>
+						<ul class="footer-list">
+							{openingHours.map((slot) => <li>{slot}</li>)}
+						</ul>
+					</section>
 
-				<p class="footer-copy">
-					&copy; 2026 Spearings Butchers Ltd. 12 Park Green, Macclesfield SK11 7NA.
-				</p>
+					<section class="footer-panel">
+						<p class="footer-heading">Email Us</p>
+						<ul class="footer-list">
+							<li>
+								<a href="mailto:spearingsbutchers@gmail.com">spearingsbutchers@gmail.com</a>
+							</li>
+							<li>
+								<a href="mailto:pies@spearings.co.uk">pies@spearings.co.uk</a>
+							</li>
+						</ul>
+					</section>
+
+					<section class="footer-panel">
+						<p class="footer-heading">Phone & Location</p>
+						<ul class="footer-list">
+							<li>
+								<a href="tel:01625424395">01625 424395</a>
+							</li>
+							<li>12 Park Green, Macclesfield</li>
+							<li>Cheshire, SK11 7NA</li>
+						</ul>
+					</section>
+
+					<section class="footer-panel footer-panel-social">
+						<p class="footer-heading">Facebook</p>
+						<p class="footer-copy-social">
+							Weekly updates, pie news, and shop announcements are best surfaced on Facebook.
+						</p>
+						<a
+							href="https://www.facebook.com/people/Spearings-Butchers/100063608560341/"
+							class="card-link footer-facebook-link"
+							target="_blank"
+							rel="noreferrer"
+						>
+							See latest updates
+						</a>
+					</section>
+				</div>
+
+				<div class="footer-meta">
+					<nav class="footer-nav" aria-label="Footer navigation">
+						{
+							navigation.map((item) => (
+								<a href={item.href}>{item.label}</a>
+							))
+						}
+					</nav>
+
+					<p class="footer-copy">
+						&copy; 2026 Spearings Butchers Ltd. 12 Park Green, Macclesfield SK11 7NA.
+					</p>
+				</div>
 			</div>
 		</footer>
 		<script is:inline>
 			(() => {
 				const header = document.getElementById('siteHeader');
+				const mobileNavToggle = document.getElementById('mobileNavToggle');
+				const mobileNavShell = document.getElementById('mobileNavShell');
+				const mobileNavPanel = document.getElementById('mobileNavPanel');
 				const handleScroll = () => {
 					header?.classList.toggle('scrolled', window.scrollY > 40);
 				};
 
+				const closeMobileNav = () => {
+					header?.classList.remove('menu-open');
+					mobileNavToggle?.setAttribute('aria-expanded', 'false');
+					mobileNavToggle?.setAttribute('aria-label', 'Open navigation menu');
+					if (mobileNavShell) {
+						mobileNavShell.hidden = true;
+					}
+				};
+
+				const toggleMobileNav = () => {
+					const isOpen = header?.classList.toggle('menu-open');
+					const nextExpanded = isOpen ? 'true' : 'false';
+					mobileNavToggle?.setAttribute('aria-expanded', nextExpanded);
+					mobileNavToggle?.setAttribute(
+						'aria-label',
+						isOpen ? 'Close navigation menu' : 'Open navigation menu',
+					);
+
+					if (mobileNavShell) {
+						mobileNavShell.hidden = !isOpen;
+					}
+				};
+
 				handleScroll();
 				window.addEventListener('scroll', handleScroll, { passive: true });
+				mobileNavToggle?.addEventListener('click', toggleMobileNav);
+				mobileNavPanel?.querySelectorAll('a').forEach((link) => {
+					link.addEventListener('click', closeMobileNav);
+				});
+				window.addEventListener('resize', () => {
+					if (window.innerWidth > 860) {
+						closeMobileNav();
+					}
+				});
+				window.addEventListener('keydown', (event) => {
+					if (event.key === 'Escape') {
+						closeMobileNav();
+					}
+				});
 
 				const revealElements = document.querySelectorAll(
 					'.reveal, .reveal-up, .reveal-scale, .reveal-left, .reveal-right',
