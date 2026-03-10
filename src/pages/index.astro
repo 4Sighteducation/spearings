@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { formatPrice, getCatalog, getProductsByCategory } from '../lib/catalog';
-import heroBannerLogo from '../../../assets/site-logo-banner.png';
 const { categories, products } = await getCatalog();
 const pieCount = getProductsByCategory(products, 'pies').length;
 const pieProducts = getProductsByCategory(products, 'pies').slice(0, 4);
@@ -30,7 +29,7 @@ const categoryDescriptions: Record<string, string> = {
     <section class="hero">
       <div class="container hero-brand-wrap">
         <div class="hero-brand-banner reveal-scale">
-          <img src={heroBannerLogo.src} alt="Spearings Quality Family Butcher banner logo" />
+          <img src="/images/site-logo-banner.png" alt="Spearings Quality Family Butcher banner logo" />
         </div>
       </div>
 
