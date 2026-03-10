@@ -30,13 +30,13 @@ const categoryDescriptions: Record<string, string> = {
   <main>
     <section class="hero">
       <div class="container hero-brand-wrap">
-        <div class="hero-brand-banner reveal-up">
+        <div class="hero-brand-banner reveal-scale">
           <img src={siteLogoBanner.src} alt="Spearings Quality Family Butcher banner logo" />
         </div>
       </div>
 
       <div class="container hero-inner">
-        <div class="stack home-hero-copy reveal-up reveal-delay-1">
+        <div class="stack home-hero-copy reveal-left reveal-d1">
 
           <div class="hero-badge">
             <span class="badge-year">Since 1945</span>
@@ -63,7 +63,7 @@ const categoryDescriptions: Record<string, string> = {
           </ul>
         </div>
 
-        <div class="hero-media reveal-up reveal-delay-2">
+        <div class="hero-media reveal-right reveal-d2">
           <div class="media-frame media-main">
             <img src="/images/shop-interior.jpg" alt="Inside Spearings butcher shop" />
           </div>
@@ -118,7 +118,7 @@ const categoryDescriptions: Record<string, string> = {
 
     <section class="section section-cream">
       <div class="container story-grid">
-        <div class="stack reveal-up">
+        <div class="stack reveal-left">
           <p class="eyebrow">Our Story</p>
           <h2>Serving Macclesfield since 1945.</h2>
           <p class="body-lead">
@@ -134,7 +134,7 @@ const categoryDescriptions: Record<string, string> = {
           <a href="/our-story" class="card-link">Read the family story</a>
         </div>
 
-        <div>
+        <div class="reveal-right reveal-d1">
           <div class="story-image-frame">
             <img src="/images/shopfront-history.png" alt="Historic Spearings storefront" />
           </div>
@@ -157,7 +157,7 @@ const categoryDescriptions: Record<string, string> = {
         <div class="product-grid">
           {
             categories.map((category) => (
-              <article class="product-card reveal-up">
+              <article class="product-card reveal-scale">
                 <div class="product-icon">{category.name}</div>
                 <h3>{category.name}</h3>
                 <p>
@@ -179,7 +179,7 @@ const categoryDescriptions: Record<string, string> = {
 
     <section class="section section-cream">
       <div class="container pie-grid">
-        <div class="pie-menu-card reveal-up">
+        <div class="pie-menu-card reveal-left">
           <div class="pie-menu-header">
             <span class="pie-menu-rule"></span>
             <div class="pie-menu-title">
@@ -205,7 +205,7 @@ const categoryDescriptions: Record<string, string> = {
           </div>
         </div>
 
-        <div class="order-panel stack reveal-up reveal-delay-1">
+        <div class="order-panel stack reveal-right reveal-d1">
           <p class="eyebrow">Order Online</p>
           <h2>Our pies, <em>delivered to you</em>.</h2>
           <p>
@@ -244,7 +244,7 @@ const categoryDescriptions: Record<string, string> = {
 
     <section class="section section-cream">
       <div class="container visit-grid">
-        <div class="visit-card stack reveal-up">
+        <div class="visit-card stack reveal-left">
           <p class="eyebrow">Visit The Shop</p>
           <h2>Find us at 12 Park Green, Macclesfield.</h2>
           <p>
@@ -254,7 +254,7 @@ const categoryDescriptions: Record<string, string> = {
           <a href="/visit" class="card-link">Plan your visit</a>
         </div>
 
-        <div class="visit-card detail-list reveal-up reveal-delay-1">
+        <div class="visit-card detail-list reveal-right reveal-d1">
           <div>
             <strong>Address</strong>
             <span>12 Park Green, Macclesfield, Cheshire, SK11 7NA</span>
@@ -289,20 +289,20 @@ const categoryDescriptions: Record<string, string> = {
     background: rgba(255, 253, 247, 0.96);
     border: 1px solid rgba(201, 154, 26, 0.35);
     box-shadow: 0 22px 48px rgba(0, 0, 0, 0.24);
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
   }
 
   .hero-brand-banner img {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 
   .home-hero-copy h1 {
     max-width: 9.25ch;
-    font-size: clamp(2.3rem, 4.4vw, 3.95rem);
-    line-height: 1.03;
+    font-size: clamp(2.45rem, 4.2vw, 3.85rem);
+    line-height: 1.05;
     text-wrap: balance;
   }
 
@@ -314,7 +314,7 @@ const categoryDescriptions: Record<string, string> = {
 
   .home-hero-copy .hero-lead {
     max-width: 35rem;
-    font-size: 1.14rem;
+    font-size: 1.18rem;
   }
 
   .home-hero-copy .badge-year {
@@ -327,7 +327,7 @@ const categoryDescriptions: Record<string, string> = {
   }
 
   .media-frame {
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
@@ -339,17 +339,17 @@ const categoryDescriptions: Record<string, string> = {
   }
 
   .media-frame.media-float {
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     border: 3px solid rgba(255, 255, 255, 0.3);
   }
 
   .media-badge {
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
 
   .story-image-frame {
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
   }
@@ -361,11 +361,11 @@ const categoryDescriptions: Record<string, string> = {
   }
 
   .product-card {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
   }
 
   .testimonial {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 </style>

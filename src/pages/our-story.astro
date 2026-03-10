@@ -10,7 +10,7 @@ import Layout from '../layouts/Layout.astro';
   <main>
     <section class="page-hero">
       <div class="container page-hero-inner">
-        <div class="page-hero-copy stack">
+        <div class="page-hero-copy stack reveal-left">
           <div class="page-hero-badge">
             <span class="badge-year">1945</span>
             <span>Macclesfield since 1945</span>
@@ -23,7 +23,7 @@ import Layout from '../layouts/Layout.astro';
           </p>
         </div>
 
-        <div class="page-visual">
+        <div class="page-visual reveal-right reveal-d1">
           <div class="page-image-frame history">
             <img src="/images/shopfront-history.png" alt="Historic Spearings shopfront" />
           </div>
@@ -33,7 +33,7 @@ import Layout from '../layouts/Layout.astro';
 
     <section class="section section-cream">
       <div class="container split-grid">
-        <div class="stack">
+        <div class="stack reveal-left">
           <p class="eyebrow">Our Heritage</p>
           <h2>From £100 and a single counter.</h2>
           <p class="body-lead">
@@ -55,7 +55,7 @@ import Layout from '../layouts/Layout.astro';
           </blockquote>
         </div>
 
-        <div class="feature-photo">
+        <div class="feature-photo reveal-right reveal-d1">
           <img src="/images/denis-portrait.png" alt="Portrait of Denis Spearing" />
         </div>
       </div>
@@ -178,11 +178,11 @@ import Layout from '../layouts/Layout.astro';
 
     <section class="section section-cream">
       <div class="container feature-split">
-        <div class="feature-photo">
+        <div class="feature-photo reveal-left">
           <img src="/images/family-team.png" alt="The Spearings family team together in the shop" />
         </div>
 
-        <div class="stack">
+        <div class="stack reveal-right reveal-d1">
           <p class="eyebrow">Spearings Today</p>
           <h2>Still a warm, family-run shop.</h2>
           <p>
@@ -203,7 +203,7 @@ import Layout from '../layouts/Layout.astro';
 
 <style>
   .page-image-frame {
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
@@ -215,7 +215,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .feature-photo {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
   }
@@ -309,7 +309,8 @@ import Layout from '../layouts/Layout.astro';
     padding: 1.4rem 1.6rem;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
     border: 1px solid rgba(240, 201, 111, 0.14);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 20px 46px rgba(0, 0, 0, 0.22);
+    border-radius: var(--radius-lg);
   }
 
   .story-timeline .timeline-copy p {
@@ -334,7 +335,7 @@ import Layout from '../layouts/Layout.astro';
   .tribute-portrait {
     max-width: 18rem;
     margin: 0 auto 1.5rem;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
   }

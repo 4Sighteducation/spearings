@@ -33,13 +33,13 @@ const navigation = [
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Jost:wght@300;400;500;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
 		<title>{title}</title>
 	</head>
 	<body>
-		<header class="site-header">
+		<header class="site-header" id="siteHeader">
 			<div class="container nav-wrap">
 				<a href="/" class="brand" aria-label="Spearings Butchers Home">
 					<span class="brand-logo-shell">
@@ -96,5 +96,41 @@ const navigation = [
 				</p>
 			</div>
 		</footer>
+		<script is:inline>
+			(() => {
+				const header = document.getElementById('siteHeader');
+				const handleScroll = () => {
+					header?.classList.toggle('scrolled', window.scrollY > 40);
+				};
+
+				handleScroll();
+				window.addEventListener('scroll', handleScroll, { passive: true });
+
+				const revealElements = document.querySelectorAll(
+					'.reveal, .reveal-up, .reveal-scale, .reveal-left, .reveal-right',
+				);
+
+				if (!revealElements.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+					revealElements.forEach((element) => element.classList.add('visible'));
+					return;
+				}
+
+				const observer = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (!entry.isIntersecting) return;
+							entry.target.classList.add('visible');
+							observer.unobserve(entry.target);
+						});
+					},
+					{
+						threshold: 0.12,
+						rootMargin: '0px 0px -60px 0px',
+					},
+				);
+
+				revealElements.forEach((element) => observer.observe(element));
+			})();
+		</script>
 	</body>
 </html>

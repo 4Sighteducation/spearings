@@ -14,7 +14,7 @@ const pieProducts = getProductsByCategory(products, 'pies');
   <main>
     <section class="page-hero">
       <div class="container page-hero-inner">
-        <div class="page-hero-copy stack reveal-up reveal-delay-1">
+        <div class="page-hero-copy stack reveal-left reveal-d1">
           <div class="page-hero-badge">
             <span class="badge-year">Famous Pies</span>
             <span>Handmade daily in Macclesfield</span>
@@ -31,7 +31,7 @@ const pieProducts = getProductsByCategory(products, 'pies');
           </div>
         </div>
 
-        <div class="page-visual reveal-up reveal-delay-2">
+        <div class="page-visual reveal-right reveal-d2">
           <div class="page-image-frame">
             <img src="/product-images/meat-potato.png" alt="Spearings pie selection" />
           </div>
@@ -41,7 +41,7 @@ const pieProducts = getProductsByCategory(products, 'pies');
 
     <section class="section section-cream">
       <div class="container dual-panels">
-        <article class="detail-card reveal-up">
+        <article class="detail-card reveal-left">
           <p class="eyebrow">Handmade Daily</p>
           <h2>Made fresh at the shop, every morning.</h2>
           <p>
@@ -51,7 +51,7 @@ const pieProducts = getProductsByCategory(products, 'pies');
           </p>
         </article>
 
-        <article class="detail-card reveal-up reveal-delay-1">
+        <article class="detail-card reveal-right reveal-d1">
           <p class="eyebrow">Order Online</p>
           <h2>Collection or delivery to your door.</h2>
           <ul class="bullet-list">
@@ -76,7 +76,7 @@ const pieProducts = getProductsByCategory(products, 'pies');
 
         <div class="catalog-grid">
           {pieProducts.map((product) => (
-            <article class="catalog-card reveal-up">
+            <article class="catalog-card reveal-scale">
               <div class="catalog-card-media">
                 <img src={product.imageUrl ?? '/images/shop-interior.jpg'} alt={product.name} />
               </div>
@@ -105,7 +105,7 @@ const pieProducts = getProductsByCategory(products, 'pies');
 
 <style>
   .page-image-frame {
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
@@ -117,12 +117,12 @@ const pieProducts = getProductsByCategory(products, 'pies');
   }
 
   .catalog-card {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
   }
 
   .catalog-card-media {
-    border-radius: 10px 10px 0 0;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
     overflow: hidden;
   }
 
@@ -132,6 +132,6 @@ const pieProducts = getProductsByCategory(products, 'pies');
   }
 
   .detail-card {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 </style>

@@ -29,7 +29,7 @@ const sections = categories.map((category) => ({
   <main>
     <section class="page-hero">
       <div class="container page-hero-inner">
-        <div class="page-hero-copy stack reveal-up reveal-delay-1">
+        <div class="page-hero-copy stack reveal-left reveal-d1">
           <div class="page-hero-badge">
             <span class="badge-year">Full Range</span>
             <span>Browse everything before you visit</span>
@@ -49,7 +49,7 @@ const sections = categories.map((category) => ({
           </p>
         </div>
 
-        <div class="page-visual reveal-up reveal-delay-2">
+        <div class="page-visual reveal-right reveal-d2">
           <div class="page-image-frame">
             <img src="/images/counter-display.jpg" alt="Selection of Spearings produce on display" />
           </div>
@@ -59,15 +59,15 @@ const sections = categories.map((category) => ({
 
     <section class="section section-cream">
       <div class="container stats-grid">
-        <article class="stat-card reveal-up">
+        <article class="stat-card reveal-scale">
           <strong>{categories.length}</strong>
           <span>departments to explore</span>
         </article>
-        <article class="stat-card reveal-up reveal-delay-1">
+        <article class="stat-card reveal-scale reveal-d1">
           <strong>{products.length}</strong>
           <span>products in the range</span>
         </article>
-        <article class="stat-card reveal-up reveal-delay-2">
+        <article class="stat-card reveal-scale reveal-d2">
           <strong>{getProductsByCategory(products, 'pies').length}</strong>
           <span>handmade pies available to order</span>
         </article>
@@ -76,7 +76,7 @@ const sections = categories.map((category) => ({
 
     <section id="catalogue" class="section section-cream">
       <div class="container">
-        <div class="section-header">
+          <div class="section-header reveal-up">
           <p class="eyebrow">Our Products</p>
           <h2>Browse by department.</h2>
           <p class="body-lead">
@@ -93,7 +93,7 @@ const sections = categories.map((category) => ({
 
 <style>
   .page-image-frame {
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
@@ -105,6 +105,6 @@ const sections = categories.map((category) => ({
   }
 
   .stat-card {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 </style>
