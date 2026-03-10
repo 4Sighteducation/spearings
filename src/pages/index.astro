@@ -43,7 +43,8 @@ const categoryDescriptions: Record<string, string> = {
           </div>
 
           <h1>
-            <span class="hero-title-main">Quality local meat, famous pies, and</span>
+            <span>Quality local meat,</span>
+            <span>famous pies, and</span>
             <em>proper family service</em>
           </h1>
 
@@ -349,34 +350,33 @@ const categoryDescriptions: Record<string, string> = {
   }
 
   .home-hero-copy {
-    width: min(100%, 29rem);
-    max-width: 29rem;
+    width: min(100%, 39rem);
+    max-width: 39rem;
     justify-self: start;
     margin: 0;
   }
 
   .home-hero-copy h1 {
     width: 100%;
-    max-width: 11.2ch;
-    font-size: clamp(2.75rem, 4.4vw, 4.2rem);
-    line-height: 1;
-    text-wrap: balance;
+    max-width: 12.5ch;
+    font-size: clamp(2.7rem, 4.3vw, 4.85rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-wrap: unset;
   }
 
-  .home-hero-copy .hero-title-main {
+  .home-hero-copy h1 span,
+  .home-hero-copy h1 em {
     display: block;
   }
 
   .home-hero-copy h1 em {
-    display: block;
-    margin-top: 0.12em;
-    max-width: 8.8ch;
-    font-size: 0.88em;
+    font-size: 0.92em;
   }
 
   .home-hero-copy .hero-lead {
-    max-width: 35rem;
-    font-size: 1.18rem;
+    max-width: 31rem;
+    font-size: 1.14rem;
   }
 
   .home-hero-copy .badge-year {
@@ -444,19 +444,20 @@ const categoryDescriptions: Record<string, string> = {
   }
 
   @media (max-width: 860px) {
+    .hero-inner {
+      gap: 2rem;
+    }
+
     .home-hero-copy {
+      order: 2;
       width: 100%;
       max-width: none;
     }
 
     .home-hero-copy h1 {
-      max-width: 11.5ch;
-      font-size: clamp(2.35rem, 10vw, 3.3rem);
-      line-height: 1.02;
-    }
-
-    .home-hero-copy h1 em {
-      max-width: none;
+      max-width: 12.5ch;
+      font-size: clamp(2.3rem, 7.3vw, 3.45rem);
+      line-height: 0.96;
     }
 
     .hero-brand-banner {
@@ -467,18 +468,71 @@ const categoryDescriptions: Record<string, string> = {
     .hero-brand-banner::before {
       inset: -10px;
     }
+
+    .hero-media {
+      order: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.92fr);
+      gap: 0.9rem;
+      width: min(100%, 34rem);
+      margin: 0 auto;
+      padding: 0;
+      align-items: start;
+    }
+
+    .media-main {
+      height: auto;
+      min-height: 100%;
+      aspect-ratio: 1.02;
+    }
+
+    .media-float {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      width: 100%;
+      aspect-ratio: 0.92;
+    }
+
+    .media-badge {
+      position: relative;
+      right: auto;
+      top: auto;
+      width: fit-content;
+    }
+
+    .hero-pillars {
+      display: none;
+    }
   }
 
   @media (max-width: 560px) {
     .home-hero-copy h1 {
-      max-width: none;
-      font-size: clamp(2rem, 9.4vw, 2.75rem);
-      line-height: 1.04;
+      max-width: 12ch;
+      font-size: clamp(2rem, 8.3vw, 2.8rem);
+      line-height: 0.98;
     }
 
-    .home-hero-copy .hero-title-main,
-    .home-hero-copy h1 em {
-      max-width: none;
+    .home-hero-copy .hero-lead {
+      font-size: 1rem;
+    }
+
+    .hero-media {
+      width: 100%;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    .media-main {
+      aspect-ratio: 1.14;
+    }
+
+    .media-float {
+      max-width: 15rem;
+    }
+
+    .media-badge {
+      padding: 0.65rem 0.85rem;
     }
   }
 

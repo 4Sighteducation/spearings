@@ -53,7 +53,7 @@ const openingHours = [
 					<span class="brand-logo-shell">
 						<img
 							class="brand-logo brand-logo-header brand-logo-header-crest"
-							src="/images/crest-logo-black.png"
+							src="/images/crest-logo-header-new.png"
 							alt="Spearings Quality Family Butcher logo"
 						/>
 					</span>
@@ -68,6 +68,30 @@ const openingHours = [
 						))
 					}
 				</nav>
+
+				<a href="/pies" class="pie-shortcut" aria-label="Order pies online">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path
+							d="M4.5 18.5h15a1 1 0 0 0 .9-1.43l-5.2-10.4a1 1 0 0 0-.9-.57H9.7a1 1 0 0 0-.9.57L3.6 17.07a1 1 0 0 0 .9 1.43Z"
+							fill="currentColor"
+						></path>
+						<path
+							d="M12 6.2v12.3"
+							stroke="rgba(8,22,17,0.55)"
+							stroke-linecap="round"
+							stroke-width="1.4"
+						></path>
+						<path
+							d="M8.7 11.2h6.6"
+							stroke="rgba(8,22,17,0.55)"
+							stroke-linecap="round"
+							stroke-width="1.4"
+						></path>
+						<circle cx="9.2" cy="9.2" r="1" fill="rgba(8,22,17,0.45)"></circle>
+						<circle cx="14.6" cy="13.8" r="1" fill="rgba(8,22,17,0.45)"></circle>
+					</svg>
+					<span>Pies</span>
+				</a>
 
 				<button
 					type="button"
@@ -234,7 +258,7 @@ const openingHours = [
 					link.addEventListener('click', closeMobileNav);
 				});
 				window.addEventListener('resize', () => {
-					if (window.innerWidth > 860) {
+					if (window.innerWidth > 980) {
 						closeMobileNav();
 					}
 				});

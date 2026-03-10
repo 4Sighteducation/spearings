@@ -305,13 +305,14 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 7px 9px;
-  background: linear-gradient(180deg, rgba(255, 253, 247, 0.99), rgba(248, 242, 226, 0.98));
-  border: 1px solid rgba(221, 184, 74, 0.28);
-  border-radius: var(--radius-md);
+  padding: 0.32rem 0.44rem;
+  background: rgba(255, 253, 247, 0.98);
+  border: 1px solid rgba(221, 184, 74, 0.18);
+  border-radius: 16px;
   box-shadow:
     0 2px 12px rgba(0, 0, 0, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -329,8 +330,8 @@ p {
 }
 
 .brand-logo-header {
-  height: 2.95rem;
-  border-radius: 6px;
+  height: 2.7rem;
+  border-radius: 10px;
 }
 
 .brand-logo-header-crest {
@@ -391,6 +392,37 @@ p {
 
 .mobile-nav-toggle,
 .mobile-nav-shell {
+  display: none;
+}
+
+.pie-shortcut {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold), #e1ba53);
+  color: var(--g-900);
+  border: 1px solid rgba(255, 244, 204, 0.42);
+  box-shadow:
+    0 10px 24px rgba(201, 154, 26, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.pie-shortcut:hover,
+.pie-shortcut:focus-visible {
+  transform: translateY(-2px) scale(1.03);
+  opacity: 1;
+}
+
+.pie-shortcut svg {
+  width: 1.32rem;
+  height: 1.32rem;
+}
+
+.pie-shortcut span {
   display: none;
 }
 
@@ -485,11 +517,21 @@ p {
   }
 
   .nav-wrap {
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 0.7rem;
+  }
+
+  .mobile-nav-toggle {
+    margin-left: 0;
   }
 
   .site-header.menu-open .mobile-nav-shell {
     display: block;
+  }
+
+  .pie-shortcut {
+    display: inline-flex;
+    margin-left: auto;
   }
 }
 
@@ -1608,7 +1650,7 @@ p {
   }
 
   .brand-logo {
-    height: 3rem;
+    height: 2.5rem;
   }
 
   .hero-inner,
@@ -1619,10 +1661,6 @@ p {
   .contact-grid,
   .page-hero-inner {
     grid-template-columns: 1fr;
-  }
-
-  .hero-media {
-    display: none;
   }
 
   .trust-grid,
