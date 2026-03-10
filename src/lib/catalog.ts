@@ -126,7 +126,7 @@ export async function getCatalog() {
       });
     }
 
-    return {
+    const remoteCatalog = {
       categories:
         categoriesResult.data?.map((row) => ({
           name: row.name,
@@ -162,6 +162,12 @@ export async function getCatalog() {
           } satisfies Product;
         }) ?? [],
     };
+
+    if (remoteCatalog.categories.length === 0 || remoteCatalog.products.length === 0) {
+      return normalizeLocalCatalog();
+    }
+
+    return remoteCatalog;
   } catch {
     return normalizeLocalCatalog();
   }
