@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Order Confirmed | Spearings Butchers"
+  description="Your pie order has been placed."
+  path="/order-confirmed"
+>
+  <main>
+    <section class="section section-cream">
+      <div class="container confirmation-wrap">
+        <div class="confirmation-card">
+          <div class="confirmation-icon">&#10003;</div>
+          <h1>Order Confirmed!</h1>
+          <p class="body-lead" id="confirmMsg">
+            Thank you for your order. We're preparing your pies now.
+          </p>
+
+          <div class="confirmation-details" id="confirmDetails">
+            <div class="confirm-row">
+              <span class="confirm-label">Reference</span>
+              <strong id="confirmRef">—</strong>
+            </div>
+          </div>
+
+          <p class="confirm-email-note">
+            A confirmation email will be sent to your email address shortly.
+          </p>
+
+          <div class="confirm-actions">
+            <a href="/pies" class="btn btn-gold">Order More Pies</a>
+            <a href="/" class="btn btn-ghost btn-ghost-cream">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .confirmation-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  .confirmation-card {
+    max-width: 34rem;
+    width: 100%;
+    text-align: center;
+    padding: 3rem 2.5rem;
+    border: 1px solid rgba(26, 26, 24, 0.1);
+    background: rgba(255, 253, 247, 0.8);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 12px 40px rgba(26, 26, 24, 0.06);
+  }
+
+  .confirmation-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 999px;
+    background: var(--g-700);
+    color: var(--cream);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .confirmation-card h1 {
+    margin-bottom: 0.75rem;
+    font-size: 2rem;
+  }
+
+  .confirmation-details {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--cream-dk);
+    border-radius: var(--radius-md);
+    text-align: left;
+  }
+
+  .confirm-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(26, 26, 24, 0.08);
+    font-size: 0.95rem;
+  }
+
+  .confirm-row:last-child {
+    border-bottom: none;
+  }
+
+  .confirm-label {
+    color: var(--ink-soft);
+  }
+
+  .confirm-email-note {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-ghost-cream {
+    color: var(--ink);
+    border-color: rgba(26, 26, 24, 0.2);
+  }
+
+  .btn-ghost-cream:hover {
+    border-color: rgba(26, 26, 24, 0.4);
+    background: rgba(26, 26, 24, 0.04);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref');
+    var paymentIntent = params.get('payment_intent');
+
+    if (ref) {
+      document.getElementById('confirmRef').textContent = ref;
+    }
+
+    // Clear cart after successful order
+    try { localStorage.removeItem('spearings_cart'); } catch (e) {}
+
+    // Update badge
+    var badge = document.getElementById('cartBadge');
+    if (badge) { badge.hidden = true; badge.textContent = '0'; }
+
+    // Confirm payment and trigger emails server-side
+    if (paymentIntent) {
+      fetch('/api/confirm-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ payment_intent: paymentIntent }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.confirmed) {
+            console.log('Order confirmed and emails sent');
+          }
+        })
+        .catch(function (err) {
+          console.error('Confirm payment error:', err);
+        });
+    }
+  })();
+</script>

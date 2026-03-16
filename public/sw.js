@@ -1,0 +1,64 @@
+const CACHE_NAME = 'spearings-pies-v2';
+
+const PRECACHE_URLS = [
+  '/pies',
+  '/checkout',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  '/images/crest-logo-header-new.png',
+  '/images/pie-icon.png',
+  '/images/site-logo-banner.png',
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  if (request.method !== 'GET') return;
+  if (url.pathname.startsWith('/api/')) return;
+  if (url.origin !== self.location.origin) return;
+
+  // Network-first for HTML pages (always get fresh content when online)
+  if (request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          return response;
+        })
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('/pies')))
+    );
+    return;
+  }
+
+  // Cache-first for static assets (images, CSS, JS, fonts)
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+      return fetch(request).then((response) => {
+        if (response.ok && (url.pathname.match(/\.(js|css|png|jpg|jpeg|svg|woff2?)$/))) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+        }
+        return response;
+      });
+    })
+  );
+});

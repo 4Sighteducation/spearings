@@ -15,9 +15,14 @@
     "supabase:reset": "supabase db reset"
   },
   "dependencies": {
+    "@astrojs/vercel": "^9.0.5",
+    "@stripe/stripe-js": "^8.9.0",
     "@supabase/supabase-js": "^2.57.4",
     "astro": "^5.17.1",
-    "csv-parse": "^6.1.0"
+    "csv-parse": "^6.1.0",
+    "resend": "^6.9.3",
+    "sharp": "^0.34.5",
+    "stripe": "^20.4.1"
   },
   "devDependencies": {
     "supabase": "^2.77.1"

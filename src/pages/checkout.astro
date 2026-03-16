@@ -1,0 +1,677 @@
+---
+import Layout from '../layouts/Layout.astro';
+const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
+---
+
+<Layout
+  title="Checkout | Spearings Butchers"
+  description="Complete your pie order from Spearings Butchers."
+  path="/checkout"
+>
+  <main>
+    <section class="section section-cream">
+      <div class="container checkout-layout">
+
+        <!-- Left: Order summary + form -->
+        <div class="checkout-form-col">
+          <h1 class="checkout-title">Checkout</h1>
+
+          <!-- Order summary -->
+          <div class="checkout-card" id="orderSummary">
+            <h2 class="checkout-card-heading">Your Order</h2>
+            <div id="summaryItems"></div>
+            <div class="summary-totals" id="summaryTotals"></div>
+          </div>
+
+          <!-- Date picker -->
+          <div class="checkout-card">
+            <h2 class="checkout-card-heading">Collection / Delivery Date</h2>
+            <div class="checkout-delivery-toggle">
+              <button type="button" class="delivery-type-btn active" data-type="collection">Collection</button>
+              <button type="button" class="delivery-type-btn" data-type="delivery">Delivery</button>
+            </div>
+            <div class="date-picker-wrap" id="datePickerWrap">
+              <p class="date-picker-loading">Loading available dates...</p>
+            </div>
+          </div>
+
+          <!-- Delivery address (shown only for delivery) -->
+          <div class="checkout-card" id="addressCard" hidden>
+            <h2 class="checkout-card-heading">Delivery Address</h2>
+            <div class="form-stack">
+              <div class="form-field">
+                <label for="addressLine1">Address Line 1</label>
+                <input type="text" id="addressLine1" required />
+              </div>
+              <div class="form-field">
+                <label for="addressLine2">Address Line 2 (optional)</label>
+                <input type="text" id="addressLine2" />
+              </div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="addressCity">City</label>
+                  <input type="text" id="addressCity" value="Macclesfield" required />
+                </div>
+                <div class="form-field">
+                  <label for="addressPostcode">Postcode</label>
+                  <input type="text" id="addressPostcode" required />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer details -->
+          <div class="checkout-card">
+            <h2 class="checkout-card-heading">Your Details</h2>
+            <div class="form-stack">
+              <div class="form-field">
+                <label for="customerName">Full Name</label>
+                <input type="text" id="customerName" required />
+              </div>
+              <div class="form-field">
+                <label for="customerEmail">Email</label>
+                <input type="email" id="customerEmail" required />
+              </div>
+              <div class="form-field">
+                <label for="customerPhone">Phone (optional)</label>
+                <input type="tel" id="customerPhone" />
+              </div>
+              <div class="form-field">
+                <label for="customerNotes">Order Notes (optional)</label>
+                <textarea id="customerNotes" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Payment -->
+        <div class="checkout-payment-col">
+          <div class="checkout-card checkout-payment-card">
+            <h2 class="checkout-card-heading">Payment</h2>
+            <div id="paymentElement"></div>
+            <div id="paymentMessage" class="payment-message" hidden></div>
+            <button type="button" class="btn btn-gold checkout-pay-btn" id="payBtn" disabled>
+              Place Order
+            </button>
+            <p class="checkout-secure-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Payments secured by Stripe. Your card details never touch our servers.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style is:global>
+  .checkout-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+    padding-top: 1rem;
+  }
+
+  .checkout-title {
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+  }
+
+  .checkout-card {
+    padding: 1.5rem;
+    border: 1px solid rgba(26, 26, 24, 0.1);
+    background: rgba(255, 253, 247, 0.7);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.25rem;
+  }
+
+  .checkout-card-heading {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(26, 26, 24, 0.08);
+  }
+
+  .checkout-payment-card {
+    position: sticky;
+    top: calc(var(--header-offset) + 1.5rem);
+  }
+
+  /* Delivery toggle */
+  .checkout-delivery-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .delivery-type-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(26, 26, 24, 0.15);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 253, 247, 0.6);
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .delivery-type-btn.active {
+    background: var(--g-700);
+    color: var(--cream);
+    border-color: var(--g-700);
+  }
+
+  /* Date picker */
+  .date-picker-wrap {
+    min-height: 3rem;
+  }
+
+  .date-picker-loading {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  .date-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.35rem;
+  }
+
+  .date-grid-header {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 0.4rem 0;
+    color: var(--ink-soft);
+  }
+
+  .date-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0.3rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .date-cell:hover:not(.unavailable):not(.selected) {
+    background: rgba(201, 154, 26, 0.1);
+    border-color: rgba(201, 154, 26, 0.3);
+  }
+
+  .date-cell.unavailable {
+    color: rgba(26, 26, 24, 0.25);
+    cursor: default;
+    text-decoration: line-through;
+  }
+
+  .date-cell.selected {
+    background: var(--g-700);
+    color: var(--cream);
+    border-color: var(--g-700);
+    font-weight: 700;
+  }
+
+  .date-cell.other-month {
+    visibility: hidden;
+  }
+
+  .date-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .date-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(26, 26, 24, 0.15);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .date-nav-btn:hover {
+    background: rgba(26, 26, 24, 0.06);
+  }
+
+  .date-nav-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  /* Form fields */
+  .form-stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--ink-soft);
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(26, 26, 24, 0.18);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 154, 26, 0.15);
+  }
+
+  /* Summary items */
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.92rem;
+    border-bottom: 1px solid rgba(26, 26, 24, 0.06);
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+  .summary-item-name {
+    display: flex;
+    gap: 0.55rem;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .summary-item-qty {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 999px;
+    background: var(--g-700);
+    color: var(--cream);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .summary-totals {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(26, 26, 24, 0.1);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .summary-row.total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(26, 26, 24, 0.1);
+  }
+
+  .summary-row.total span:last-child {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--g-700);
+  }
+
+  /* Payment */
+  .checkout-pay-btn {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.95rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .checkout-pay-btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .checkout-secure-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  .payment-message {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+  }
+
+  .payment-message.error {
+    background: rgba(176, 0, 32, 0.08);
+    color: #b00020;
+    border: 1px solid rgba(176, 0, 32, 0.15);
+  }
+
+  .payment-message[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .checkout-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .checkout-payment-card {
+      position: static;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ stripePublishableKey }}>
+  (function () {
+    const STORAGE_KEY = 'spearings_cart';
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+    function getCart() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.items) || parsed.items.length === 0) return null;
+        return parsed;
+      } catch { return null; }
+    }
+
+    function formatPence(p) { return '\u00A3' + (p / 100).toFixed(2); }
+
+    var cart = getCart();
+    if (!cart) {
+      window.location.href = '/pies';
+      return;
+    }
+
+    // State
+    var state = {
+      deliveryType: cart.deliveryType || 'collection',
+      selectedDate: cart.deliveryDate || null,
+      availableDates: new Set(),
+      viewMonth: new Date().getMonth(),
+      viewYear: new Date().getFullYear(),
+      stripeReady: false,
+      processing: false,
+      clientSecret: null,
+      orderRef: null,
+    };
+
+    // ── Render order summary ──
+    var summaryItems = document.getElementById('summaryItems');
+    var summaryTotals = document.getElementById('summaryTotals');
+
+    function renderSummary() {
+      var subtotal = 0;
+      summaryItems.innerHTML = cart.items.map(function (item) {
+        var lineTotal = item.price * item.quantity;
+        subtotal += lineTotal;
+        return '<div class="summary-item"><span class="summary-item-name"><span class="summary-item-qty">' +
+          item.quantity + '</span>' + item.name +
+          (item.size ? ' <small>(' + item.size + ')</small>' : '') +
+          '</span><span>' + formatPence(lineTotal) + '</span></div>';
+      }).join('');
+
+      var shipping = 0;
+      if (state.deliveryType === 'delivery' && subtotal < 3000) shipping = 500;
+
+      summaryTotals.innerHTML =
+        '<div class="summary-row"><span>Subtotal</span><span>' + formatPence(subtotal) + '</span></div>' +
+        (state.deliveryType === 'delivery'
+          ? '<div class="summary-row"><span>Delivery</span><span>' + (shipping ? formatPence(shipping) : 'Free') + '</span></div>'
+          : '') +
+        '<div class="summary-row total"><span>Total</span><span>' + formatPence(subtotal + shipping) + '</span></div>';
+    }
+    renderSummary();
+
+    // ── Delivery type toggle ──
+    var typeBtns = document.querySelectorAll('.delivery-type-btn');
+    var addressCard = document.getElementById('addressCard');
+
+    typeBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        typeBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        state.deliveryType = btn.dataset.type;
+        addressCard.hidden = state.deliveryType !== 'delivery';
+        renderSummary();
+      });
+    });
+
+    // ── Date picker ──
+    var dateWrap = document.getElementById('datePickerWrap');
+
+    fetch('/api/available-dates')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.dates) {
+          data.dates.forEach(function (d) { state.availableDates.add(d); });
+          if (data.dates.length > 0) {
+            var first = new Date(data.dates[0]);
+            state.viewMonth = first.getMonth();
+            state.viewYear = first.getFullYear();
+          }
+        }
+        renderCalendar();
+      })
+      .catch(function () {
+        dateWrap.innerHTML = '<p style="color:#b00020;">Failed to load dates. Please refresh.</p>';
+      });
+
+    function renderCalendar() {
+      var firstDay = new Date(state.viewYear, state.viewMonth, 1).getDay();
+      var daysInMonth = new Date(state.viewYear, state.viewMonth + 1, 0).getDate();
+
+      var html = '<div class="date-nav">' +
+        '<button type="button" class="date-nav-btn" id="datePrev">&lsaquo;</button>' +
+        '<span class="date-nav-label">' + MONTHS[state.viewMonth] + ' ' + state.viewYear + '</span>' +
+        '<button type="button" class="date-nav-btn" id="dateNext">&rsaquo;</button></div>';
+
+      html += '<div class="date-grid">';
+      DAYS.forEach(function (d) { html += '<div class="date-grid-header">' + d + '</div>'; });
+
+      for (var i = 0; i < firstDay; i++) {
+        html += '<div class="date-cell other-month"></div>';
+      }
+
+      for (var day = 1; day <= daysInMonth; day++) {
+        var dateStr = state.viewYear + '-' +
+          String(state.viewMonth + 1).padStart(2, '0') + '-' +
+          String(day).padStart(2, '0');
+        var isAvail = state.availableDates.has(dateStr);
+        var isSelected = dateStr === state.selectedDate;
+        var cls = 'date-cell';
+        if (!isAvail) cls += ' unavailable';
+        if (isSelected) cls += ' selected';
+        html += '<div class="' + cls + '" data-date="' + dateStr + '">' + day + '</div>';
+      }
+
+      html += '</div>';
+      dateWrap.innerHTML = html;
+
+      document.getElementById('datePrev').addEventListener('click', function () {
+        state.viewMonth--;
+        if (state.viewMonth < 0) { state.viewMonth = 11; state.viewYear--; }
+        renderCalendar();
+      });
+      document.getElementById('dateNext').addEventListener('click', function () {
+        state.viewMonth++;
+        if (state.viewMonth > 11) { state.viewMonth = 0; state.viewYear++; }
+        renderCalendar();
+      });
+
+      dateWrap.querySelectorAll('.date-cell:not(.unavailable)').forEach(function (cell) {
+        cell.addEventListener('click', function () {
+          state.selectedDate = cell.dataset.date;
+          renderCalendar();
+          updatePayBtnState();
+        });
+      });
+    }
+
+    // ── Stripe Payment Element ──
+    var payBtn = document.getElementById('payBtn');
+    var payMsg = document.getElementById('paymentMessage');
+    var stripe, elements, paymentElement;
+
+    function loadStripe() {
+      var script = document.createElement('script');
+      script.src = 'https://js.stripe.com/v3/';
+      script.onload = function () {
+        stripe = window.Stripe(stripePublishableKey);
+        state.stripeReady = true;
+        updatePayBtnState();
+      };
+      document.head.appendChild(script);
+    }
+    loadStripe();
+
+    function updatePayBtnState() {
+      var name = document.getElementById('customerName').value.trim();
+      var email = document.getElementById('customerEmail').value.trim();
+      payBtn.disabled = !state.stripeReady || !state.selectedDate || !name || !email || state.processing;
+    }
+
+    document.getElementById('customerName').addEventListener('input', updatePayBtnState);
+    document.getElementById('customerEmail').addEventListener('input', updatePayBtnState);
+
+    function showError(msg) {
+      payMsg.textContent = msg;
+      payMsg.className = 'payment-message error';
+      payMsg.hidden = false;
+    }
+
+    payBtn.addEventListener('click', async function () {
+      if (state.processing) return;
+      state.processing = true;
+      payBtn.disabled = true;
+      payBtn.textContent = 'Processing...';
+      payMsg.hidden = true;
+
+      try {
+        var body = {
+          items: cart.items.map(function (i) { return { slug: i.slug, quantity: i.quantity }; }),
+          customer: {
+            name: document.getElementById('customerName').value.trim(),
+            email: document.getElementById('customerEmail').value.trim(),
+            phone: document.getElementById('customerPhone').value.trim() || undefined,
+          },
+          delivery: {
+            type: state.deliveryType,
+            date: state.selectedDate,
+          },
+          notes: document.getElementById('customerNotes').value.trim() || undefined,
+        };
+
+        if (state.deliveryType === 'delivery') {
+          body.delivery.address_line1 = document.getElementById('addressLine1').value.trim();
+          body.delivery.address_line2 = document.getElementById('addressLine2').value.trim() || undefined;
+          body.delivery.city = document.getElementById('addressCity').value.trim();
+          body.delivery.postcode = document.getElementById('addressPostcode').value.trim();
+        }
+
+        var res = await fetch('/api/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Order creation failed');
+
+        state.clientSecret = data.client_secret;
+        state.orderRef = data.order_reference;
+
+        if (!elements) {
+          elements = stripe.elements({
+            clientSecret: state.clientSecret,
+            appearance: {
+              theme: 'stripe',
+              variables: {
+                colorPrimary: '#1f4a2e',
+                colorBackground: '#fffdf7',
+                fontFamily: "'DM Sans', system-ui, sans-serif",
+                borderRadius: '6px',
+              },
+            },
+          });
+          paymentElement = elements.create('payment');
+          paymentElement.mount('#paymentElement');
+
+          payBtn.textContent = 'Pay Now';
+          state.processing = false;
+          payBtn.disabled = false;
+          return;
+        }
+
+        var result = await stripe.confirmPayment({
+          elements: elements,
+          confirmParams: {
+            return_url: window.location.origin + '/order-confirmed?ref=' + encodeURIComponent(state.orderRef),
+          },
+        });
+
+        if (result.error) {
+          showError(result.error.message);
+          state.processing = false;
+          payBtn.textContent = 'Pay Now';
+          payBtn.disabled = false;
+        }
+      } catch (err) {
+        showError(err.message);
+        state.processing = false;
+        payBtn.textContent = 'Place Order';
+        payBtn.disabled = false;
+      }
+    });
+  })();
+</script>

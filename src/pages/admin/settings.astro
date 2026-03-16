@@ -1,0 +1,177 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { getAdminFromRequest } from '../../lib/admin-auth';
+import { supabaseAdmin } from '../../lib/supabase-server';
+
+const admin = getAdminFromRequest(Astro.request);
+if (!admin) return Astro.redirect('/admin/login');
+
+const { data: settingsRows } = await supabaseAdmin
+  .from('order_settings')
+  .select('key, value');
+
+const settings = Object.fromEntries((settingsRows ?? []).map((s: any) => [s.key, s.value]));
+
+const fields = [
+  { key: 'orders_enabled', label: 'Online Ordering', type: 'toggle', help: 'Turn off to disable all online orders.' },
+  { key: 'collection_only', label: 'Collection Only', type: 'toggle', help: 'When on, hides the delivery option at checkout.' },
+  { key: 'min_lead_days', label: 'Minimum Lead Days', type: 'number', help: 'How many days ahead customers must order. e.g. 2 = can\'t order for today or tomorrow.' },
+  { key: 'closed_weekdays', label: 'Closed Weekdays', type: 'text', help: 'Comma-separated day numbers. 0=Sun, 1=Mon, 2=Tue, ... 6=Sat. e.g. "0,1" blocks Sunday and Monday.' },
+  { key: 'delivery_fee_pence', label: 'Delivery Fee (pence)', type: 'number', help: 'Delivery fee in pence. e.g. 500 = £5.00.' },
+  { key: 'free_delivery_threshold_pence', label: 'Free Delivery Over (pence)', type: 'number', help: 'Orders above this value get free delivery. e.g. 3000 = £30.00.' },
+  { key: 'max_order_items', label: 'Max Items Per Order', type: 'number', help: 'Maximum number of items in a single order.' },
+];
+---
+
+<AdminLayout title="Settings" activeNav="settings">
+  <div class="admin-card">
+    <h2>Order Settings</h2>
+    <p style="color:rgba(26,26,24,0.55);font-size:0.88rem;margin-bottom:1.5rem;">
+      These settings control the online ordering system. Changes take effect immediately.
+    </p>
+
+    <div class="settings-list" id="settingsList">
+      {fields.map((field) => (
+        <div class="setting-row" data-key={field.key}>
+          <div class="setting-info">
+            <strong>{field.label}</strong>
+            <span>{field.help}</span>
+          </div>
+          <div class="setting-control">
+            {field.type === 'toggle' ? (
+              <label class="toggle-switch">
+                <input
+                  type="checkbox"
+                  class="setting-input"
+                  data-key={field.key}
+                  checked={settings[field.key] === 'true'}
+                />
+                <span class="toggle-track"></span>
+              </label>
+            ) : (
+              <input
+                type={field.type}
+                class="admin-input setting-input"
+                data-key={field.key}
+                value={settings[field.key] ?? ''}
+                style="width:8rem;"
+              />
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div style="margin-top:1.5rem;">
+      <button class="admin-btn admin-btn-primary" id="saveSettingsBtn">Save All Settings</button>
+    </div>
+  </div>
+</AdminLayout>
+
+<style is:global>
+  .settings-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(26, 26, 24, 0.06);
+  }
+
+  .setting-row:last-child { border-bottom: none; }
+
+  .setting-info strong {
+    display: block;
+    font-size: 0.92rem;
+  }
+
+  .setting-info span {
+    font-size: 0.8rem;
+    color: rgba(26, 26, 24, 0.5);
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.65rem;
+    cursor: pointer;
+  }
+
+  .toggle-switch input { display: none; }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 24, 0.15);
+    border-radius: 999px;
+    transition: background 0.25s;
+  }
+
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s;
+  }
+
+  .toggle-switch input:checked + .toggle-track {
+    background: #28a745;
+  }
+
+  .toggle-switch input:checked + .toggle-track::after {
+    transform: translateX(1.35rem);
+  }
+</style>
+
+<script is:inline>
+  document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+    var updates = {};
+    document.querySelectorAll('.setting-input').forEach(function(input) {
+      var key = input.dataset.key;
+      if (input.type === 'checkbox') {
+        updates[key] = input.checked ? 'true' : 'false';
+      } else {
+        updates[key] = input.value;
+      }
+    });
+
+    this.textContent = 'Saving...';
+    var btn = this;
+
+    fetch('/api/admin/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      btn.textContent = 'Save All Settings';
+      if (data.ok) {
+        showToast('Settings saved');
+      } else {
+        showToast('Error: ' + data.error);
+      }
+    }).catch(function() {
+      btn.textContent = 'Save All Settings';
+      showToast('Failed to save');
+    });
+  });
+
+  function showToast(msg) {
+    var el = document.createElement('div');
+    el.className = 'admin-toast';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(function() { el.remove(); }, 2500);
+  }
+</script>

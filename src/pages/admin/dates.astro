@@ -1,0 +1,146 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { getAdminFromRequest } from '../../lib/admin-auth';
+import { supabaseAdmin } from '../../lib/supabase-server';
+
+const admin = getAdminFromRequest(Astro.request);
+if (!admin) return Astro.redirect('/admin/login');
+
+const { data: blockedDates } = await supabaseAdmin
+  .from('order_dates_blocked')
+  .select('id, blocked_date, reason')
+  .order('blocked_date', { ascending: true });
+
+const dateList = blockedDates ?? [];
+const today = new Date().toISOString().slice(0, 10);
+const futureDates = dateList.filter((d: any) => d.blocked_date >= today);
+const pastDates = dateList.filter((d: any) => d.blocked_date < today);
+---
+
+<AdminLayout title="Date Manager" activeNav="dates">
+  <div class="admin-toolbar">
+    <p style="margin:0;color:rgba(26,26,24,0.55);font-size:0.88rem;">
+      Block dates to prevent customers from ordering for collection/delivery on those days.
+    </p>
+  </div>
+
+  <div class="admin-card">
+    <h2>Block New Dates</h2>
+    <form id="blockDateForm" style="display:flex;gap:0.75rem;align-items:end;flex-wrap:wrap;">
+      <div class="admin-form-group" style="margin-bottom:0;">
+        <label for="blockFrom">From</label>
+        <input type="date" id="blockFrom" class="admin-input" min={today} required style="width:auto;" />
+      </div>
+      <div class="admin-form-group" style="margin-bottom:0;">
+        <label for="blockTo">To</label>
+        <input type="date" id="blockTo" class="admin-input" min={today} style="width:auto;" />
+      </div>
+      <div class="admin-form-group" style="margin-bottom:0;">
+        <label for="blockReason">Reason</label>
+        <input type="text" id="blockReason" class="admin-input" placeholder="e.g. Bank Holiday" style="width:14rem;" />
+      </div>
+      <button type="submit" class="admin-btn admin-btn-primary">Block Dates</button>
+    </form>
+  </div>
+
+  <div class="admin-card">
+    <h2>Upcoming Blocked Dates ({futureDates.length})</h2>
+    {futureDates.length === 0 ? (
+      <div class="admin-empty">No upcoming blocked dates.</div>
+    ) : (
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Reason</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="futureDatesBody">
+          {futureDates.map((d: any) => (
+            <tr data-date-id={d.id}>
+              <td><strong>{d.blocked_date}</strong></td>
+              <td>{new Date(d.blocked_date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long' })}</td>
+              <td>{d.reason ?? '—'}</td>
+              <td>
+                <button class="admin-btn admin-btn-sm admin-btn-danger unblock-btn" data-date-id={d.id}>
+                  Unblock
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+
+  {pastDates.length > 0 && (
+    <div class="admin-card">
+      <h2>Past Blocked Dates ({pastDates.length})</h2>
+      <details>
+        <summary style="cursor:pointer;font-size:0.85rem;color:rgba(26,26,24,0.5);">Show past dates</summary>
+        <table class="admin-table" style="margin-top:0.75rem;">
+          <thead>
+            <tr><th>Date</th><th>Reason</th></tr>
+          </thead>
+          <tbody>
+            {pastDates.map((d: any) => (
+              <tr>
+                <td>{d.blocked_date}</td>
+                <td>{d.reason ?? '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </details>
+    </div>
+  )}
+</AdminLayout>
+
+<script is:inline>
+  document.getElementById('blockDateForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var from = document.getElementById('blockFrom').value;
+    var to = document.getElementById('blockTo').value || from;
+    var reason = document.getElementById('blockReason').value;
+
+    if (!from) return;
+    if (to < from) to = from;
+
+    fetch('/api/admin/dates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: from, to: to, reason: reason })
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.ok) {
+        showToast('Blocked ' + data.count + ' date(s)');
+        setTimeout(function() { location.reload(); }, 1000);
+      } else { showToast('Error: ' + data.error); }
+    });
+  });
+
+  document.querySelectorAll('.unblock-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var id = btn.dataset.dateId;
+      fetch('/api/admin/dates', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      }).then(function(r) {
+        if (r.ok) {
+          btn.closest('tr').remove();
+          showToast('Date unblocked');
+        } else { showToast('Failed to unblock'); }
+      });
+    });
+  });
+
+  function showToast(msg) {
+    var el = document.createElement('div');
+    el.className = 'admin-toast';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(function() { el.remove(); }, 2500);
+  }
+</script>

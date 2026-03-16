@@ -15,7 +15,22 @@ const { sections } = Astro.props;
 const defaultSlug = sections[0]?.category.slug ?? '';
 ---
 
-<div class="catalog-browser reveal-up" data-default-category={defaultSlug}>
+<div class="catalog-search-wrap reveal-up">
+  <div class="catalog-search-box">
+    <svg class="catalog-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input
+      type="search"
+      id="catalog-search"
+      class="catalog-search-input"
+      placeholder="Search products and prices..."
+      autocomplete="off"
+    />
+    <kbd class="catalog-search-hint">ESC to clear</kbd>
+  </div>
+  <div id="catalog-search-results" class="catalog-search-results" hidden></div>
+</div>
+
+<div class="catalog-browser" data-default-category={defaultSlug}>
   <div class="catalog-tabs" role="tablist" aria-label="Product categories">
     {
       sections.map((section, index) => (
@@ -105,6 +120,87 @@ const defaultSlug = sections[0]?.category.slug ?? '';
     }
   </div>
 </div>
+
+<script is:inline define:vars={{ searchIndex: sections.flatMap(s => s.products.map(p => ({ name: p.name, slug: p.slug, cat: s.category.name, catSlug: s.category.slug, price: p.price, priceType: p.priceType, size: p.size, desc: p.shortDescription, online: s.category.slug === 'pies', img: p.imageUrl }))) }}>
+  (() => {
+    const input = document.getElementById('catalog-search');
+    const resultsEl = document.getElementById('catalog-search-results');
+    if (!input || !resultsEl) return;
+
+    function fmtPrice(p) {
+      if (p.price === null || p.price === undefined) return 'Ask in shop';
+      const base = '\u00a3' + Number(p.price).toFixed(2);
+      if (p.priceType === 'by_weight') return base + ' per lb';
+      if (p.priceType === 'by_count') return base + ' each';
+      return base;
+    }
+
+    let debounce = null;
+    input.addEventListener('input', () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => runSearch(input.value.trim()), 150);
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        input.value = '';
+        runSearch('');
+        input.blur();
+      }
+    });
+
+    function runSearch(query) {
+      if (query.length < 2) {
+        resultsEl.hidden = true;
+        resultsEl.innerHTML = '';
+        document.querySelector('.catalog-browser').style.display = '';
+        return;
+      }
+
+      const q = query.toLowerCase();
+      const matches = searchIndex.filter(p => {
+        const haystack = [p.name, p.cat, p.size, p.desc].filter(Boolean).join(' ').toLowerCase();
+        return haystack.includes(q);
+      });
+
+      document.querySelector('.catalog-browser').style.display = 'none';
+      resultsEl.hidden = false;
+
+      if (matches.length === 0) {
+        resultsEl.innerHTML = '<div class="search-empty">No products found for &ldquo;' + query.replace(/</g, '&lt;') + '&rdquo;</div>';
+        return;
+      }
+
+      const grouped = {};
+      matches.forEach(p => {
+        if (!grouped[p.cat]) grouped[p.cat] = [];
+        grouped[p.cat].push(p);
+      });
+
+      let html = '<div class="search-count">' + matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' for &ldquo;' + query.replace(/</g, '&lt;') + '&rdquo;</div>';
+
+      for (const [cat, items] of Object.entries(grouped)) {
+        html += '<div class="search-group"><h3 class="search-group-title">' + cat + ' <small>' + items.length + '</small></h3><div class="search-grid">';
+        items.forEach(p => {
+          const priceStr = fmtPrice(p);
+          const badge = p.online
+            ? '<span class="meta-pill orderable">Order online</span>'
+            : '<span class="meta-pill">Available in shop</span>';
+          const sizeHtml = p.size ? '<span class="meta-pill">' + p.size + '</span>' : '';
+          const link = p.online ? '/pies' : null;
+          const mediaTag = link
+            ? '<a href="' + link + '" class="catalog-card-media"><img src="' + (p.img || '/images/shop-interior.jpg') + '" alt="' + p.name.replace(/"/g, '&quot;') + '" /></a>'
+            : '<div class="catalog-card-media"><img src="' + (p.img || '/images/shop-interior.jpg') + '" alt="' + p.name.replace(/"/g, '&quot;') + '" /></div>';
+          const btnHtml = link ? '<a href="' + link + '" class="btn btn-green btn-sm catalog-card-action">Order Online</a>' : '';
+          html += '<article class="catalog-card visible">' + mediaTag + '<div class="catalog-card-head"><div><h3>' + p.name + '</h3><div class="catalog-meta">' + badge + sizeHtml + '</div></div><div class="catalog-card-price">' + priceStr + '</div></div><p>' + (p.desc || '') + '</p>' + btnHtml + '</article>';
+        });
+        html += '</div></div>';
+      }
+
+      resultsEl.innerHTML = html;
+    }
+  })();
+</script>
 
 <script is:inline>
   (() => {

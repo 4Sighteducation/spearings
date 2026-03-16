@@ -1,0 +1,52 @@
+{
+  "name": "Spearings Pies — Order Online",
+  "short_name": "Spearings Pies",
+  "description": "Order handmade pies from Spearings Butchers, Macclesfield. Collection or delivery.",
+  "start_url": "/pies",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0e2318",
+  "background_color": "#0e2318",
+  "categories": ["food", "shopping"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Order Pies",
+      "short_name": "Pies",
+      "url": "/pies",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "View Basket & Checkout",
+      "short_name": "Checkout",
+      "url": "/checkout"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { getAdminFromRequest } from '../../lib/admin-auth';
+import { supabaseAdmin } from '../../lib/supabase-server';
+
+const admin = getAdminFromRequest(Astro.request);
+if (!admin) return Astro.redirect('/admin/login');
+
+const today = new Date().toISOString().slice(0, 10);
+const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+
+const [ordersRes, recentRes, productsRes, settingsRes] = await Promise.all([
+  supabaseAdmin.from('orders').select('id, status, total', { count: 'exact' }),
+  supabaseAdmin.from('orders').select('id, reference, customer_name, total, status, delivery_date, created_at')
+    .gte('created_at', weekAgo + 'T00:00:00')
+    .order('created_at', { ascending: false })
+    .limit(10),
+  supabaseAdmin.from('products').select('id', { count: 'exact' }).eq('is_archived', false),
+  supabaseAdmin.from('order_settings').select('key, value'),
+]);
+
+const orders = ordersRes.data ?? [];
+const recentOrders = recentRes.data ?? [];
+const productCount = productsRes.count ?? 0;
+const settings = Object.fromEntries((settingsRes.data ?? []).map((s: any) => [s.key, s.value]));
+
+const pendingCount = orders.filter((o: any) => o.status === 'pending').length;
+const confirmedCount = orders.filter((o: any) => o.status === 'confirmed').length;
+const totalRevenue = orders
+  .filter((o: any) => ['confirmed', 'preparing', 'ready', 'collected', 'delivered'].includes(o.status))
+  .reduce((sum: number, o: any) => sum + (o.total ?? 0), 0);
+const ordersEnabled = settings.orders_enabled !== 'false';
+---
+
+<AdminLayout title="Dashboard" activeNav="dashboard">
+  <div class="admin-grid">
+    <div class="admin-stat">
+      <div class="admin-stat-label">Pending Orders</div>
+      <div class="admin-stat-value">{pendingCount}</div>
+    </div>
+    <div class="admin-stat">
+      <div class="admin-stat-label">Confirmed</div>
+      <div class="admin-stat-value">{confirmedCount}</div>
+    </div>
+    <div class="admin-stat">
+      <div class="admin-stat-label">Total Revenue</div>
+      <div class="admin-stat-value">£{(totalRevenue / 100).toFixed(2)}</div>
+    </div>
+    <div class="admin-stat">
+      <div class="admin-stat-label">Products</div>
+      <div class="admin-stat-value">{productCount}</div>
+    </div>
+    <div class="admin-stat">
+      <div class="admin-stat-label">Ordering</div>
+      <div class="admin-stat-value" style={`color: ${ordersEnabled ? '#28a745' : '#dc3545'}`}>
+        {ordersEnabled ? 'ON' : 'OFF'}
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card" style="margin-top: 1.5rem;">
+    <h2>Recent Orders (Last 7 Days)</h2>
+    {recentOrders.length === 0 ? (
+      <div class="admin-empty">No orders in the last 7 days.</div>
+    ) : (
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {recentOrders.map((order: any) => (
+            <tr>
+              <td><strong>{order.reference}</strong></td>
+              <td>{order.customer_name}</td>
+              <td>{new Date(order.delivery_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</td>
+              <td>£{(order.total / 100).toFixed(2)}</td>
+              <td><span class={`admin-badge ${order.status}`}>{order.status}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
