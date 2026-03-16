@@ -417,9 +417,22 @@ p {
   opacity: 1;
 }
 
-.pie-shortcut svg {
-  width: 1.32rem;
-  height: 1.32rem;
+.pie-shortcut img {
+  width: 1.4rem;
+  height: 1.4rem;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.btn-pie {
+  gap: 0.5rem;
+}
+
+.btn-pie-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  object-fit: contain;
+  filter: brightness(0);
 }
 
 .pie-shortcut span {
