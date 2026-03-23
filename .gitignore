@@ -31,3 +31,10 @@ pnpm-debug.log*
 
 # vercel local project settings
 .vercel/
+
+# Stray duplicate page copies at repo root (routes live in src/pages/)
+/index.astro
+/pies.astro
+/our-story.astro
+/visit.astro
+/spearings-preview.html
