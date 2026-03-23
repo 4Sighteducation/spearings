@@ -6,13 +6,22 @@ interface Props {
 	title?: string;
 	description?: string;
 	path?: string;
+	/** Absolute URL or site-root path for Open Graph / Twitter image */
+	ogImage?: string;
 }
 
 const {
 	title = 'Spearings Butchers | Macclesfield Since 1945',
 	description = 'Traditional family butchers in Macclesfield, serving local meat, handmade pies, deli produce, and cheese since 1945.',
 	path = '/',
+	ogImage = '/images/site-logo-banner.png',
 } = Astro.props;
+
+const siteBase = Astro.site ?? new URL('https://spearings.co.uk');
+const canonicalURL = new URL(Astro.url.pathname, siteBase);
+const ogImageUrl = ogImage.startsWith('http')
+	? ogImage
+	: new URL(ogImage.startsWith('/') ? ogImage : `/${ogImage}`, siteBase).href;
 
 const navigation = [
 	{ href: '/our-story', label: 'Our Story' },
@@ -39,8 +48,24 @@ const openingHours = [
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL.href} />
 		<meta name="theme-color" content="#0e2318" />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="en_GB" />
+		<meta property="og:site_name" content="Spearings Butchers" />
+		<meta property="og:url" content={canonicalURL.href} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
 		<link rel="manifest" href="/manifest.json" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

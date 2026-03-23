@@ -1,0 +1,8 @@
+# https://spearings.co.uk — update Sitemap URL if domain changes
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://spearings.co.uk/sitemap-index.xml
