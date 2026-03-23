@@ -1,10 +1,9 @@
 ---
 export const prerender = true;
 import Layout from '../layouts/Layout.astro';
-import { formatPrice, getCatalog, getProductsByCategory } from '../lib/catalog';
+import { getCatalog, getProductsByCategory } from '../lib/catalog';
 const { categories, products } = await getCatalog();
 const pieCount = getProductsByCategory(products, 'pies').length;
-const pieProducts = getProductsByCategory(products, 'pies').slice(0, 4);
 
 const categoryLinks = {
   meat: '/products#meat',
@@ -160,47 +159,41 @@ const categoryDescriptions: Record<string, string> = {
     </section>
 
     <section class="section section-cream">
-      <div class="container pie-grid">
-        <div class="pie-menu-card reveal-left">
-          <div class="pie-menu-header">
-            <span class="pie-menu-rule"></span>
-            <div class="pie-menu-title">
-              <p class="eyebrow">Famous Pies</p>
-              <h2>Handmade daily, delivered to your door.</h2>
+      <div class="container">
+        <div class="order-online-panel order-panel reveal-up">
+          <div class="order-online-grid">
+            <div class="order-online-copy stack">
+              <p class="eyebrow">Order Online</p>
+              <h2 class="order-online-heading">
+                <span class="order-online-lead">Handmade daily</span>
+                <span class="order-online-head-rest"> — our pies, <em>delivered to you</em>.</span>
+              </h2>
+              <p>
+                Every pie is <strong>handmade daily</strong> at our Macclesfield shop. Take your pick
+                from a wide range of hot and cold options, then have them delivered straight to your
+                door or ready to collect. Perfect for family meals, parties, or just because you
+                deserve a proper pie — including show-stoppers like our Special Occasion pie.
+              </p>
+              <ul class="bullet-list">
+                <li>Choose from the full pie range online</li>
+                <li>Collection or delivery available</li>
+                <li>Ideal for family meals, parties, and events</li>
+              </ul>
+              <a href="/pies" class="btn btn-green">Order Pies</a>
             </div>
-            <span class="pie-menu-rule"></span>
-          </div>
-
-          <div class="pie-list">
-            {pieProducts.map((product) => (
-              <div class="pie-item">
-                <div>
-                  <strong>{product.name}</strong>
-                  <div class="pie-desc">
-                    {product.shortDescription ??
-                      'A Spearings classic, handmade fresh every day at the shop.'}
-                  </div>
-                </div>
-                <div class="pie-price">{formatPrice(product)}</div>
+            <figure class="order-online-visual">
+              <div class="order-online-frame">
+                <img
+                  src="/images/special-occasion-pie.png"
+                  alt="Spearings Special Occasion pie — decorated pastry top, handmade daily"
+                  width="2048"
+                  height="1013"
+                  loading="lazy"
+                />
               </div>
-            ))}
+              <figcaption class="order-online-caption">Special Occasion pie</figcaption>
+            </figure>
           </div>
-        </div>
-
-        <div class="order-panel stack reveal-right reveal-d1">
-          <p class="eyebrow">Order Online</p>
-          <h2>Our pies, <em>delivered to you</em>.</h2>
-          <p>
-            Take your pick from a wide range of hot and cold options, handmade daily and
-            delivered straight to your door. Perfect for family meals, parties, or just because
-            you deserve a proper pie.
-          </p>
-          <ul class="bullet-list">
-            <li>Choose from the full pie range online</li>
-            <li>Collection or delivery available</li>
-            <li>Ideal for family meals, parties, and events</li>
-          </ul>
-          <a href="/pies" class="btn btn-green">Order Pies</a>
         </div>
       </div>
     </section>

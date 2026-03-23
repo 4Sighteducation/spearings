@@ -20,7 +20,11 @@ const pieProducts = getProductsByCategory(products, 'pies');
           <img src="/icons/icon-192x192.png" alt="" class="pwa-install-icon" />
           <div>
             <strong>Get the Spearings Pies app</strong>
-            <span>Order pies faster from your home screen</span>
+            <span id="pwaInstallHintChrome">Order pies faster from your home screen</span>
+            <span id="pwaInstallHintIos" hidden>
+              On iPhone or iPad: tap <strong>Share</strong> (square with arrow), then <strong>Add to Home Screen</strong>.
+              Safari does not show an &quot;Install&quot; button like desktop Chrome — this is the normal way to save the app.
+            </span>
           </div>
         </div>
         <div class="pwa-install-actions">
@@ -361,6 +365,13 @@ const pieProducts = getProductsByCategory(products, 'pies');
     color: rgba(245, 237, 216, 0.7);
   }
 
+  .pwa-install-copy #pwaInstallHintIos {
+    display: block;
+    margin-top: 0.25rem;
+    max-width: 44rem;
+    line-height: 1.45;
+  }
+
   .pwa-install-actions {
     display: flex;
     align-items: center;
@@ -594,40 +605,63 @@ const pieProducts = getProductsByCategory(products, 'pies');
     var bar = document.getElementById('pwaInstallBar');
     var installBtn = document.getElementById('pwaInstallBtn');
     var dismissBtn = document.getElementById('pwaInstallDismiss');
+    var hintChrome = document.getElementById('pwaInstallHintChrome');
+    var hintIos = document.getElementById('pwaInstallHintIos');
 
     if (!bar || !installBtn) return;
 
     // Don't show if user previously dismissed this session
     if (sessionStorage.getItem('pwa_dismissed')) return;
 
+    function isStandalonePwa() {
+      if (window.matchMedia('(display-mode: standalone)').matches) return true;
+      if ('standalone' in window.navigator && window.navigator.standalone === true) return true;
+      return false;
+    }
+
+    function isIOS() {
+      return (
+        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+      );
+    }
+
     // Don't show if already running as installed PWA
-    if (window.matchMedia('(display-mode: standalone)').matches) return;
+    if (isStandalonePwa()) return;
 
-    window.addEventListener('beforeinstallprompt', function (e) {
-      e.preventDefault();
-      deferredPrompt = e;
+    // iOS Safari never fires beforeinstallprompt — show manual Add to Home Screen instructions instead
+    if (isIOS()) {
       bar.hidden = false;
-    });
+      if (hintChrome) hintChrome.hidden = true;
+      if (hintIos) hintIos.hidden = false;
+      installBtn.hidden = true;
+    } else {
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        bar.hidden = false;
+      });
 
-    installBtn.addEventListener('click', function () {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function (result) {
-        if (result.outcome === 'accepted') {
-          bar.hidden = true;
-        }
+      installBtn.addEventListener('click', function () {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (result) {
+          if (result.outcome === 'accepted') {
+            bar.hidden = true;
+          }
+          deferredPrompt = null;
+        });
+      });
+
+      window.addEventListener('appinstalled', function () {
+        bar.hidden = true;
         deferredPrompt = null;
       });
-    });
+    }
 
     dismissBtn.addEventListener('click', function () {
       bar.hidden = true;
       sessionStorage.setItem('pwa_dismissed', '1');
-    });
-
-    window.addEventListener('appinstalled', function () {
-      bar.hidden = true;
-      deferredPrompt = null;
     });
   })();
 </script>

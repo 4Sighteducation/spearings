@@ -62,11 +62,21 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
             <tr data-date-id={d.id}>
               <td><strong>{d.blocked_date}</strong></td>
               <td>{new Date(d.blocked_date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long' })}</td>
-              <td>{d.reason ?? '—'}</td>
+              <td class="closure-reason-cell">{d.reason ?? '—'}</td>
               <td>
-                <button class="admin-btn admin-btn-sm admin-btn-danger unblock-btn" data-date-id={d.id}>
-                  Unblock
-                </button>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                  <button
+                    type="button"
+                    class="admin-btn admin-btn-sm edit-closure-btn"
+                    data-date-id={d.id}
+                    data-blocked-date={d.blocked_date}
+                  >
+                    Edit
+                  </button>
+                  <button type="button" class="admin-btn admin-btn-sm admin-btn-danger unblock-btn" data-date-id={d.id}>
+                    Unblock
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
@@ -74,6 +84,28 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
       </table>
     )}
   </div>
+
+  <dialog id="editClosureDialog" class="closure-edit-dialog">
+    <form id="editClosureForm" class="closure-edit-form">
+      <h2 style="margin:0 0 1rem;font-size:1.15rem;">Edit closure</h2>
+      <p style="margin:0 0 1rem;font-size:0.88rem;color:rgba(26,26,24,0.55);">
+        Change the blocked date or the reason shown to staff. Saving a date that is already blocked elsewhere will fail.
+      </p>
+      <input type="hidden" id="editClosureId" />
+      <div class="admin-form-group">
+        <label for="editClosureDate">Blocked date</label>
+        <input type="date" id="editClosureDate" class="admin-input" required />
+      </div>
+      <div class="admin-form-group">
+        <label for="editClosureReason">Reason</label>
+        <input type="text" id="editClosureReason" class="admin-input" placeholder="e.g. Bank Holiday" />
+      </div>
+      <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.25rem;">
+        <button type="button" class="admin-btn" id="editClosureCancel">Cancel</button>
+        <button type="submit" class="admin-btn admin-btn-primary">Save changes</button>
+      </div>
+    </form>
+  </dialog>
 
   {pastDates.length > 0 && (
     <div class="admin-card">
@@ -98,6 +130,22 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
   )}
 </AdminLayout>
 
+<style>
+  .closure-edit-dialog {
+    border: none;
+    border-radius: var(--admin-radius, 12px);
+    padding: 0;
+    max-width: 26rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+  }
+  .closure-edit-dialog::backdrop {
+    background: rgba(14, 35, 24, 0.45);
+  }
+  .closure-edit-form {
+    padding: 1.5rem;
+  }
+</style>
+
 <script is:inline>
   document.getElementById('blockDateForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -119,6 +167,60 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
       } else { showToast('Error: ' + data.error); }
     });
   });
+
+  var editDialog = document.getElementById('editClosureDialog');
+  var editForm = document.getElementById('editClosureForm');
+  var editCancel = document.getElementById('editClosureCancel');
+
+  document.querySelectorAll('.edit-closure-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tr = btn.closest('tr');
+      var tds = tr.querySelectorAll('td');
+      var reasonCell = tds[2];
+      var reason = reasonCell ? reasonCell.textContent.trim() : '';
+      if (reason === '—') reason = '';
+      document.getElementById('editClosureId').value = btn.dataset.dateId;
+      document.getElementById('editClosureDate').value = btn.dataset.blockedDate || '';
+      document.getElementById('editClosureReason').value = reason;
+      if (editDialog) editDialog.showModal();
+    });
+  });
+
+  if (editCancel && editDialog) {
+    editCancel.addEventListener('click', function() {
+      editDialog.close();
+    });
+  }
+
+  if (editForm) {
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var id = document.getElementById('editClosureId').value;
+      var blocked_date = document.getElementById('editClosureDate').value;
+      var reason = document.getElementById('editClosureReason').value;
+      fetch('/api/admin/dates', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, blocked_date: blocked_date, reason: reason }),
+      })
+        .then(function(r) {
+          return r.json().then(function(data) {
+            return { ok: r.ok, data: data };
+          });
+        })
+        .then(function(res) {
+          if (res.ok) {
+            if (editDialog) editDialog.close();
+            showToast('Closure updated');
+            setTimeout(function() {
+              location.reload();
+            }, 600);
+          } else {
+            showToast(res.data.error || 'Update failed');
+          }
+        });
+    });
+  }
 
   document.querySelectorAll('.unblock-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {

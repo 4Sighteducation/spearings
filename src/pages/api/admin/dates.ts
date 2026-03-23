@@ -41,3 +41,39 @@ export const DELETE: APIRoute = async ({ request }) => {
   if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   return new Response(JSON.stringify({ ok: true }));
 };
+
+export const PATCH: APIRoute = async ({ request }) => {
+  const admin = getAdminFromRequest(request);
+  if (!admin) return new Response('Unauthorized', { status: 401 });
+
+  const body = await request.json();
+  const { id, blocked_date, reason } = body;
+  if (!id) return new Response(JSON.stringify({ error: 'Missing id' }), { status: 400 });
+
+  const updates: Record<string, string> = {};
+  if (blocked_date !== undefined) {
+    if (typeof blocked_date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(blocked_date)) {
+      return new Response(JSON.stringify({ error: 'Invalid blocked_date' }), { status: 400 });
+    }
+    updates.blocked_date = blocked_date;
+  }
+  if (reason !== undefined) {
+    updates.reason = typeof reason === 'string' ? reason : '';
+  }
+
+  if (Object.keys(updates).length === 0) {
+    return new Response(JSON.stringify({ error: 'Nothing to update' }), { status: 400 });
+  }
+
+  const { error } = await supabaseAdmin.from('order_dates_blocked').update(updates).eq('id', id);
+
+  if (error) {
+    const dup = error.message.includes('duplicate');
+    const msg = dup ? 'That date is already blocked' : error.message;
+    return new Response(JSON.stringify({ error: msg }), { status: dup ? 409 : 500 });
+  }
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};

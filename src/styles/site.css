@@ -731,7 +731,6 @@ p {
 
 .hero-inner,
 .story-grid,
-.pie-grid,
 .visit-grid,
 .split-grid,
 .contact-grid {
@@ -1155,6 +1154,72 @@ p {
     box-shadow 0.35s ease;
 }
 
+.order-online-panel {
+  width: 100%;
+}
+
+.order-online-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.order-online-heading {
+  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.order-online-lead {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--g-700);
+}
+
+.order-online-head-rest {
+  font-weight: 400;
+}
+
+.order-online-visual {
+  margin: 0;
+}
+
+.order-online-frame {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(26, 26, 24, 0.1);
+  box-shadow: 0 16px 48px rgba(26, 26, 24, 0.08);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.order-online-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 2048 / 1013;
+  object-fit: cover;
+  object-position: center;
+}
+
+.order-online-caption {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .order-online-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-online-visual {
+    order: -1;
+  }
+}
+
 .pie-menu-header {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -1541,6 +1606,11 @@ p {
 .meta-pill.orderable {
   background: rgba(201, 154, 26, 0.18);
   color: var(--g-900);
+}
+
+.meta-pill-range {
+  border-style: dashed;
+  color: rgba(26, 26, 24, 0.65);
 }
 
 .catalog-card-price {
@@ -1966,7 +2036,6 @@ p {
 
   .hero-inner,
   .story-grid,
-  .pie-grid,
   .visit-grid,
   .split-grid,
   .contact-grid,

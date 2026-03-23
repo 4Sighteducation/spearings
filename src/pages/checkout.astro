@@ -88,10 +88,14 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
         <div class="checkout-payment-col">
           <div class="checkout-card checkout-payment-card">
             <h2 class="checkout-card-heading">Payment</h2>
+            <p class="checkout-payment-placeholder" id="paymentPlaceholder">
+              Enter your details and choose a date above, then tap <strong>Continue to secure payment</strong>.
+              Apple Pay and Google Pay appear here on supported devices after you continue (once your domain is verified in Stripe).
+            </p>
             <div id="paymentElement"></div>
             <div id="paymentMessage" class="payment-message" hidden></div>
             <button type="button" class="btn btn-gold checkout-pay-btn" id="payBtn" disabled>
-              Place Order
+              Continue to secure payment
             </button>
             <p class="checkout-secure-note">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -368,6 +372,17 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
     pointer-events: none;
   }
 
+  .checkout-payment-placeholder {
+    margin: 0 0 1rem;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+
+  .checkout-payment-placeholder[hidden] {
+    display: none;
+  }
+
   .checkout-secure-note {
     display: flex;
     align-items: center;
@@ -444,7 +459,18 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
       processing: false,
       clientSecret: null,
       orderRef: null,
+      paymentElementMounted: false,
     };
+
+    function getTotalPence() {
+      var subtotal = 0;
+      cart.items.forEach(function (i) {
+        subtotal += i.price * i.quantity;
+      });
+      var shipping = 0;
+      if (state.deliveryType === 'delivery' && subtotal < 3000) shipping = 500;
+      return subtotal + shipping;
+    }
 
     // ── Render order summary ──
     var summaryItems = document.getElementById('summaryItems');
@@ -484,6 +510,7 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
         state.deliveryType = btn.dataset.type;
         addressCard.hidden = state.deliveryType !== 'delivery';
         renderSummary();
+        updatePayBtnState();
       });
     });
 
@@ -561,6 +588,7 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
     // ── Stripe Payment Element ──
     var payBtn = document.getElementById('payBtn');
     var payMsg = document.getElementById('paymentMessage');
+    var paymentPlaceholder = document.getElementById('paymentPlaceholder');
     var stripe, elements, paymentElement;
 
     function loadStripe() {
@@ -578,11 +606,28 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
     function updatePayBtnState() {
       var name = document.getElementById('customerName').value.trim();
       var email = document.getElementById('customerEmail').value.trim();
-      payBtn.disabled = !state.stripeReady || !state.selectedDate || !name || !email || state.processing;
+      var baseOk = state.stripeReady && state.selectedDate && name && email;
+      if (state.deliveryType === 'delivery') {
+        baseOk =
+          baseOk &&
+          document.getElementById('addressLine1').value.trim() &&
+          document.getElementById('addressCity').value.trim() &&
+          document.getElementById('addressPostcode').value.trim();
+      }
+      payBtn.disabled = !baseOk || state.processing;
+      if (state.paymentElementMounted) {
+        payBtn.textContent = 'Pay ' + formatPence(getTotalPence());
+      } else {
+        payBtn.textContent = 'Continue to secure payment';
+      }
     }
 
     document.getElementById('customerName').addEventListener('input', updatePayBtnState);
     document.getElementById('customerEmail').addEventListener('input', updatePayBtnState);
+    ['addressLine1', 'addressCity', 'addressPostcode'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', updatePayBtnState);
+    });
 
     function showError(msg) {
       payMsg.textContent = msg;
@@ -592,46 +637,78 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
     payBtn.addEventListener('click', async function () {
       if (state.processing) return;
-      state.processing = true;
-      payBtn.disabled = true;
-      payBtn.textContent = 'Processing...';
-      payMsg.hidden = true;
 
-      try {
-        var body = {
-          items: cart.items.map(function (i) { return { slug: i.slug, quantity: i.quantity }; }),
-          customer: {
-            name: document.getElementById('customerName').value.trim(),
-            email: document.getElementById('customerEmail').value.trim(),
-            phone: document.getElementById('customerPhone').value.trim() || undefined,
-          },
-          delivery: {
-            type: state.deliveryType,
-            date: state.selectedDate,
-          },
-          notes: document.getElementById('customerNotes').value.trim() || undefined,
-        };
+      if (!state.paymentElementMounted) {
+        state.processing = true;
+        payBtn.disabled = true;
+        payBtn.textContent = 'Setting up payment...';
+        payMsg.hidden = true;
 
-        if (state.deliveryType === 'delivery') {
-          body.delivery.address_line1 = document.getElementById('addressLine1').value.trim();
-          body.delivery.address_line2 = document.getElementById('addressLine2').value.trim() || undefined;
-          body.delivery.city = document.getElementById('addressCity').value.trim();
-          body.delivery.postcode = document.getElementById('addressPostcode').value.trim();
-        }
+        try {
+          var body = {
+            items: cart.items.map(function (i) { return { slug: i.slug, quantity: i.quantity }; }),
+            customer: {
+              name: document.getElementById('customerName').value.trim(),
+              email: document.getElementById('customerEmail').value.trim(),
+              phone: document.getElementById('customerPhone').value.trim() || undefined,
+            },
+            delivery: {
+              type: state.deliveryType,
+              date: state.selectedDate,
+            },
+            notes: document.getElementById('customerNotes').value.trim() || undefined,
+          };
 
-        var res = await fetch('/api/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
+          if (state.deliveryType === 'delivery') {
+            body.delivery.address_line1 = document.getElementById('addressLine1').value.trim();
+            body.delivery.address_line2 = document.getElementById('addressLine2').value.trim() || undefined;
+            body.delivery.city = document.getElementById('addressCity').value.trim();
+            body.delivery.postcode = document.getElementById('addressPostcode').value.trim();
+          }
 
-        var data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Order creation failed');
+          function checkoutFingerprint() {
+            return JSON.stringify({
+              items: cart.items.map(function (i) {
+                return { slug: i.slug, q: i.quantity };
+              }),
+              dt: state.deliveryType,
+              date: state.selectedDate,
+            });
+          }
 
-        state.clientSecret = data.client_secret;
-        state.orderRef = data.order_reference;
+          function syncCheckoutIdempotency() {
+            try {
+              var fp = checkoutFingerprint();
+              var storedFp = sessionStorage.getItem('spearings_checkout_fp');
+              var idem = sessionStorage.getItem('spearings_checkout_idem');
+              if (!idem || storedFp !== fp) {
+                idem = crypto.randomUUID();
+                sessionStorage.setItem('spearings_checkout_idem', idem);
+              }
+              sessionStorage.setItem('spearings_checkout_fp', fp);
+              return idem;
+            } catch (e) {
+              return crypto.randomUUID();
+            }
+          }
 
-        if (!elements) {
+          body.idempotency_key = syncCheckoutIdempotency();
+
+          var res = await fetch('/api/create-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Order creation failed');
+
+          state.clientSecret = data.client_secret;
+          state.orderRef = data.order_reference;
+
+          var custName = document.getElementById('customerName').value.trim();
+          var custEmail = document.getElementById('customerEmail').value.trim();
+
           elements = stripe.elements({
             clientSecret: state.clientSecret,
             appearance: {
@@ -644,32 +721,62 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
               },
             },
           });
-          paymentElement = elements.create('payment');
+          paymentElement = elements.create('payment', {
+            layout: 'tabs',
+            defaultValues: {
+              billingDetails: {
+                name: custName,
+                email: custEmail,
+              },
+            },
+          });
           paymentElement.mount('#paymentElement');
-
-          payBtn.textContent = 'Pay Now';
+          if (paymentPlaceholder) paymentPlaceholder.hidden = true;
+          state.paymentElementMounted = true;
           state.processing = false;
-          payBtn.disabled = false;
-          return;
+          updatePayBtnState();
+        } catch (err) {
+          showError(err.message);
+          state.processing = false;
+          payBtn.textContent = 'Continue to secure payment';
+          updatePayBtnState();
         }
+        return;
+      }
 
+      state.processing = true;
+      payBtn.disabled = true;
+      payBtn.textContent = 'Processing...';
+      payMsg.hidden = true;
+
+      try {
         var result = await stripe.confirmPayment({
           elements: elements,
           confirmParams: {
-            return_url: window.location.origin + '/order-confirmed?ref=' + encodeURIComponent(state.orderRef),
+            return_url:
+              window.location.origin + '/order-confirmed?ref=' + encodeURIComponent(state.orderRef),
           },
+          redirect: 'if_required',
         });
 
         if (result.error) {
           showError(result.error.message);
           state.processing = false;
-          payBtn.textContent = 'Pay Now';
+          payBtn.textContent = 'Pay ' + formatPence(getTotalPence());
           payBtn.disabled = false;
+        } else if (result.paymentIntent) {
+          var st = result.paymentIntent.status;
+          if (st === 'succeeded' || st === 'processing') {
+            window.location.href =
+              window.location.origin +
+              '/order-confirmed?ref=' +
+              encodeURIComponent(state.orderRef);
+          }
         }
       } catch (err) {
         showError(err.message);
         state.processing = false;
-        payBtn.textContent = 'Place Order';
+        payBtn.textContent = 'Pay ' + formatPence(getTotalPence());
         payBtn.disabled = false;
       }
     });

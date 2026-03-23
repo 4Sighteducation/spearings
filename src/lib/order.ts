@@ -8,6 +8,20 @@ function generateReference(): string {
   return `SP-${ymd}-${rand}`;
 }
 
+/** Sequential refs e.g. SP00000250 — requires migration `allocate_spearings_order_ref`. */
+async function allocateNextReference(): Promise<string> {
+  try {
+    const { data, error } = await supabaseAdmin.rpc('allocate_spearings_order_ref');
+    if (!error && data != null && typeof data === 'string' && data.startsWith('SP')) {
+      return data;
+    }
+  } catch {
+    /* fall through */
+  }
+  console.warn('allocate_spearings_order_ref unavailable; using dated fallback reference');
+  return generateReference();
+}
+
 interface ProductLookup {
   slug: string;
   name: string;
@@ -38,7 +52,7 @@ async function lookupProducts(slugs: string[]): Promise<Map<string, ProductLooku
   return map;
 }
 
-interface CreateOrderInput {
+export interface CreateOrderInput {
   items: Array<{ slug: string; quantity: number }>;
   customer: { name: string; email: string; phone?: string };
   delivery: {
@@ -50,6 +64,8 @@ interface CreateOrderInput {
     postcode?: string;
   };
   notes?: string;
+  /** Same browser checkout session — prevents duplicate pending orders / Stripe intents on retry. */
+  idempotencyKey?: string;
 }
 
 interface OrderResult {
@@ -112,7 +128,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
   }
 
   const total = subtotal + shipping;
-  const reference = generateReference();
+  const reference = await allocateNextReference();
 
   const { data: order, error: orderErr } = await supabaseAdmin
     .from('orders')
@@ -132,6 +148,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
       shipping,
       total,
       notes: input.notes || null,
+      checkout_idempotency_key: input.idempotencyKey?.trim() || null,
     })
     .select('id')
     .single();
@@ -152,6 +169,32 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
   }
 
   return { reference, orderId: order.id, subtotal, shipping, total };
+}
+
+export type OrderPaymentRow = {
+  id: string;
+  reference: string;
+  total: number;
+  subtotal: number;
+  shipping: number;
+  stripe_client_secret: string | null;
+  stripe_payment_intent_id: string | null;
+  customer_name: string;
+  status: string;
+};
+
+/** Replay safe: same checkout idempotency key returns the same order row. */
+export async function getOrderByIdempotencyKey(key: string): Promise<OrderPaymentRow | null> {
+  const { data, error } = await supabaseAdmin
+    .from('orders')
+    .select(
+      'id, reference, total, subtotal, shipping, stripe_client_secret, stripe_payment_intent_id, customer_name, status',
+    )
+    .eq('checkout_idempotency_key', key.trim())
+    .maybeSingle();
+
+  if (error || !data) return null;
+  return data as OrderPaymentRow;
 }
 
 export async function updateOrderPaymentIntent(

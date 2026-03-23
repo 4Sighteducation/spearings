@@ -135,6 +135,12 @@ import Layout from '../layouts/Layout.astro';
     // Clear cart after successful order
     try { localStorage.removeItem('spearings_cart'); } catch (e) {}
 
+    // New checkout session next time (avoid replaying old idempotency keys)
+    try {
+      sessionStorage.removeItem('spearings_checkout_idem');
+      sessionStorage.removeItem('spearings_checkout_fp');
+    } catch (e) {}
+
     // Update badge
     var badge = document.getElementById('cartBadge');
     if (badge) { badge.hidden = true; badge.textContent = '0'; }

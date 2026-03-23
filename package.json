@@ -10,6 +10,7 @@
     "catalog:import": "node scripts/import-products.mjs",
     "catalog:match-images": "node scripts/match-product-images.mjs",
     "catalog:mirror-images": "node scripts/mirror-product-images.mjs",
+    "pwa:icons": "node scripts/generate-pwa-icons.mjs",
     "supabase:start": "supabase start",
     "supabase:status": "supabase status",
     "supabase:reset": "supabase db reset"
