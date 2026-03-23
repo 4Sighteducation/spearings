@@ -1,7 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
-const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
+const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 10;
+const innerDeliveryMiles = Number(import.meta.env.PUBLIC_INNER_DELIVERY_MILES) || 5;
+const freeDeliveryThresholdPence = Number(import.meta.env.PUBLIC_FREE_DELIVERY_THRESHOLD_PENCE) || 2500;
+const deliveryFeeInnerPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_INNER_PENCE) || 500;
+const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_PENCE) || 1500;
 ---
 
 <Layout
@@ -37,7 +41,16 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
           </div>
 
           <!-- Delivery address (shown only for delivery) -->
-          <div class="checkout-card" id="addressCard" hidden data-max-delivery-miles={maxDeliveryMiles}>
+          <div
+            class="checkout-card"
+            id="addressCard"
+            hidden
+            data-max-delivery-miles={maxDeliveryMiles}
+            data-inner-delivery-miles={innerDeliveryMiles}
+            data-free-threshold-pence={freeDeliveryThresholdPence}
+            data-fee-inner-pence={deliveryFeeInnerPence}
+            data-fee-outer-pence={deliveryFeeOuterPence}
+          >
             <h2 class="checkout-card-heading">Delivery Address</h2>
             <div class="form-stack">
               <div class="form-field">
@@ -59,8 +72,9 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
                 </div>
               </div>
               <p class="checkout-delivery-radius-hint">
-                Delivery is available within <strong>{maxDeliveryMiles} miles</strong> of our shop (12 Park Green,
-                Macclesfield). Distance is measured in a straight line from the shop — not driving miles.
+                We deliver up to <strong>{innerDeliveryMiles} miles</strong> (standard area) and up to{' '}
+                <strong>{maxDeliveryMiles} miles</strong> (extended area) from 12 Park Green — straight-line distance, not
+                driving miles. See <a href="/delivery">delivery charges &amp; times</a>.
               </p>
               <div
                 id="postcodeDeliveryStatus"
@@ -511,16 +525,17 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
       clientSecret: null,
       orderRef: null,
       paymentElementMounted: false,
+      deliveryZone: null,
     };
 
     /** null = not checked; true = in radius; false = out of radius */
     var deliveryRadiusOk = null;
     var postcodeStatusEl = document.getElementById('postcodeDeliveryStatus');
-    var maxDeliveryMilesRule = parseFloat(
-      (document.getElementById('addressCard') && document.getElementById('addressCard').dataset.maxDeliveryMiles) ||
-        '5',
-    );
-    if (Number.isNaN(maxDeliveryMilesRule)) maxDeliveryMilesRule = 5;
+    var addressCardEl = document.getElementById('addressCard');
+    var maxDeliveryMilesRule = parseFloat(addressCardEl && addressCardEl.dataset.maxDeliveryMiles) || 10;
+    var feeInnerPence = parseInt(addressCardEl && addressCardEl.dataset.feeInnerPence, 10) || 500;
+    var feeOuterPence = parseInt(addressCardEl && addressCardEl.dataset.feeOuterPence, 10) || 1500;
+    var freeThresholdPence = parseInt(addressCardEl && addressCardEl.dataset.freeThresholdPence, 10) || 2500;
 
     function showPostcodeStatus(message, kind) {
       if (!postcodeStatusEl) return;
@@ -538,12 +553,14 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
     async function checkDeliveryPostcode() {
       if (state.deliveryType !== 'delivery') {
         deliveryRadiusOk = null;
+        state.deliveryZone = null;
         showPostcodeStatus('', '');
         return true;
       }
       var pc = document.getElementById('addressPostcode').value.trim();
       if (!pc) {
         deliveryRadiusOk = null;
+        state.deliveryZone = null;
         showPostcodeStatus('', '');
         return false;
       }
@@ -553,24 +570,63 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
         var data = await res.json();
         if (data.ok) {
           deliveryRadiusOk = true;
+          state.deliveryZone = data.zone;
           var dm = typeof data.distanceMiles === 'number' ? data.distanceMiles : parseFloat(data.distanceMiles);
-          showPostcodeStatus(
-            'Within our delivery area (about ' + dm.toFixed(1) + ' miles from the shop, straight-line).',
-            'ok',
-          );
+          if (data.zone === 'outer') {
+            showPostcodeStatus(
+              'Extended delivery area (about ' +
+                dm.toFixed(1) +
+                ' miles). A £' +
+                (feeOuterPence / 100).toFixed(2) +
+                ' delivery charge applies.',
+              'ok',
+            );
+          } else {
+            showPostcodeStatus(
+              'Standard delivery area (about ' +
+                dm.toFixed(1) +
+                ' miles). £' +
+                (feeInnerPence / 100).toFixed(2) +
+                ' if your order is under £' +
+                (freeThresholdPence / 100).toFixed(2) +
+                ', or free for orders of £' +
+                (freeThresholdPence / 100).toFixed(2) +
+                ' or more.',
+              'ok',
+            );
+          }
+          renderSummary();
           return true;
         }
         deliveryRadiusOk = false;
+        state.deliveryZone = null;
         showPostcodeStatus(data.error || 'Outside delivery area.', 'error');
+        renderSummary();
         return false;
       } catch (e) {
         deliveryRadiusOk = true;
+        state.deliveryZone = null;
         showPostcodeStatus(
-          'We could not verify your postcode online — you can still continue; the order will be checked on our server.',
+          'We could not verify your postcode online — you can still continue; the exact charge will be confirmed when you place the order.',
           'warn',
         );
+        renderSummary();
         return true;
       }
+    }
+
+    function resolvedZoneForPricing() {
+      if (state.deliveryZone) return state.deliveryZone;
+      if (deliveryRadiusOk === true) return 'inner';
+      return null;
+    }
+
+    function getShippingPence(subtotal) {
+      if (state.deliveryType !== 'delivery') return 0;
+      var z = resolvedZoneForPricing();
+      if (z === null) return null;
+      if (z === 'outer') return feeOuterPence;
+      return subtotal >= freeThresholdPence ? 0 : feeInnerPence;
     }
 
     function getTotalPence() {
@@ -578,9 +634,9 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
       cart.items.forEach(function (i) {
         subtotal += i.price * i.quantity;
       });
-      var shipping = 0;
-      if (state.deliveryType === 'delivery' && subtotal < 3000) shipping = 500;
-      return subtotal + shipping;
+      var ship = getShippingPence(subtotal);
+      if (ship === null) return subtotal;
+      return subtotal + ship;
     }
 
     // ── Render order summary ──
@@ -598,15 +654,25 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
           '</span><span>' + formatPence(lineTotal) + '</span></div>';
       }).join('');
 
-      var shipping = 0;
-      if (state.deliveryType === 'delivery' && subtotal < 3000) shipping = 500;
+      var ship = getShippingPence(subtotal);
+      var deliveryRow = '';
+      if (state.deliveryType === 'delivery') {
+        if (ship === null) {
+          deliveryRow =
+            '<div class="summary-row"><span>Delivery</span><span style="color:var(--ink-soft);">Enter postcode</span></div>';
+        } else {
+          deliveryRow =
+            '<div class="summary-row"><span>Delivery</span><span>' +
+            (ship ? formatPence(ship) : 'Free') +
+            '</span></div>';
+        }
+      }
+      var totalPence = subtotal + (ship === null ? 0 : ship);
 
       summaryTotals.innerHTML =
         '<div class="summary-row"><span>Subtotal</span><span>' + formatPence(subtotal) + '</span></div>' +
-        (state.deliveryType === 'delivery'
-          ? '<div class="summary-row"><span>Delivery</span><span>' + (shipping ? formatPence(shipping) : 'Free') + '</span></div>'
-          : '') +
-        '<div class="summary-row total"><span>Total</span><span>' + formatPence(subtotal + shipping) + '</span></div>';
+        deliveryRow +
+        '<div class="summary-row total"><span>Total</span><span>' + formatPence(totalPence) + '</span></div>';
     }
     renderSummary();
 
@@ -622,8 +688,10 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
         addressCard.hidden = state.deliveryType !== 'delivery';
         if (state.deliveryType !== 'delivery') {
           deliveryRadiusOk = null;
+          state.deliveryZone = null;
           showPostcodeStatus('', '');
         } else {
+          state.deliveryZone = null;
           checkDeliveryPostcode();
         }
         renderSummary();
@@ -750,7 +818,9 @@ const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
     if (addressPostcodeEl) {
       addressPostcodeEl.addEventListener('input', function () {
         deliveryRadiusOk = null;
+        state.deliveryZone = null;
         showPostcodeStatus('', '');
+        renderSummary();
         updatePayBtnState();
       });
       addressPostcodeEl.addEventListener('blur', function () {

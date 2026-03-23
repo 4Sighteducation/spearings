@@ -1,5 +1,6 @@
 import rawCatalog from '../../data/catalog.json';
 import { validateDeliveryPostcode } from './delivery-radius';
+import { getEnv } from './env';
 import { OrderValidationError } from './order-validation';
 import { supabaseAdmin } from './supabase-server';
 
@@ -85,13 +86,6 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
     throw new Error('Could not look up products');
   }
 
-  if (input.delivery.type === 'delivery') {
-    const radius = await validateDeliveryPostcode(input.delivery.postcode);
-    if (!radius.ok) {
-      throw new OrderValidationError(radius.error);
-    }
-  }
-
   let subtotal = 0;
   const orderItems: Array<{
     product_slug: string;
@@ -120,7 +114,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
 
   const settings = new Map<string, string>([
     ['delivery_fee_pence', '500'],
-    ['free_delivery_threshold_pence', '3000'],
+    ['free_delivery_threshold_pence', '2500'],
   ]);
   try {
     const { data: settingsData } = await supabaseAdmin
@@ -131,9 +125,18 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
 
   let shipping = 0;
   if (input.delivery.type === 'delivery') {
-    const fee = parseInt(settings.get('delivery_fee_pence') ?? '500', 10);
-    const threshold = parseInt(settings.get('free_delivery_threshold_pence') ?? '3000', 10);
-    shipping = subtotal >= threshold ? 0 : fee;
+    const radius = await validateDeliveryPostcode(input.delivery.postcode);
+    if (!radius.ok) {
+      throw new OrderValidationError(radius.error);
+    }
+    const outerFee = parseInt(getEnv('DELIVERY_OUTER_ZONE_FEE_PENCE') || '1500', 10);
+    if (radius.zone === 'outer') {
+      shipping = Number.isFinite(outerFee) && outerFee >= 0 ? outerFee : 1500;
+    } else {
+      const fee = parseInt(settings.get('delivery_fee_pence') ?? '500', 10);
+      const threshold = parseInt(settings.get('free_delivery_threshold_pence') ?? '2500', 10);
+      shipping = subtotal >= threshold ? 0 : fee;
+    }
   }
 
   const total = subtotal + shipping;

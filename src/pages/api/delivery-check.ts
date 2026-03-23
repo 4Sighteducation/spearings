@@ -1,5 +1,9 @@
 import type { APIRoute } from 'astro';
-import { getMaxDeliveryMiles, validateDeliveryPostcode } from '../../lib/delivery-radius';
+import {
+  getInnerDeliveryRadiusMiles,
+  getMaxDeliveryMiles,
+  validateDeliveryPostcode,
+} from '../../lib/delivery-radius';
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -18,6 +22,8 @@ export const GET: APIRoute = async ({ url }) => {
         ok: true,
         distanceMiles: result.distanceMiles,
         maxMiles: result.maxMiles,
+        innerRadiusMiles: result.innerRadiusMiles,
+        zone: result.zone,
       });
     }
     return json({
@@ -25,6 +31,7 @@ export const GET: APIRoute = async ({ url }) => {
       error: result.error,
       distanceMiles: result.distanceMiles,
       maxMiles: result.maxMiles,
+      innerRadiusMiles: result.innerRadiusMiles,
     });
   } catch {
     return json(
@@ -32,6 +39,7 @@ export const GET: APIRoute = async ({ url }) => {
         ok: false,
         error: 'Could not check delivery area. Try again.',
         maxMiles: getMaxDeliveryMiles(),
+        innerRadiusMiles: getInnerDeliveryRadiusMiles(),
       },
       500,
     );

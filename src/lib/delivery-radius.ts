@@ -1,14 +1,12 @@
 /**
- * Delivery area check: straight-line distance (haversine) in miles from the shop.
- * Uses postcodes.io (UK, no API key) for customer postcode → lat/lng.
- * Shop position: env SPEARINGS_SHOP_LAT/LNG or default 12 Park Green, SK11 7NA.
+ * Delivery area: straight-line miles (haversine) from the shop.
+ * postcodes.io (UK) for customer postcode → lat/lng.
+ * Shop: SPEARINGS_SHOP_LAT/LNG or default 12 Park Green SK11 7NA.
  *
- * Note: This is “as the crow flies”, not driving distance. For tight boundaries
- * near the edge, consider Google Distance Matrix later (paid).
+ * Zones: inner (≤ inner radius, default 5 mi) vs outer (≤ max radius, default 10 mi).
  */
 import { getEnv } from './env';
 
-/** Default: Spearings, 12 Park Green, Macclesfield SK11 7NA (postcodes.io centroid) */
 const DEFAULT_SHOP = { lat: 53.256677, lng: -2.123665 };
 
 export function getShopCoordinates(): { lat: number; lng: number } {
@@ -20,13 +18,20 @@ export function getShopCoordinates(): { lat: number; lng: number } {
   return DEFAULT_SHOP;
 }
 
+/** Outer limit — no delivery beyond this (default 10 miles). */
 export function getMaxDeliveryMiles(): number {
   const v = parseFloat(getEnv('MAX_DELIVERY_MILES'));
+  if (!Number.isNaN(v) && v > 0) return v;
+  return 10;
+}
+
+/** Inner zone edge — “standard” area with £25 free / £5 under (default 5 miles). */
+export function getInnerDeliveryRadiusMiles(): number {
+  const v = parseFloat(getEnv('DELIVERY_INNER_RADIUS_MILES'));
   if (!Number.isNaN(v) && v > 0) return v;
   return 5;
 }
 
-/** Earth radius in miles */
 export function haversineMiles(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 3958.7613;
   const toRad = (d: number) => (d * Math.PI) / 180;
@@ -56,14 +61,30 @@ export async function geocodeUkPostcode(postcode: string): Promise<{ lat: number
   return { lat: data.result.latitude, lng: data.result.longitude };
 }
 
+export type DeliveryZone = 'inner' | 'outer';
+
 export type DeliveryRadiusResult =
-  | { ok: true; distanceMiles: number; maxMiles: number }
-  | { ok: false; error: string; distanceMiles?: number; maxMiles: number };
+  | {
+      ok: true;
+      distanceMiles: number;
+      maxMiles: number;
+      innerRadiusMiles: number;
+      zone: DeliveryZone;
+    }
+  | {
+      ok: false;
+      error: string;
+      distanceMiles?: number;
+      maxMiles: number;
+      innerRadiusMiles: number;
+    };
 
 export async function validateDeliveryPostcode(postcode: string | undefined): Promise<DeliveryRadiusResult> {
   const maxMiles = getMaxDeliveryMiles();
+  const innerMiles = getInnerDeliveryRadiusMiles();
+
   if (!postcode?.trim()) {
-    return { ok: false, error: 'Delivery postcode is required.', maxMiles };
+    return { ok: false, error: 'Delivery postcode is required.', maxMiles, innerRadiusMiles: innerMiles };
   }
 
   let dest: { lat: number; lng: number } | null;
@@ -79,6 +100,7 @@ export async function validateDeliveryPostcode(postcode: string | undefined): Pr
       error:
         'We could not verify that postcode. Check it is a valid UK postcode, or try again in a moment.',
       maxMiles,
+      innerRadiusMiles: innerMiles,
     };
   }
 
@@ -88,11 +110,20 @@ export async function validateDeliveryPostcode(postcode: string | undefined): Pr
   if (distanceMiles > maxMiles) {
     return {
       ok: false,
-      error: `Sorry — we only deliver within ${maxMiles} miles of our shop. This address is about ${distanceMiles.toFixed(1)} miles away (straight-line). Choose collection, or contact us for large orders.`,
+      error: `Sorry — we only deliver within ${maxMiles} miles of our shop. This address is about ${distanceMiles.toFixed(1)} miles away (straight-line). Choose collection, or contact us before ordering.`,
       distanceMiles,
       maxMiles,
+      innerRadiusMiles: innerMiles,
     };
   }
 
-  return { ok: true, distanceMiles, maxMiles };
+  const zone: DeliveryZone = distanceMiles <= innerMiles ? 'inner' : 'outer';
+
+  return {
+    ok: true,
+    distanceMiles,
+    maxMiles,
+    innerRadiusMiles: innerMiles,
+    zone,
+  };
 }
