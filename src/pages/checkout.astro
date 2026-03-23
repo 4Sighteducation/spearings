@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 5;
 ---
 
 <Layout
@@ -36,7 +37,7 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
           </div>
 
           <!-- Delivery address (shown only for delivery) -->
-          <div class="checkout-card" id="addressCard" hidden>
+          <div class="checkout-card" id="addressCard" hidden data-max-delivery-miles={maxDeliveryMiles}>
             <h2 class="checkout-card-heading">Delivery Address</h2>
             <div class="form-stack">
               <div class="form-field">
@@ -54,9 +55,20 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
                 </div>
                 <div class="form-field">
                   <label for="addressPostcode">Postcode</label>
-                  <input type="text" id="addressPostcode" required />
+                  <input type="text" id="addressPostcode" required autocomplete="postal-code" />
                 </div>
               </div>
+              <p class="checkout-delivery-radius-hint">
+                Delivery is available within <strong>{maxDeliveryMiles} miles</strong> of our shop (12 Park Green,
+                Macclesfield). Distance is measured in a straight line from the shop — not driving miles.
+              </p>
+              <div
+                id="postcodeDeliveryStatus"
+                class="checkout-postcode-status"
+                role="status"
+                aria-live="polite"
+                hidden
+              ></div>
             </div>
           </div>
 
@@ -298,6 +310,45 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
     box-shadow: 0 0 0 3px rgba(201, 154, 26, 0.15);
   }
 
+  .checkout-delivery-radius-hint {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  .checkout-postcode-status {
+    margin-top: 0.35rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+
+  .checkout-postcode-status.ok {
+    background: rgba(212, 237, 218, 0.88);
+    border: 1px solid rgba(21, 87, 36, 0.28);
+    color: #155724;
+  }
+
+  .checkout-postcode-status.error {
+    background: rgba(248, 215, 218, 0.92);
+    border: 1px solid rgba(114, 28, 36, 0.28);
+    color: #721c24;
+  }
+
+  .checkout-postcode-status.pending {
+    color: var(--ink-soft);
+    border: 1px solid rgba(26, 26, 24, 0.1);
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .checkout-postcode-status.warn {
+    background: rgba(255, 248, 230, 0.95);
+    border: 1px solid rgba(201, 154, 26, 0.35);
+    color: #5c4a1a;
+  }
+
   /* Summary items */
   .summary-item {
     display: flex;
@@ -462,6 +513,66 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
       paymentElementMounted: false,
     };
 
+    /** null = not checked; true = in radius; false = out of radius */
+    var deliveryRadiusOk = null;
+    var postcodeStatusEl = document.getElementById('postcodeDeliveryStatus');
+    var maxDeliveryMilesRule = parseFloat(
+      (document.getElementById('addressCard') && document.getElementById('addressCard').dataset.maxDeliveryMiles) ||
+        '5',
+    );
+    if (Number.isNaN(maxDeliveryMilesRule)) maxDeliveryMilesRule = 5;
+
+    function showPostcodeStatus(message, kind) {
+      if (!postcodeStatusEl) return;
+      if (!message) {
+        postcodeStatusEl.hidden = true;
+        postcodeStatusEl.textContent = '';
+        postcodeStatusEl.className = 'checkout-postcode-status';
+        return;
+      }
+      postcodeStatusEl.hidden = false;
+      postcodeStatusEl.textContent = message;
+      postcodeStatusEl.className = 'checkout-postcode-status' + (kind ? ' ' + kind : '');
+    }
+
+    async function checkDeliveryPostcode() {
+      if (state.deliveryType !== 'delivery') {
+        deliveryRadiusOk = null;
+        showPostcodeStatus('', '');
+        return true;
+      }
+      var pc = document.getElementById('addressPostcode').value.trim();
+      if (!pc) {
+        deliveryRadiusOk = null;
+        showPostcodeStatus('', '');
+        return false;
+      }
+      showPostcodeStatus('Checking delivery area…', 'pending');
+      try {
+        var res = await fetch('/api/delivery-check?postcode=' + encodeURIComponent(pc));
+        var data = await res.json();
+        if (data.ok) {
+          deliveryRadiusOk = true;
+          var dm = typeof data.distanceMiles === 'number' ? data.distanceMiles : parseFloat(data.distanceMiles);
+          showPostcodeStatus(
+            'Within our delivery area (about ' + dm.toFixed(1) + ' miles from the shop, straight-line).',
+            'ok',
+          );
+          return true;
+        }
+        deliveryRadiusOk = false;
+        showPostcodeStatus(data.error || 'Outside delivery area.', 'error');
+        return false;
+      } catch (e) {
+        deliveryRadiusOk = true;
+        showPostcodeStatus(
+          'We could not verify your postcode online — you can still continue; the order will be checked on our server.',
+          'warn',
+        );
+        return true;
+      }
+    }
+
     function getTotalPence() {
       var subtotal = 0;
       cart.items.forEach(function (i) {
@@ -509,6 +620,12 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
         btn.classList.add('active');
         state.deliveryType = btn.dataset.type;
         addressCard.hidden = state.deliveryType !== 'delivery';
+        if (state.deliveryType !== 'delivery') {
+          deliveryRadiusOk = null;
+          showPostcodeStatus('', '');
+        } else {
+          checkDeliveryPostcode();
+        }
         renderSummary();
         updatePayBtnState();
       });
@@ -612,7 +729,8 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
           baseOk &&
           document.getElementById('addressLine1').value.trim() &&
           document.getElementById('addressCity').value.trim() &&
-          document.getElementById('addressPostcode').value.trim();
+          document.getElementById('addressPostcode').value.trim() &&
+          deliveryRadiusOk === true;
       }
       payBtn.disabled = !baseOk || state.processing;
       if (state.paymentElementMounted) {
@@ -624,10 +742,21 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
     document.getElementById('customerName').addEventListener('input', updatePayBtnState);
     document.getElementById('customerEmail').addEventListener('input', updatePayBtnState);
-    ['addressLine1', 'addressCity', 'addressPostcode'].forEach(function (id) {
+    ['addressLine1', 'addressCity'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener('input', updatePayBtnState);
     });
+    var addressPostcodeEl = document.getElementById('addressPostcode');
+    if (addressPostcodeEl) {
+      addressPostcodeEl.addEventListener('input', function () {
+        deliveryRadiusOk = null;
+        showPostcodeStatus('', '');
+        updatePayBtnState();
+      });
+      addressPostcodeEl.addEventListener('blur', function () {
+        if (state.deliveryType === 'delivery') checkDeliveryPostcode().then(updatePayBtnState);
+      });
+    }
 
     function showError(msg) {
       payMsg.textContent = msg;
@@ -645,6 +774,21 @@ const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
         payMsg.hidden = true;
 
         try {
+          if (state.deliveryType === 'delivery') {
+            var radiusOk = await checkDeliveryPostcode();
+            if (!radiusOk) {
+              showError(
+                'Delivery is only available within ' +
+                  maxDeliveryMilesRule +
+                  ' miles of our shop. Choose collection or enter a different postcode.',
+              );
+              state.processing = false;
+              payBtn.textContent = 'Continue to secure payment';
+              updatePayBtnState();
+              return;
+            }
+          }
+
           var body = {
             items: cart.items.map(function (i) { return { slug: i.slug, quantity: i.quantity }; }),
             customer: {

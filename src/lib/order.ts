@@ -1,4 +1,6 @@
 import rawCatalog from '../../data/catalog.json';
+import { validateDeliveryPostcode } from './delivery-radius';
+import { OrderValidationError } from './order-validation';
 import { supabaseAdmin } from './supabase-server';
 
 function generateReference(): string {
@@ -81,6 +83,13 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
 
   if (productMap.size === 0) {
     throw new Error('Could not look up products');
+  }
+
+  if (input.delivery.type === 'delivery') {
+    const radius = await validateDeliveryPostcode(input.delivery.postcode);
+    if (!radius.ok) {
+      throw new OrderValidationError(radius.error);
+    }
   }
 
   let subtotal = 0;

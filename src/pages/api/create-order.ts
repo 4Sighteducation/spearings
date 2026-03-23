@@ -7,6 +7,7 @@ import {
   updateOrderPaymentIntent,
   type CreateOrderInput,
 } from '../../lib/order';
+import { OrderValidationError } from '../../lib/order-validation';
 
 import { getEnv } from '../../lib/env';
 
@@ -36,6 +37,15 @@ export const POST: APIRoute = async ({ request }) => {
     }
     if (!delivery?.date || !delivery?.type) {
       return json({ error: 'Delivery date and type are required' }, 400);
+    }
+
+    if (delivery.type === 'delivery') {
+      const a1 = typeof delivery.address_line1 === 'string' ? delivery.address_line1.trim() : '';
+      const city = typeof delivery.city === 'string' ? delivery.city.trim() : '';
+      const pc = typeof delivery.postcode === 'string' ? delivery.postcode.trim() : '';
+      if (!a1 || !city || !pc) {
+        return json({ error: 'Delivery address, city, and postcode are required' }, 400);
+      }
     }
 
     const dateOk = await isDateAvailable(delivery.date);
@@ -108,6 +118,9 @@ export const POST: APIRoute = async ({ request }) => {
     try {
       order = await createOrder(input);
     } catch (err: any) {
+      if (err instanceof OrderValidationError || err?.name === 'OrderValidationError') {
+        return json({ error: err.message }, 400);
+      }
       // Parallel duplicate POST with same idempotency key — second insert lost the race
       if (input.idempotencyKey) {
         const replay = await getOrderByIdempotencyKey(input.idempotencyKey);
@@ -175,6 +188,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (err: any) {
     console.error('create-order error:', err);
-    return json({ error: err.message || 'Order creation failed' }, 500);
+    const status =
+      err instanceof OrderValidationError || err?.name === 'OrderValidationError' ? 400 : 500;
+    return json({ error: err.message || 'Order creation failed' }, status);
   }
 };
