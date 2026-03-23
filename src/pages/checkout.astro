@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getDeliveryDistanceMode } from '../lib/delivery-radius';
+
+const deliveryDistanceMode = getDeliveryDistanceMode();
 const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 10;
 const innerDeliveryMiles = Number(import.meta.env.PUBLIC_INNER_DELIVERY_MILES) || 5;
@@ -73,8 +76,15 @@ const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_P
               </div>
               <p class="checkout-delivery-radius-hint">
                 We deliver up to <strong>{innerDeliveryMiles} miles</strong> (standard area) and up to{' '}
-                <strong>{maxDeliveryMiles} miles</strong> (extended area) from 12 Park Green — straight-line distance, not
-                driving miles. See <a href="/delivery">delivery charges &amp; times</a>.
+                <strong>{maxDeliveryMiles} miles</strong> (extended area) from 12 Park Green —{' '}
+                {deliveryDistanceMode === 'driving' ? (
+                  <>approximate <strong>driving</strong> distance by road.</>
+                ) : (
+                  <>
+                    <strong>straight-line</strong> distance (not driving miles).
+                  </>
+                )}{' '}
+                See <a href="/delivery">delivery charges &amp; times</a>.
               </p>
               <div
                 id="postcodeDeliveryStatus"
@@ -572,11 +582,14 @@ const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_P
           deliveryRadiusOk = true;
           state.deliveryZone = data.zone;
           var dm = typeof data.distanceMiles === 'number' ? data.distanceMiles : parseFloat(data.distanceMiles);
+          var byRoad = data.distanceMode === 'driving' ? ' by road' : '';
           if (data.zone === 'outer') {
             showPostcodeStatus(
               'Extended delivery area (about ' +
                 dm.toFixed(1) +
-                ' miles). A £' +
+                ' miles' +
+                byRoad +
+                '). A £' +
                 (feeOuterPence / 100).toFixed(2) +
                 ' delivery charge applies.',
               'ok',
@@ -585,7 +598,9 @@ const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_P
             showPostcodeStatus(
               'Standard delivery area (about ' +
                 dm.toFixed(1) +
-                ' miles). £' +
+                ' miles' +
+                byRoad +
+                '). £' +
                 (feeInnerPence / 100).toFixed(2) +
                 ' if your order is under £' +
                 (freeThresholdPence / 100).toFixed(2) +

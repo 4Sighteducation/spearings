@@ -1,16 +1,21 @@
 ---
 /**
- * Fetches /api/site-promo and shows a themed modal when visible.
- * Dismiss is stored per campaignId in localStorage. Date window is enforced server-side.
+ * Single site announcement modal: /api/site-promo + order_settings.
+ * Seasonal hero strip + icons; dismiss per campaignId in localStorage.
  */
 ---
 
 <dialog id="sitePromoDialog" class="site-promo-dialog" aria-modal="true" aria-labelledby="sitePromoTitleEl">
-  <div class="site-promo-card">
-    <h2 id="sitePromoTitleEl" class="site-promo-title"></h2>
-    <div id="sitePromoBodyEl" class="site-promo-body"></div>
-    <div class="site-promo-actions">
-      <button type="button" class="btn btn-gold site-promo-btn" id="sitePromoDismiss">OK, got it</button>
+  <div class="site-promo-shell">
+    <div class="site-promo-hero">
+      <div class="site-promo-icons" id="sitePromoIcons" aria-hidden="true"></div>
+      <h2 id="sitePromoTitleEl" class="site-promo-title site-promo-title--hero"></h2>
+    </div>
+    <div class="site-promo-card">
+      <div id="sitePromoBodyEl" class="site-promo-body"></div>
+      <div class="site-promo-actions">
+        <button type="button" class="btn btn-gold site-promo-btn" id="sitePromoDismiss">Got it, thanks!</button>
+      </div>
     </div>
   </div>
 </dialog>
@@ -20,27 +25,61 @@
     var STORAGE_PREFIX = 'spearings_site_promo_dismissed:';
     var shownCampaignId = null;
 
+    var THEME_ICONS = {
+      easter: ['🐣', '🥚', '🐰'],
+      summer: ['☀️', '🌿', '🏖️'],
+      christmas: ['🎄', '⭐', '🎁'],
+      spring: ['🌸', '🌷', '🌱'],
+      gold: ['✨', '⭐', '✨'],
+      green: ['🥧', '🌾', '❤️'],
+      neutral: ['📢', '✉️', '👋'],
+    };
+
     function escapeHtml(s) {
       var d = document.createElement('div');
       d.textContent = s;
       return d.innerHTML;
     }
 
+    /** Plain text: paragraphs, lines starting with "- " or "• " as bullets, "> " as italic footnote line */
     function bodyToHtml(text) {
       if (!text) return '';
-      return String(text)
-        .split(/\r?\n/)
-        .map(function (line) {
-          return '<p>' + escapeHtml(line) + '</p>';
-        })
-        .join('');
+      var lines = String(text).split(/\r?\n/);
+      var parts = [];
+      var inList = false;
+      for (var i = 0; i < lines.length; i++) {
+        var raw = lines[i];
+        var trimmed = raw.trim();
+        var bullet = /^\s*[-•]\s+(.+)$/.exec(raw);
+        var foot = /^\s*>\s*(.+)$/.exec(raw);
+        if (bullet) {
+          if (!inList) {
+            parts.push('<ul class="site-promo-list">');
+            inList = true;
+          }
+          parts.push('<li>' + escapeHtml(bullet[1].trim()) + '</li>');
+        } else {
+          if (inList) {
+            parts.push('</ul>');
+            inList = false;
+          }
+          if (foot) {
+            parts.push('<p class="site-promo-footnote">' + escapeHtml(foot[1].trim()) + '</p>');
+          } else if (trimmed.length) {
+            parts.push('<p>' + escapeHtml(trimmed) + '</p>');
+          }
+        }
+      }
+      if (inList) parts.push('</ul>');
+      return parts.join('');
     }
 
     var dialog = document.getElementById('sitePromoDialog');
     var titleEl = document.getElementById('sitePromoTitleEl');
     var bodyEl = document.getElementById('sitePromoBodyEl');
+    var iconsEl = document.getElementById('sitePromoIcons');
     var dismissBtn = document.getElementById('sitePromoDismiss');
-    if (!dialog || !titleEl || !bodyEl || !dismissBtn) return;
+    if (!dialog || !titleEl || !bodyEl || !dismissBtn || !iconsEl) return;
 
     dialog.addEventListener('close', function () {
       if (shownCampaignId) {
@@ -66,17 +105,28 @@
           if (localStorage.getItem(STORAGE_PREFIX + campaignId) === '1') return;
         } catch (e) {}
 
+        var theme = data.theme || 'neutral';
+        var icons = THEME_ICONS[theme] || THEME_ICONS.neutral;
+        iconsEl.innerHTML = icons
+          .map(function (c) {
+            return '<span class="site-promo-icon">' + c + '</span>';
+          })
+          .join('');
+
         titleEl.textContent = data.title || 'Announcement';
         bodyEl.innerHTML = bodyToHtml(data.body || '');
+        dismissBtn.textContent = data.buttonLabel || 'Got it, thanks!';
+
         dialog.classList.remove(
           'theme-easter',
+          'theme-summer',
           'theme-christmas',
           'theme-spring',
           'theme-gold',
           'theme-green',
           'theme-neutral',
         );
-        dialog.classList.add('theme-' + (data.theme || 'neutral'));
+        dialog.classList.add('theme-' + theme);
 
         shownCampaignId = campaignId;
         if (typeof dialog.showModal === 'function') {

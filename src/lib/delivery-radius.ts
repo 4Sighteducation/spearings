@@ -1,9 +1,11 @@
 /**
- * Delivery area: straight-line miles (haversine) from the shop.
- * postcodes.io (UK) for customer postcode → lat/lng.
- * Shop: SPEARINGS_SHOP_LAT/LNG or default 12 Park Green SK11 7NA.
+ * Delivery area from the shop: inner zone (default 5 mi) vs outer (default 10 mi max).
  *
- * Zones: inner (≤ inner radius, default 5 mi) vs outer (≤ max radius, default 10 mi).
+ * Postcode → lat/lng: UK postcodes via postcodes.io (no API key).
+ * Distance: if GOOGLE_MAPS_API_KEY is set, Google Distance Matrix (driving miles);
+ * otherwise straight-line miles (haversine). Same 5 / 10 mile limits apply to either.
+ *
+ * Shop: SPEARINGS_SHOP_LAT/LNG or default 12 Park Green SK11 7NA.
  */
 import { getEnv } from './env';
 
@@ -48,6 +50,54 @@ type PostcodesIoResponse = {
   result?: { latitude: number; longitude: number };
 };
 
+export type DeliveryDistanceMode = 'straight_line' | 'driving';
+
+/** When a server-side Google Maps key is configured, zones use driving distance. */
+export function getDeliveryDistanceMode(): DeliveryDistanceMode {
+  return getEnv('GOOGLE_MAPS_API_KEY').trim() ? 'driving' : 'straight_line';
+}
+
+type DistanceMatrixResponse = {
+  status: string;
+  rows?: Array<{
+    elements?: Array<{
+      status: string;
+      distance?: { value: number; text: string };
+    }>;
+  }>;
+};
+
+/**
+ * Driving distance in miles (road route). Returns null if the API fails or key missing.
+ */
+export async function googleDrivingDistanceMiles(
+  shop: { lat: number; lng: number },
+  dest: { lat: number; lng: number },
+): Promise<number | null> {
+  const key = getEnv('GOOGLE_MAPS_API_KEY').trim();
+  if (!key) return null;
+
+  const params = new URLSearchParams({
+    origins: `${shop.lat},${shop.lng}`,
+    destinations: `${dest.lat},${dest.lng}`,
+    units: 'imperial',
+    mode: 'driving',
+    key,
+  });
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?${params}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = (await res.json()) as DistanceMatrixResponse;
+    if (data.status !== 'OK' || !data.rows?.[0]?.elements?.[0]) return null;
+    const el = data.rows[0].elements[0];
+    if (el.status !== 'OK' || el.distance == null) return null;
+    return el.distance.value / 1609.344;
+  } catch {
+    return null;
+  }
+}
+
 export async function geocodeUkPostcode(postcode: string): Promise<{ lat: number; lng: number } | null> {
   const normalized = postcode.trim().toUpperCase().replace(/\s+/g, ' ');
   const compact = normalized.replace(/\s/g, '');
@@ -67,6 +117,7 @@ export type DeliveryRadiusResult =
   | {
       ok: true;
       distanceMiles: number;
+      distanceMode: DeliveryDistanceMode;
       maxMiles: number;
       innerRadiusMiles: number;
       zone: DeliveryZone;
@@ -75,6 +126,7 @@ export type DeliveryRadiusResult =
       ok: false;
       error: string;
       distanceMiles?: number;
+      distanceMode?: DeliveryDistanceMode;
       maxMiles: number;
       innerRadiusMiles: number;
     };
@@ -84,7 +136,13 @@ export async function validateDeliveryPostcode(postcode: string | undefined): Pr
   const innerMiles = getInnerDeliveryRadiusMiles();
 
   if (!postcode?.trim()) {
-    return { ok: false, error: 'Delivery postcode is required.', maxMiles, innerRadiusMiles: innerMiles };
+    return {
+      ok: false,
+      error: 'Delivery postcode is required.',
+      maxMiles,
+      innerRadiusMiles: innerMiles,
+      distanceMode: getDeliveryDistanceMode(),
+    };
   }
 
   let dest: { lat: number; lng: number } | null;
@@ -101,19 +159,30 @@ export async function validateDeliveryPostcode(postcode: string | undefined): Pr
         'We could not verify that postcode. Check it is a valid UK postcode, or try again in a moment.',
       maxMiles,
       innerRadiusMiles: innerMiles,
+      distanceMode: getDeliveryDistanceMode(),
     };
   }
 
   const shop = getShopCoordinates();
-  const distanceMiles = haversineMiles(shop.lat, shop.lng, dest.lat, dest.lng);
+  let distanceMiles = haversineMiles(shop.lat, shop.lng, dest.lat, dest.lng);
+  let distanceMode: DeliveryDistanceMode = 'straight_line';
+
+  const driving = await googleDrivingDistanceMiles(shop, dest);
+  if (driving != null) {
+    distanceMiles = driving;
+    distanceMode = 'driving';
+  }
+
+  const distLabel = distanceMode === 'driving' ? 'driving' : 'straight-line';
 
   if (distanceMiles > maxMiles) {
     return {
       ok: false,
-      error: `Sorry — we only deliver within ${maxMiles} miles of our shop. This address is about ${distanceMiles.toFixed(1)} miles away (straight-line). Choose collection, or contact us before ordering.`,
+      error: `Sorry — we only deliver within ${maxMiles} miles of our shop. This address is about ${distanceMiles.toFixed(1)} miles away (${distLabel}). Choose collection, or contact us before ordering.`,
       distanceMiles,
       maxMiles,
       innerRadiusMiles: innerMiles,
+      distanceMode,
     };
   }
 
@@ -122,6 +191,7 @@ export async function validateDeliveryPostcode(postcode: string | undefined): Pr
   return {
     ok: true,
     distanceMiles,
+    distanceMode,
     maxMiles,
     innerRadiusMiles: innerMiles,
     zone,

@@ -14,6 +14,7 @@ const keys = [
   'site_promo_body',
   'site_promo_theme',
   'site_promo_campaign_id',
+  'site_promo_button_label',
 ] as const;
 
 const { data: settingsRows } = await supabaseAdmin.from('order_settings').select('key, value').in('key', [...keys]);
@@ -21,28 +22,32 @@ const { data: settingsRows } = await supabaseAdmin.from('order_settings').select
 const settings = Object.fromEntries((settingsRows ?? []).map((s: { key: string; value: string }) => [s.key, s.value]));
 
 const themes = [
-  { value: 'neutral', label: 'Neutral (cream / dark text)' },
-  { value: 'easter', label: 'Easter (soft lilac & gold accent)' },
-  { value: 'christmas', label: 'Christmas (deep green & gold)' },
-  { value: 'spring', label: 'Spring (fresh green)' },
-  { value: 'gold', label: 'Gold highlight' },
-  { value: 'green', label: 'Brand green' },
+  { value: 'summer', label: 'Summer (sky & sun — shop break, holidays)' },
+  { value: 'easter', label: 'Easter (green header — seasonal hours)' },
+  { value: 'spring', label: 'Spring (fresh green header)' },
+  { value: 'christmas', label: 'Christmas (dark header, light message area)' },
+  { value: 'gold', label: 'Gold (warm gold header)' },
+  { value: 'green', label: 'Brand green (butcher green header)' },
+  { value: 'neutral', label: 'Neutral (cream header)' },
 ] as const;
 ---
 
-<AdminLayout title="Site announcement" activeNav="promo">
+<AdminLayout title="Site pop-up" activeNav="promo">
   <div class="admin-card">
-    <h2>Pop-up announcement</h2>
-    <p class="admin-muted" style="margin: 0 0 1.25rem; max-width: 44rem; font-size: 0.9rem;">
-      Shown on the public site as a modal when enabled and the current date (UK time) is between the start and end
-      dates <strong>inclusive</strong>. After the end date it <strong>stops automatically</strong> — no code deploy needed.
-      Change <strong>Campaign ID</strong> when you switch events so people who dismissed the old message see the new one.
+    <h2>Site pop-up</h2>
+    <p class="admin-muted" style="margin: 0 0 1rem; max-width: 46rem; font-size: 0.9rem;">
+      This is the <strong>only</strong> announcement modal on the public site. Turn it on, set the first and last day it should appear (UK dates), choose a seasonal look, and save.
+      On the day <strong>after</strong> the end date it stops showing automatically — no developer needed.
+    </p>
+    <p class="admin-muted" style="margin: 0 0 1.25rem; max-width: 46rem; font-size: 0.9rem;">
+      To <strong>block pie orders</strong> for closed days, use{' '}
+      <a href="/admin/dates" class="promo-admin-link">Date manager</a>. The pop-up tells customers what&apos;s happening; blocked dates control the checkout calendar.
     </p>
 
     <div class="setting-row promo-row" style="border-bottom: 1px solid rgba(26,26,24,0.06); padding: 1rem 0;">
       <div class="setting-info">
         <strong>Show pop-up</strong>
-        <span>Master switch (still respects dates below).</span>
+        <span>On while dates below are valid and there is a title or message.</span>
       </div>
       <label class="toggle-switch">
         <input type="checkbox" class="promo-input" data-key="site_promo_enabled" checked={settings.site_promo_enabled === 'true'} />
@@ -52,27 +57,36 @@ const themes = [
 
     <div class="promo-grid">
       <label class="promo-field">
-        <span>Start date (UK)</span>
+        <span>First day to show (UK)</span>
         <input type="date" class="admin-input promo-input" data-key="site_promo_start" value={settings.site_promo_start ?? ''} />
       </label>
       <label class="promo-field">
-        <span>End date (UK)</span>
+        <span>Last day to show (UK)</span>
         <input type="date" class="admin-input promo-input" data-key="site_promo_end" value={settings.site_promo_end ?? ''} />
       </label>
     </div>
 
     <label class="promo-field promo-field-block">
       <span>Title</span>
-      <input type="text" class="admin-input promo-input" data-key="site_promo_title" value={settings.site_promo_title ?? ''} placeholder="e.g. Easter opening hours" />
+      <input
+        type="text"
+        class="admin-input promo-input"
+        data-key="site_promo_title"
+        value={settings.site_promo_title ?? ''}
+        placeholder="e.g. Summer break — shop closed"
+      />
     </label>
 
     <label class="promo-field promo-field-block">
       <span>Message</span>
-      <textarea class="admin-input promo-input" data-key="site_promo_body" rows="8" placeholder="Plain text — line breaks are kept. No HTML.">{settings.site_promo_body ?? ''}</textarea>
+      <textarea class="admin-input promo-input" data-key="site_promo_body" rows="10" placeholder={`Intro line here.\n\n- First bullet point\n- Second point\n\n> Optional small italic line (starts with >)`}>{settings.site_promo_body ?? ''}</textarea>
     </label>
+    <p class="promo-format-hint">
+      Plain text only. Line breaks become paragraphs. Lines starting with <code>- </code> or <code>• </code> become a bullet list. Lines starting with <code>&gt; </code> become a small italic note at the end.
+    </p>
 
     <label class="promo-field promo-field-block">
-      <span>Style theme</span>
+      <span>Look &amp; feel</span>
       <select class="admin-input promo-input" data-key="site_promo_theme">
         {themes.map((t) => (
           <option value={t.value} selected={settings.site_promo_theme === t.value || (!settings.site_promo_theme && t.value === 'neutral')}>
@@ -83,19 +97,30 @@ const themes = [
     </label>
 
     <label class="promo-field promo-field-block">
+      <span>Button label</span>
+      <input
+        type="text"
+        class="admin-input promo-input"
+        data-key="site_promo_button_label"
+        value={settings.site_promo_button_label ?? ''}
+        placeholder="Got it, thanks!"
+      />
+    </label>
+
+    <label class="promo-field promo-field-block">
       <span>Campaign ID</span>
       <input
         type="text"
         class="admin-input promo-input"
         data-key="site_promo_campaign_id"
         value={settings.site_promo_campaign_id ?? ''}
-        placeholder="e.g. easter-2026"
+        placeholder="e.g. summer-2026"
       />
-      <small class="promo-hint">Visitors who dismissed the pop-up won&apos;t see it again until this value changes.</small>
+      <small class="promo-hint">If someone closed the pop-up already, change this so the new message appears again.</small>
     </label>
 
     <div style="margin-top: 1.25rem;">
-      <button type="button" class="admin-btn admin-btn-primary" id="savePromoBtn">Save announcement</button>
+      <button type="button" class="admin-btn admin-btn-primary" id="savePromoBtn">Save pop-up</button>
     </div>
   </div>
 </AdminLayout>
@@ -167,6 +192,26 @@ const themes = [
     font-size: 0.78rem;
     color: rgba(26, 26, 24, 0.5);
   }
+  .promo-format-hint {
+    margin: -0.35rem 0 0.5rem;
+    font-size: 0.78rem;
+    color: rgba(26, 26, 24, 0.5);
+    max-width: 46rem;
+  }
+  .promo-format-hint code {
+    font-size: 0.85em;
+    background: rgba(26, 26, 24, 0.06);
+    padding: 0.05rem 0.25rem;
+    border-radius: 4px;
+  }
+  .promo-admin-link {
+    color: #1f5a3a;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .promo-admin-link:hover {
+    color: #0e2318;
+  }
 </style>
 
 <script is:inline>
@@ -193,7 +238,7 @@ const themes = [
         return r.json();
       })
       .then(function (data) {
-        btn.textContent = 'Save announcement';
+        btn.textContent = 'Save pop-up';
         if (data.ok) {
           var el = document.createElement('div');
           el.className = 'admin-toast';
@@ -207,7 +252,7 @@ const themes = [
         }
       })
       .catch(function () {
-        btn.textContent = 'Save announcement';
+        btn.textContent = 'Save pop-up';
         alert('Failed to save');
       });
   });

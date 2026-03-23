@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import {
+  getDeliveryDistanceMode,
   getInnerDeliveryRadiusMiles,
   getMaxDeliveryMiles,
   validateDeliveryPostcode,
@@ -21,6 +22,7 @@ export const GET: APIRoute = async ({ url }) => {
       return json({
         ok: true,
         distanceMiles: result.distanceMiles,
+        distanceMode: result.distanceMode,
         maxMiles: result.maxMiles,
         innerRadiusMiles: result.innerRadiusMiles,
         zone: result.zone,
@@ -30,6 +32,7 @@ export const GET: APIRoute = async ({ url }) => {
       ok: false,
       error: result.error,
       distanceMiles: result.distanceMiles,
+      distanceMode: result.distanceMode,
       maxMiles: result.maxMiles,
       innerRadiusMiles: result.innerRadiusMiles,
     });
@@ -40,6 +43,7 @@ export const GET: APIRoute = async ({ url }) => {
         error: 'Could not check delivery area. Try again.',
         maxMiles: getMaxDeliveryMiles(),
         innerRadiusMiles: getInnerDeliveryRadiusMiles(),
+        distanceMode: getDeliveryDistanceMode(),
       },
       500,
     );

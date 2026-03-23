@@ -18,6 +18,7 @@ export const PUT: APIRoute = async ({ request }) => {
     'site_promo_body',
     'site_promo_theme',
     'site_promo_campaign_id',
+    'site_promo_button_label',
   ];
 
   const rows = Object.entries(updates)

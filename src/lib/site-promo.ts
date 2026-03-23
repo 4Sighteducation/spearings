@@ -8,6 +8,7 @@ const PROMO_KEYS = [
   'site_promo_body',
   'site_promo_theme',
   'site_promo_campaign_id',
+  'site_promo_button_label',
 ] as const;
 
 /** Calendar date in Europe/London as YYYY-MM-DD */
@@ -30,7 +31,14 @@ export function isDateInInclusiveRange(today: string, start: string, end: string
   return start <= today && today <= end;
 }
 
-export type SitePromoTheme = 'easter' | 'christmas' | 'spring' | 'gold' | 'green' | 'neutral';
+export type SitePromoTheme =
+  | 'easter'
+  | 'summer'
+  | 'christmas'
+  | 'spring'
+  | 'gold'
+  | 'green'
+  | 'neutral';
 
 export type SitePromoPayload = {
   visible: boolean;
@@ -38,6 +46,8 @@ export type SitePromoPayload = {
   body: string;
   theme: SitePromoTheme;
   campaignId: string;
+  /** Dismiss button text */
+  buttonLabel: string;
 };
 
 const DEFAULT_THEME: SitePromoTheme = 'neutral';
@@ -49,6 +59,7 @@ export async function getSitePromoPayload(): Promise<SitePromoPayload> {
     body: '',
     theme: DEFAULT_THEME,
     campaignId: 'default',
+    buttonLabel: 'Got it, thanks!',
   };
 
   try {
@@ -66,8 +77,17 @@ export async function getSitePromoPayload(): Promise<SitePromoPayload> {
     const body = map.get('site_promo_body') ?? '';
     const themeRaw = (map.get('site_promo_theme') ?? 'neutral').trim().toLowerCase();
     const campaignId = (map.get('site_promo_campaign_id') ?? 'default').trim() || 'default';
+    const buttonLabel = (map.get('site_promo_button_label') ?? '').trim() || 'Got it, thanks!';
 
-    const themes: SitePromoTheme[] = ['easter', 'christmas', 'spring', 'gold', 'green', 'neutral'];
+    const themes: SitePromoTheme[] = [
+      'easter',
+      'summer',
+      'christmas',
+      'spring',
+      'gold',
+      'green',
+      'neutral',
+    ];
     const theme = themes.includes(themeRaw as SitePromoTheme) ? (themeRaw as SitePromoTheme) : DEFAULT_THEME;
 
     const today = todayLondonYYYYMMDD();
@@ -80,6 +100,7 @@ export async function getSitePromoPayload(): Promise<SitePromoPayload> {
       body,
       theme,
       campaignId,
+      buttonLabel,
     };
   } catch {
     return empty;

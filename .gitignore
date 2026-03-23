@@ -32,6 +32,9 @@ pnpm-debug.log*
 # vercel local project settings
 .vercel/
 
+# Old backup / duplicate scripts (not part of the app)
+scripts/_old-products*.astro
+
 # Stray duplicate page copies at repo root (routes live in src/pages/)
 /index.astro
 /pies.astro
