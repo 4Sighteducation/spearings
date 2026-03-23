@@ -25,7 +25,7 @@ export function getMaxDeliveryMiles(): number {
   return 10;
 }
 
-/** Inner zone edge — “standard” area with £25 free / £5 under (default 5 miles). */
+/** Inner zone edge — “standard” area with £30 free / £5 under (default 5 miles). */
 export function getInnerDeliveryRadiusMiles(): number {
   const v = parseFloat(getEnv('DELIVERY_INNER_RADIUS_MILES'));
   if (!Number.isNaN(v) && v > 0) return v;

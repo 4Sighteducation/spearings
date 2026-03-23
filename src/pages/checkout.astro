@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const maxDeliveryMiles = Number(import.meta.env.PUBLIC_MAX_DELIVERY_MILES) || 10;
 const innerDeliveryMiles = Number(import.meta.env.PUBLIC_INNER_DELIVERY_MILES) || 5;
-const freeDeliveryThresholdPence = Number(import.meta.env.PUBLIC_FREE_DELIVERY_THRESHOLD_PENCE) || 2500;
+const freeDeliveryThresholdPence = Number(import.meta.env.PUBLIC_FREE_DELIVERY_THRESHOLD_PENCE) || 3000;
 const deliveryFeeInnerPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_INNER_PENCE) || 500;
 const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_PENCE) || 1500;
 ---
@@ -535,7 +535,7 @@ const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_P
     var maxDeliveryMilesRule = parseFloat(addressCardEl && addressCardEl.dataset.maxDeliveryMiles) || 10;
     var feeInnerPence = parseInt(addressCardEl && addressCardEl.dataset.feeInnerPence, 10) || 500;
     var feeOuterPence = parseInt(addressCardEl && addressCardEl.dataset.feeOuterPence, 10) || 1500;
-    var freeThresholdPence = parseInt(addressCardEl && addressCardEl.dataset.freeThresholdPence, 10) || 2500;
+    var freeThresholdPence = parseInt(addressCardEl && addressCardEl.dataset.freeThresholdPence, 10) || 3000;
 
     function showPostcodeStatus(message, kind) {
       if (!postcodeStatusEl) return;

@@ -114,7 +114,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
 
   const settings = new Map<string, string>([
     ['delivery_fee_pence', '500'],
-    ['free_delivery_threshold_pence', '2500'],
+    ['free_delivery_threshold_pence', '3000'],
   ]);
   try {
     const { data: settingsData } = await supabaseAdmin
@@ -134,7 +134,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderResult>
       shipping = Number.isFinite(outerFee) && outerFee >= 0 ? outerFee : 1500;
     } else {
       const fee = parseInt(settings.get('delivery_fee_pence') ?? '500', 10);
-      const threshold = parseInt(settings.get('free_delivery_threshold_pence') ?? '2500', 10);
+      const threshold = parseInt(settings.get('free_delivery_threshold_pence') ?? '3000', 10);
       shipping = subtotal >= threshold ? 0 : fee;
     }
   }

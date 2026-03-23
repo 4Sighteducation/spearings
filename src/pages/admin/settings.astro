@@ -18,7 +18,7 @@ const fields = [
   { key: 'min_lead_days', label: 'Minimum Lead Days', type: 'number', help: 'How many days ahead customers must order. e.g. 2 = can\'t order for today or tomorrow.' },
   { key: 'closed_weekdays', label: 'Closed Weekdays', type: 'text', help: 'Comma-separated day numbers. 0=Sun, 1=Mon, 2=Tue, ... 6=Sat. e.g. "0,1" blocks Sunday and Monday.' },
   { key: 'delivery_fee_pence', label: 'Delivery Fee (pence)', type: 'number', help: 'Delivery fee in pence. e.g. 500 = £5.00.' },
-  { key: 'free_delivery_threshold_pence', label: 'Free Delivery Over (pence)', type: 'number', help: 'Inner zone (≤5 mi): orders at or above this subtotal get free delivery. e.g. 2500 = £25.00. Outer zone (5–10 mi) uses a fixed £15 fee.' },
+  { key: 'free_delivery_threshold_pence', label: 'Free Delivery Over (pence)', type: 'number', help: 'Inner zone (≤5 mi): orders at or above this subtotal get free delivery. e.g. 3000 = £30.00. Outer zone (5–10 mi) uses a fixed £15 fee.' },
   { key: 'max_order_items', label: 'Max Items Per Order', type: 'number', help: 'Maximum number of items in a single order.' },
 ];
 ---
