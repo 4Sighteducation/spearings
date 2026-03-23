@@ -1,5 +1,6 @@
 ---
 import '../styles/site.css';
+import SitePromo from '../components/SitePromo.astro';
 
 interface Props {
 	title?: string;
@@ -126,6 +127,8 @@ const openingHours = [
 		</header>
 
 		<slot />
+
+		<SitePromo />
 
 		<footer class="site-footer">
 			<div class="container footer-inner">

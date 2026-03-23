@@ -2192,6 +2192,110 @@ p {
   }
 }
 
+/* Site announcement modal — content & dates from admin / Supabase order_settings */
+.site-promo-dialog {
+  z-index: 10000;
+  border: none;
+  padding: 0;
+  max-width: min(32rem, calc(100vw - 2rem));
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  background: transparent;
+}
+
+.site-promo-dialog::backdrop {
+  background: rgba(14, 35, 24, 0.45);
+}
+
+.site-promo-card {
+  padding: 1.5rem 1.6rem 1.25rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(26, 26, 24, 0.1);
+}
+
+.site-promo-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 2.8vw, 1.65rem);
+  font-family: var(--font-display);
+  line-height: 1.2;
+}
+
+.site-promo-body {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(26, 26, 24, 0.88);
+}
+
+.site-promo-body p {
+  margin: 0 0 0.65rem;
+}
+
+.site-promo-body p:last-child {
+  margin-bottom: 0;
+}
+
+.site-promo-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.site-promo-btn {
+  min-width: 8rem;
+}
+
+.site-promo-dialog.theme-neutral .site-promo-card {
+  background: linear-gradient(165deg, #fffdf7 0%, #fff 100%);
+}
+
+.site-promo-dialog.theme-easter .site-promo-card {
+  background: linear-gradient(165deg, #fff5fb 0%, #f8f4ff 55%, #fff 100%);
+  border-color: rgba(181, 105, 180, 0.28);
+  box-shadow: 0 0 0 1px rgba(255, 200, 255, 0.35);
+}
+
+.site-promo-dialog.theme-easter .site-promo-title {
+  color: #6b3d6b;
+}
+
+.site-promo-dialog.theme-christmas .site-promo-card {
+  background: linear-gradient(165deg, #0e2318 0%, #1a3328 100%);
+  color: #f5f0e0;
+  border-color: rgba(201, 154, 26, 0.35);
+}
+
+.site-promo-dialog.theme-christmas .site-promo-title {
+  color: #fff;
+}
+
+.site-promo-dialog.theme-christmas .site-promo-body {
+  color: rgba(255, 253, 247, 0.92);
+}
+
+.site-promo-dialog.theme-spring .site-promo-card {
+  background: linear-gradient(165deg, #f0fdf4 0%, #fff 100%);
+  border-color: rgba(34, 100, 68, 0.22);
+}
+
+.site-promo-dialog.theme-spring .site-promo-title {
+  color: #1f4a2e;
+}
+
+.site-promo-dialog.theme-gold .site-promo-card {
+  background: linear-gradient(165deg, #fffdf7 0%, #fff 100%);
+  border-color: rgba(201, 154, 26, 0.45);
+  box-shadow: 0 0 0 2px rgba(201, 154, 26, 0.18);
+}
+
+.site-promo-dialog.theme-green .site-promo-card {
+  background: linear-gradient(165deg, #e8f1e0 0%, #fff 100%);
+  border-color: rgba(31, 74, 46, 0.2);
+}
+
+.site-promo-dialog.theme-green .site-promo-title {
+  color: #0e2318;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

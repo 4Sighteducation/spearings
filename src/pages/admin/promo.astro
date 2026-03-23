@@ -1,0 +1,214 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { getAdminFromRequest } from '../../lib/admin-auth';
+import { supabaseAdmin } from '../../lib/supabase-server';
+
+const admin = getAdminFromRequest(Astro.request);
+if (!admin) return Astro.redirect('/admin/login');
+
+const keys = [
+  'site_promo_enabled',
+  'site_promo_start',
+  'site_promo_end',
+  'site_promo_title',
+  'site_promo_body',
+  'site_promo_theme',
+  'site_promo_campaign_id',
+] as const;
+
+const { data: settingsRows } = await supabaseAdmin.from('order_settings').select('key, value').in('key', [...keys]);
+
+const settings = Object.fromEntries((settingsRows ?? []).map((s: { key: string; value: string }) => [s.key, s.value]));
+
+const themes = [
+  { value: 'neutral', label: 'Neutral (cream / dark text)' },
+  { value: 'easter', label: 'Easter (soft lilac & gold accent)' },
+  { value: 'christmas', label: 'Christmas (deep green & gold)' },
+  { value: 'spring', label: 'Spring (fresh green)' },
+  { value: 'gold', label: 'Gold highlight' },
+  { value: 'green', label: 'Brand green' },
+] as const;
+---
+
+<AdminLayout title="Site announcement" activeNav="promo">
+  <div class="admin-card">
+    <h2>Pop-up announcement</h2>
+    <p class="admin-muted" style="margin: 0 0 1.25rem; max-width: 44rem; font-size: 0.9rem;">
+      Shown on the public site as a modal when enabled and the current date (UK time) is between the start and end
+      dates <strong>inclusive</strong>. After the end date it <strong>stops automatically</strong> — no code deploy needed.
+      Change <strong>Campaign ID</strong> when you switch events so people who dismissed the old message see the new one.
+    </p>
+
+    <div class="setting-row promo-row" style="border-bottom: 1px solid rgba(26,26,24,0.06); padding: 1rem 0;">
+      <div class="setting-info">
+        <strong>Show pop-up</strong>
+        <span>Master switch (still respects dates below).</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" class="promo-input" data-key="site_promo_enabled" checked={settings.site_promo_enabled === 'true'} />
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+
+    <div class="promo-grid">
+      <label class="promo-field">
+        <span>Start date (UK)</span>
+        <input type="date" class="admin-input promo-input" data-key="site_promo_start" value={settings.site_promo_start ?? ''} />
+      </label>
+      <label class="promo-field">
+        <span>End date (UK)</span>
+        <input type="date" class="admin-input promo-input" data-key="site_promo_end" value={settings.site_promo_end ?? ''} />
+      </label>
+    </div>
+
+    <label class="promo-field promo-field-block">
+      <span>Title</span>
+      <input type="text" class="admin-input promo-input" data-key="site_promo_title" value={settings.site_promo_title ?? ''} placeholder="e.g. Easter opening hours" />
+    </label>
+
+    <label class="promo-field promo-field-block">
+      <span>Message</span>
+      <textarea class="admin-input promo-input" data-key="site_promo_body" rows="8" placeholder="Plain text — line breaks are kept. No HTML.">{settings.site_promo_body ?? ''}</textarea>
+    </label>
+
+    <label class="promo-field promo-field-block">
+      <span>Style theme</span>
+      <select class="admin-input promo-input" data-key="site_promo_theme">
+        {themes.map((t) => (
+          <option value={t.value} selected={settings.site_promo_theme === t.value || (!settings.site_promo_theme && t.value === 'neutral')}>
+            {t.label}
+          </option>
+        ))}
+      </select>
+    </label>
+
+    <label class="promo-field promo-field-block">
+      <span>Campaign ID</span>
+      <input
+        type="text"
+        class="admin-input promo-input"
+        data-key="site_promo_campaign_id"
+        value={settings.site_promo_campaign_id ?? ''}
+        placeholder="e.g. easter-2026"
+      />
+      <small class="promo-hint">Visitors who dismissed the pop-up won&apos;t see it again until this value changes.</small>
+    </label>
+
+    <div style="margin-top: 1.25rem;">
+      <button type="button" class="admin-btn admin-btn-primary" id="savePromoBtn">Save announcement</button>
+    </div>
+  </div>
+</AdminLayout>
+
+<style is:global>
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.65rem;
+    cursor: pointer;
+  }
+  .toggle-switch input {
+    display: none;
+  }
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 24, 0.15);
+    border-radius: 999px;
+    transition: background 0.25s;
+  }
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s;
+  }
+  .toggle-switch input:checked + .toggle-track {
+    background: #28a745;
+  }
+  .toggle-switch input:checked + .toggle-track::after {
+    transform: translateX(1.35rem);
+  }
+
+  .promo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 640px) {
+    .promo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .promo-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .promo-field span {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(26, 26, 24, 0.65);
+  }
+  .promo-field-block {
+    margin: 0.75rem 0 0;
+  }
+  .promo-hint {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.78rem;
+    color: rgba(26, 26, 24, 0.5);
+  }
+</style>
+
+<script is:inline>
+  document.getElementById('savePromoBtn').addEventListener('click', function () {
+    var updates = {};
+    document.querySelectorAll('.promo-input').forEach(function (input) {
+      var key = input.dataset.key;
+      if (input.type === 'checkbox') {
+        updates[key] = input.checked ? 'true' : 'false';
+      } else {
+        updates[key] = input.value;
+      }
+    });
+
+    var btn = this;
+    btn.textContent = 'Saving...';
+
+    fetch('/api/admin/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    })
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (data) {
+        btn.textContent = 'Save announcement';
+        if (data.ok) {
+          var el = document.createElement('div');
+          el.className = 'admin-toast';
+          el.textContent = 'Saved';
+          document.body.appendChild(el);
+          setTimeout(function () {
+            el.remove();
+          }, 2800);
+        } else {
+          alert('Error: ' + (data.error || 'Save failed'));
+        }
+      })
+      .catch(function () {
+        btn.textContent = 'Save announcement';
+        alert('Failed to save');
+      });
+  });
+</script>

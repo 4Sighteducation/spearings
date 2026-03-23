@@ -11,6 +11,13 @@ export const PUT: APIRoute = async ({ request }) => {
     'orders_enabled', 'collection_only', 'min_lead_days',
     'closed_weekdays', 'delivery_fee_pence', 'free_delivery_threshold_pence',
     'max_order_items',
+    'site_promo_enabled',
+    'site_promo_start',
+    'site_promo_end',
+    'site_promo_title',
+    'site_promo_body',
+    'site_promo_theme',
+    'site_promo_campaign_id',
   ];
 
   const rows = Object.entries(updates)

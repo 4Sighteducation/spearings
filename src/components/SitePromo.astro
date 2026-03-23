@@ -1,0 +1,88 @@
+---
+/**
+ * Fetches /api/site-promo and shows a themed modal when visible.
+ * Dismiss is stored per campaignId in localStorage. Date window is enforced server-side.
+ */
+---
+
+<dialog id="sitePromoDialog" class="site-promo-dialog" aria-modal="true" aria-labelledby="sitePromoTitleEl">
+  <div class="site-promo-card">
+    <h2 id="sitePromoTitleEl" class="site-promo-title"></h2>
+    <div id="sitePromoBodyEl" class="site-promo-body"></div>
+    <div class="site-promo-actions">
+      <button type="button" class="btn btn-gold site-promo-btn" id="sitePromoDismiss">OK, got it</button>
+    </div>
+  </div>
+</dialog>
+
+<script is:inline>
+  (function () {
+    var STORAGE_PREFIX = 'spearings_site_promo_dismissed:';
+    var shownCampaignId = null;
+
+    function escapeHtml(s) {
+      var d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function bodyToHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .split(/\r?\n/)
+        .map(function (line) {
+          return '<p>' + escapeHtml(line) + '</p>';
+        })
+        .join('');
+    }
+
+    var dialog = document.getElementById('sitePromoDialog');
+    var titleEl = document.getElementById('sitePromoTitleEl');
+    var bodyEl = document.getElementById('sitePromoBodyEl');
+    var dismissBtn = document.getElementById('sitePromoDismiss');
+    if (!dialog || !titleEl || !bodyEl || !dismissBtn) return;
+
+    dialog.addEventListener('close', function () {
+      if (shownCampaignId) {
+        try {
+          localStorage.setItem(STORAGE_PREFIX + shownCampaignId, '1');
+        } catch (e) {}
+        shownCampaignId = null;
+      }
+    });
+
+    dismissBtn.addEventListener('click', function () {
+      if (typeof dialog.close === 'function') dialog.close();
+    });
+
+    fetch('/api/site-promo')
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data || !data.visible) return;
+        var campaignId = data.campaignId || 'default';
+        try {
+          if (localStorage.getItem(STORAGE_PREFIX + campaignId) === '1') return;
+        } catch (e) {}
+
+        titleEl.textContent = data.title || 'Announcement';
+        bodyEl.innerHTML = bodyToHtml(data.body || '');
+        dialog.classList.remove(
+          'theme-easter',
+          'theme-christmas',
+          'theme-spring',
+          'theme-gold',
+          'theme-green',
+          'theme-neutral',
+        );
+        dialog.classList.add('theme-' + (data.theme || 'neutral'));
+
+        shownCampaignId = campaignId;
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        }
+      })
+      .catch(function () {});
+  })();
+</script>
