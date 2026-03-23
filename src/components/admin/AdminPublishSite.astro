@@ -1,0 +1,170 @@
+---
+import { getEnv } from '../../lib/env';
+import { isPublishStatusPollingConfigured } from '../../lib/vercel-deploy';
+import {
+  PUBLISH_PENDING_CHANGED_EVENT,
+  PUBLISH_PENDING_STORAGE_KEY,
+} from '../../lib/admin-publish-pending';
+
+interface Props {
+  /** Inline styles for the card wrapper (spacing differs on dashboard vs products). */
+  cardStyle?: string;
+}
+
+const { cardStyle = 'margin-top: 1.5rem;' } = Astro.props;
+
+const publishConfigured = Boolean(getEnv('VERCEL_DEPLOY_HOOK_URL').trim());
+const publishStatusConfigured = isPublishStatusPollingConfigured();
+---
+
+<div
+  class="admin-card admin-publish-card"
+  id="admin-publish-card"
+  style={cardStyle}
+>
+  <h2>Update live website</h2>
+  <p class="admin-muted" style="margin: 0 0 1rem; max-width: 42rem;">
+    Product wording and prices are baked into the public site when Vercel builds. After you finish editing, use this to
+    start a new deployment so visitors see your changes.
+  </p>
+  <p class="admin-publish-pending-note" id="admin-publish-pending-note" hidden>
+    You have <strong>saved product changes</strong> that are not on the live site yet — click the button below to publish
+    them.
+  </p>
+  {!publishConfigured && (
+    <p class="admin-muted" style="margin: 0 0 1rem; color: #b45309;">
+      Not configured: add <code>VERCEL_DEPLOY_HOOK_URL</code> in Vercel → Project → Settings → Environment Variables
+      (create a Deploy Hook under Settings → Git → Deploy Hooks and paste the URL).
+    </p>
+  )}
+  <div class="admin-actions" style="align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+    <button type="button" class="admin-btn" id="publishSiteBtn" disabled={!publishConfigured}>
+      Update website with changes
+    </button>
+    <span id="publishSiteStatus" class="admin-muted" style="min-height: 1.25rem;"></span>
+  </div>
+</div>
+
+<script
+  define:vars={{
+    publishConfigured,
+    publishStatusConfigured,
+    storageKey: PUBLISH_PENDING_STORAGE_KEY,
+    pendingEvent: PUBLISH_PENDING_CHANGED_EVENT,
+  }}
+>
+  (function () {
+    const btn = document.getElementById('publishSiteBtn');
+    const status = document.getElementById('publishSiteStatus');
+    const card = document.getElementById('admin-publish-card');
+    const note = document.getElementById('admin-publish-pending-note');
+    if (!btn || !status || !(btn instanceof HTMLButtonElement)) return;
+
+    function sleep(ms) {
+      return new Promise((r) => setTimeout(r, ms));
+    }
+
+    function syncPendingUi() {
+      let pending = false;
+      try {
+        pending = localStorage.getItem(storageKey) === '1';
+      } catch (e) {
+        pending = false;
+      }
+      if (card) card.classList.toggle('admin-publish-card--pending', pending);
+      if (note) note.hidden = !pending;
+      btn.classList.toggle('admin-btn-gold', pending);
+    }
+
+    window.addEventListener('storage', syncPendingUi);
+    window.addEventListener(pendingEvent, syncPendingUi);
+    syncPendingUi();
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      status.textContent = 'Starting deployment…';
+      const since = Date.now();
+
+      try {
+        const r = await fetch('/api/admin/publish', { method: 'POST' });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error((j && j.error) || r.statusText || 'Failed');
+
+        try {
+          localStorage.removeItem(storageKey);
+        } catch (e) {}
+        window.dispatchEvent(new CustomEvent(pendingEvent));
+        syncPendingUi();
+
+        if (!publishStatusConfigured) {
+          status.textContent = 'Deployment started. The live site will update in a short while — refresh to check.';
+          return;
+        }
+
+        status.textContent = 'Build running…';
+        const maxAttempts = 45;
+        for (let i = 0; i < maxAttempts; i++) {
+          await sleep(2000);
+          const pr = await fetch(`/api/admin/publish-status?since=${since}`);
+          const pj = await pr.json().catch(() => ({}));
+          if (!pr.ok) throw new Error((pj && pj.error) || pr.statusText || 'Status check failed');
+
+          if (pj.pollingAvailable === false) {
+            status.textContent = 'Deployment started. The live site will update in a short while — refresh to check.';
+            return;
+          }
+
+          if (pj.waiting && !pj.readyState) {
+            status.textContent = 'Waiting for deployment…';
+            continue;
+          }
+
+          const rs = pj.readyState;
+          if (pj.waiting && rs && rs !== 'READY' && rs !== 'ERROR' && rs !== 'CANCELED') {
+            status.textContent = `Building… (${rs})`;
+            continue;
+          }
+
+          if (rs === 'READY') {
+            status.textContent = 'Finished — live site is updated. You can refresh the public site.';
+            return;
+          }
+          if (rs === 'ERROR' || rs === 'CANCELED') {
+            status.textContent = `Deployment ended with status: ${rs}. Check the Vercel dashboard for details.`;
+            return;
+          }
+        }
+        status.textContent = 'Still in progress or timed out — check Deployments in Vercel.';
+      } catch (e) {
+        status.textContent = e instanceof Error ? e.message : 'Something went wrong.';
+      } finally {
+        btn.disabled = !publishConfigured;
+      }
+    });
+  })();
+</script>
+
+<style is:global>
+  .admin-publish-card--pending {
+    border-color: rgba(201, 154, 26, 0.55) !important;
+    background: linear-gradient(180deg, rgba(255, 248, 230, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%) !important;
+    box-shadow:
+      0 0 0 2px rgba(201, 154, 26, 0.22),
+      0 4px 14px rgba(14, 35, 24, 0.08) !important;
+  }
+
+  .admin-publish-pending-note {
+    margin: 0 0 1rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+    border: 1px solid rgba(201, 154, 26, 0.35);
+    background: rgba(255, 251, 235, 0.95);
+    color: #5c4a1a;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .admin-publish-pending-note strong {
+    color: #3d3310;
+  }
+</style>
