@@ -67,7 +67,7 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
       </div>
     </div>
 
-    <section class="page-hero">
+    <section class="page-hero" id="piePageHero">
       <div class="container page-hero-inner">
         <div class="page-hero-copy stack reveal-left reveal-d1">
           <div class="page-hero-badge">
@@ -98,50 +98,54 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
     <section class="quick-order-section" id="quickOrder">
       <div class="container">
         <div class="quick-order-bar reveal-up">
-          <div class="quick-order-header">
-            <h2 class="quick-order-title">Our Favourite Pies</h2>
-            <p class="quick-order-sub">Tap to add straight to your basket.</p>
+          <div id="pieQuickOrderIntro">
+            <div class="quick-order-header">
+              <h2 class="quick-order-title">Our Favourite Pies</h2>
+              <p class="quick-order-sub">Tap to add straight to your basket.</p>
+            </div>
+            <div class="quick-order-grid">
+              {
+                quickPickItems.map(({ product, label }) => (
+                  <button
+                    type="button"
+                    class="quick-tile"
+                    data-slug={product.slug}
+                    data-name={product.name}
+                    data-price={Math.round(product.price * 100)}
+                    data-size={product.size ?? ''}
+                    data-image={product.imageUrl ?? ''}
+                  >
+                    <span class="quick-tile-name">{label}</span>
+                    <span class="quick-tile-price">{formatPrice(product)}</span>
+                  </button>
+                ))
+              }
+            </div>
           </div>
-          <div class="quick-order-grid">
-            {
-              quickPickItems.map(({ product, label }) => (
-                <button
-                  type="button"
-                  class="quick-tile"
-                  data-slug={product.slug}
-                  data-name={product.name}
-                  data-price={Math.round(product.price * 100)}
-                  data-size={product.size ?? ''}
-                  data-image={product.imageUrl ?? ''}
-                >
-                  <span class="quick-tile-name">{label}</span>
-                  <span class="quick-tile-price">{formatPrice(product)}</span>
-                </button>
-              ))
-            }
+          <div id="pieSearchBlock" class="pie-search-block">
+            <div class="quick-order-search">
+              <svg
+                class="pie-search-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input
+                type="search"
+                id="pieSearch"
+                class="pie-search-input"
+                placeholder="Search all pies..."
+                autocomplete="off"
+                enterkeyhint="search"
+              />
+            </div>
+            <div id="pieSearchResults" class="pie-search-results" hidden aria-live="polite"></div>
           </div>
-          <div class="quick-order-search">
-            <svg
-              class="pie-search-icon"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input
-              type="search"
-              id="pieSearch"
-              class="pie-search-input"
-              placeholder="Search all pies..."
-              autocomplete="off"
-              enterkeyhint="search"
-            />
-          </div>
-          <div id="pieSearchResults" class="pie-search-results" hidden aria-live="polite"></div>
         </div>
       </div>
     </section>
@@ -257,6 +261,16 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
   .quick-order-section {
     background: var(--g-800);
     padding: 2rem 0;
+  }
+
+  .quick-order-section.pie-search-compact {
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /** Keeps search + results below fixed site header when scrolling into view */
+  .pie-search-block {
+    scroll-margin-top: var(--header-offset);
   }
 
   .quick-order-bar {
@@ -762,6 +776,9 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
       var pieRange = document.getElementById('pie-range');
       var status = document.getElementById('pieFilterStatus');
       var quickOrder = document.getElementById('quickOrder');
+      var pageHero = document.getElementById('piePageHero');
+      var quickIntro = document.getElementById('pieQuickOrderIntro');
+      var searchBlock = document.getElementById('pieSearchBlock');
 
       if (!searchInput || !dataEl || !resultsEl) return;
 
@@ -818,8 +835,12 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
         });
 
         setSearchMode(true);
-        if (!scrolledForSearch && quickOrder) {
-          quickOrder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (!scrolledForSearch && searchBlock) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              searchBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          });
           scrolledForSearch = true;
         }
 
