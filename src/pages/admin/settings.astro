@@ -152,6 +152,7 @@ const fields = [
 
     fetch('/api/admin/settings', {
       method: 'PUT',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates)
     }).then(function(r) { return r.json(); }).then(function(data) {

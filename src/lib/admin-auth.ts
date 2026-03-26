@@ -35,33 +35,48 @@ export function validateCredentials(email: string, password: string): boolean {
   return email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD;
 }
 
+/** All values for this cookie name (browsers may send duplicates when Path scopes differ). */
+function getCookieValuesForName(cookieHeader: string, name: string): string[] {
+  const out: string[] = [];
+  if (!cookieHeader) return out;
+  const prefix = `${name}=`;
+  for (const part of cookieHeader.split(';')) {
+    const trimmed = part.trim();
+    if (trimmed.startsWith(prefix)) {
+      out.push(trimmed.slice(prefix.length));
+    }
+  }
+  return out;
+}
+
 export function getAdminFromRequest(request: Request): { email: string } | null {
   const cookies = request.headers.get('cookie') ?? '';
-  const match = cookies.match(new RegExp(`${COOKIE_NAME}=([^;]+)`));
-  if (!match) return null;
-
-  const result = verifyAdminToken(decodeURIComponent(match[1]));
-  if (!result.valid || !result.email) return null;
-  return { email: result.email };
+  const values = getCookieValuesForName(cookies, COOKIE_NAME);
+  for (const raw of values) {
+    const result = verifyAdminToken(decodeURIComponent(raw));
+    if (result.valid && result.email) return { email: result.email };
+  }
+  return null;
 }
 
 export function adminLoginHeaders(email: string): Headers {
   const token = createAdminToken(email);
   const headers = new Headers();
+  // Drop legacy Path=/admin cookie so only one sp_admin value is sent.
+  headers.append('Set-Cookie', `${COOKIE_NAME}=; Path=/admin; HttpOnly; SameSite=Lax; Max-Age=0`);
   // Path must be / so the cookie is sent to /api/admin/* (not only /admin/* pages).
-  headers.set(
+  const secure = import.meta.env.PROD ? '; Secure' : '';
+  headers.append(
     'Set-Cookie',
-    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}`
+    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${secure}`
   );
   return headers;
 }
 
 export function adminLogoutHeaders(): Headers {
   const headers = new Headers();
-  headers.set(
-    'Set-Cookie',
-    `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`
-  );
+  headers.append('Set-Cookie', `${COOKIE_NAME}=; Path=/admin; HttpOnly; SameSite=Lax; Max-Age=0`);
+  headers.append('Set-Cookie', `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
   return headers;
 }
 

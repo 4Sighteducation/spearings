@@ -91,6 +91,7 @@ const statuses = ['pending', 'confirmed', 'preparing', 'ready', 'collected', 'de
       var newStatus = sel.value;
       fetch('/api/admin/orders', {
         method: 'PATCH',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: orderId, status: newStatus })
       }).then(function(r) {

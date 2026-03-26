@@ -105,7 +105,7 @@ const publishStatusConfigured = isPublishStatusPollingConfigured();
         const maxAttempts = 45;
         for (let i = 0; i < maxAttempts; i++) {
           await sleep(2000);
-          const pr = await fetch(`/api/admin/publish-status?since=${since}`);
+          const pr = await fetch(`/api/admin/publish-status?since=${since}`, { credentials: 'same-origin' });
           const pj = await pr.json().catch(() => ({}));
           if (!pr.ok) throw new Error((pj && pj.error) || pr.statusText || 'Status check failed');
 

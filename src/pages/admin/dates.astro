@@ -162,6 +162,7 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
 
     fetch('/api/admin/dates', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ from: from, to: to, reason: reason })
     }).then(function(r) { return r.json(); }).then(function(data) {
@@ -204,6 +205,7 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
       var reason = document.getElementById('editClosureReason').value;
       fetch('/api/admin/dates', {
         method: 'PATCH',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id, blocked_date: blocked_date, reason: reason }),
       })
@@ -231,6 +233,7 @@ const pastDates = dateList.filter((d: any) => d.blocked_date < today);
       var id = btn.dataset.dateId;
       fetch('/api/admin/dates', {
         method: 'DELETE',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
       }).then(function(r) {

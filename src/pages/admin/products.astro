@@ -855,6 +855,7 @@ const PRICE_TYPES = ['by_count', 'by_weight', 'other'];
           var text = reader.result;
           fetch('/api/admin/products/csv', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: { 'Content-Type': 'text/csv' },
             body: text,
           })
@@ -1007,6 +1008,7 @@ const PRICE_TYPES = ['by_count', 'by_weight', 'other'];
           var text = reader.result;
           fetch('/api/admin/products/csv', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: { 'Content-Type': 'text/csv' },
             body: text,
           })
