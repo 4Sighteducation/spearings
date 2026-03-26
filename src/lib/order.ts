@@ -225,17 +225,71 @@ export async function updateOrderPaymentIntent(
   if (error) throw new Error(`Failed to update order with payment intent: ${error.message}`);
 }
 
+/**
+ * Mark order confirmed after Stripe payment_intent.succeeded.
+ * Returns row only when status transitioned from pending → confirmed (so callers can send email once).
+ * Returns null if already confirmed (Stripe webhook retries) or no matching order.
+ */
 export async function confirmOrder(paymentIntentId: string): Promise<{ reference: string; email: string } | null> {
-  const { data, error } = await supabaseAdmin
+  const { data: updated } = await supabaseAdmin
     .from('orders')
     .update({ status: 'confirmed', confirmed_at: new Date().toISOString() })
     .eq('stripe_payment_intent_id', paymentIntentId)
     .eq('status', 'pending')
     .select('reference, customer_email')
-    .single();
+    .maybeSingle();
 
-  if (error || !data) return null;
-  return { reference: data.reference, email: data.customer_email };
+  if (updated) return { reference: updated.reference, email: updated.customer_email };
+
+  const { data: already } = await supabaseAdmin
+    .from('orders')
+    .select('id')
+    .eq('stripe_payment_intent_id', paymentIntentId)
+    .eq('status', 'confirmed')
+    .maybeSingle();
+
+  if (already) return null;
+
+  return null;
+}
+
+/**
+ * Same as confirmOrder, plus recovery when the DB row never got stripe_payment_intent_id set but
+ * PaymentIntent metadata still has order_reference (race or partial failure after create-order).
+ */
+export async function confirmOrderFromStripePaymentIntent(pi: {
+  id: string;
+  metadata?: Record<string, string> | null;
+}): Promise<{ reference: string; email: string } | null> {
+  const direct = await confirmOrder(pi.id);
+  if (direct) return direct;
+
+  const ref = pi.metadata?.order_reference;
+  if (!ref || typeof ref !== 'string') {
+    console.warn(
+      `[orders] payment_intent.succeeded: no pending order for PI ${pi.id} and no metadata.order_reference`,
+    );
+    return null;
+  }
+
+  const { data: recovered } = await supabaseAdmin
+    .from('orders')
+    .update({
+      status: 'confirmed',
+      confirmed_at: new Date().toISOString(),
+      stripe_payment_intent_id: pi.id,
+    })
+    .eq('reference', ref.trim())
+    .eq('status', 'pending')
+    .select('reference, customer_email')
+    .maybeSingle();
+
+  if (recovered) {
+    console.warn(`[orders] confirmed order ${ref} via metadata fallback (stripe_payment_intent_id was missing)`);
+    return { reference: recovered.reference, email: recovered.customer_email };
+  }
+
+  return null;
 }
 
 export async function failOrder(paymentIntentId: string): Promise<void> {

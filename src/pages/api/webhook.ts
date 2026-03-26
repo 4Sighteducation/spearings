@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
-import { confirmOrder, failOrder } from '../../lib/order';
+import { confirmOrderFromStripePaymentIntent, failOrder } from '../../lib/order';
 import { sendOrderConfirmationEmails } from '../../lib/email';
 
 import { getEnv } from '../../lib/env';
@@ -27,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
   switch (event.type) {
     case 'payment_intent.succeeded': {
       const pi = event.data.object as Stripe.PaymentIntent;
-      const result = await confirmOrder(pi.id);
+      const result = await confirmOrderFromStripePaymentIntent(pi);
       if (result) {
         console.log(`Order ${result.reference} confirmed for ${result.email}`);
         await sendOrderConfirmationEmails(result.reference);

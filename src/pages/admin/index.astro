@@ -60,6 +60,9 @@ const ordersEnabled = settings.orders_enabled !== 'false';
 
   <div class="admin-card" style="margin-top: 1.5rem;">
     <h2>Recent Orders (Last 7 Days)</h2>
+    <p style="font-size: 0.85rem; color: rgba(26,26,24,0.5); margin: -0.25rem 0 1rem;">
+      Click a row to see full line items and details (if emails fail).
+    </p>
     {recentOrders.length === 0 ? (
       <div class="admin-empty">No orders in the last 7 days.</div>
     ) : (
@@ -75,7 +78,7 @@ const ordersEnabled = settings.orders_enabled !== 'false';
         </thead>
         <tbody>
           {recentOrders.map((order: any) => (
-            <tr>
+            <tr data-order-id={order.id}>
               <td><strong>{order.reference}</strong></td>
               <td>{order.customer_name}</td>
               <td>{new Date(order.delivery_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</td>

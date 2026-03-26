@@ -42,6 +42,9 @@ const statuses = ['pending', 'confirmed', 'preparing', 'ready', 'collected', 'de
   </div>
 
   <div class="admin-card">
+    <p style="font-size: 0.85rem; color: rgba(26,26,24,0.5); margin: 0 0 1rem;">
+      Click a row to view items and customer details. Use the status dropdown only to change status.
+    </p>
     {orderList.length === 0 ? (
       <div class="admin-empty">No orders found.</div>
     ) : (
