@@ -59,7 +59,7 @@ export function adminLogoutHeaders(): Headers {
   const headers = new Headers();
   headers.set(
     'Set-Cookie',
-    `${COOKIE_NAME}=; Path=/admin; HttpOnly; SameSite=Lax; Max-Age=0`
+    `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`
   );
   return headers;
 }
