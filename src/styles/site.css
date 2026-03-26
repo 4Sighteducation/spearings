@@ -2108,11 +2108,6 @@ p {
     --header-offset: 5rem;
   }
 
-  /* Pies page: marketing dual-panels — hide on mobile/small tablet (global id, not Astro-scoped) */
-  #pieIntroSections {
-    display: none !important;
-  }
-
   .brand-logo {
     height: 2.5rem;
   }
@@ -2155,6 +2150,17 @@ p {
   .footer-brand-row,
   .footer-meta {
     align-items: flex-start;
+  }
+}
+
+/*
+ * Pies page only (#pieIntroSections). Hide below 1024px — NOT 860px: many phones in
+ * landscape are ~900–932px CSS pixels wide, so max-width:860 never matched and the
+ * marketing cards stayed visible.
+ */
+@media (max-width: 1024px) {
+  #pieIntroSections {
+    display: none !important;
   }
 }
 

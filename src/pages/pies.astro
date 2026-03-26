@@ -118,6 +118,28 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
       </div>
     </section>
 
+    <script is:inline>
+      (function () {
+        var mqStr = '(max-width: 1024px)';
+        function applyPieIntroMobile() {
+          var el = document.getElementById('pieIntroSections');
+          if (!el) return;
+          if (window.matchMedia(mqStr).matches) {
+            el.style.setProperty('display', 'none', 'important');
+            el.setAttribute('aria-hidden', 'true');
+          } else {
+            el.style.removeProperty('display');
+            el.removeAttribute('aria-hidden');
+          }
+        }
+        applyPieIntroMobile();
+        window.addEventListener('resize', applyPieIntroMobile);
+        var mq = window.matchMedia(mqStr);
+        if (mq.addEventListener) mq.addEventListener('change', applyPieIntroMobile);
+        else if (mq.addListener) mq.addListener(applyPieIntroMobile);
+      })();
+    </script>
+
     {quickPickItems.length > 0 && (
     <section class="quick-order-section" id="quickOrder">
       <div class="container">

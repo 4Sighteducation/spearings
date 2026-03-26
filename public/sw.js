@@ -1,4 +1,4 @@
-const CACHE_NAME = 'spearings-pies-v4';
+const CACHE_NAME = 'spearings-pies-v5';
 
 const PRECACHE_URLS = [
   '/pies',
