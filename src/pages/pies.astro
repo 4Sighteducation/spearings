@@ -644,6 +644,69 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
 
 <script is:inline>
   (function () {
+    function initPieSearch() {
+      var searchInput = document.getElementById('pieSearch');
+      var grid = document.getElementById('pieGrid');
+      var status = document.getElementById('pieFilterStatus');
+      if (!searchInput || !grid) return;
+
+      var cards = Array.from(grid.querySelectorAll('.catalog-card'));
+
+      function filterCards(query) {
+        var q = (query || '').toLowerCase().trim();
+        var shown = 0;
+
+        cards.forEach(function (card) {
+          var name = card.getAttribute('data-pie-name') || '';
+          var desc = card.getAttribute('data-pie-desc') || '';
+          var match = !q || name.indexOf(q) !== -1 || desc.indexOf(q) !== -1;
+          card.style.display = match ? '' : 'none';
+          if (match) {
+            shown++;
+            card.classList.add('visible');
+          }
+        });
+
+        if (q && status) {
+          status.hidden = false;
+          status.textContent =
+            shown + ' pie' + (shown !== 1 ? 's' : '') + ' matching \u201C' + query + '\u201D';
+          if (shown === 0) {
+            status.textContent =
+              'No pies found for \u201C' + query + '\u201D \u2014 try another search.';
+          }
+        } else if (status) {
+          status.hidden = true;
+        }
+      }
+
+      var debounce = null;
+      searchInput.addEventListener('input', function () {
+        clearTimeout(debounce);
+        debounce = setTimeout(function () {
+          filterCards(searchInput.value);
+        }, 150);
+      });
+
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          searchInput.value = '';
+          filterCards('');
+          searchInput.blur();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPieSearch);
+    } else {
+      initPieSearch();
+    }
+  })();
+</script>
+
+<script is:inline>
+  (function () {
     const STORAGE_KEY = 'spearings_cart';
 
     function getCart() {
