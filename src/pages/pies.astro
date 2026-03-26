@@ -273,6 +273,14 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
     scroll-margin-top: var(--header-offset);
   }
 
+  /**
+   * JS toggles this while searching. Uses !important so marketing blocks cannot
+   * stay visible due to other display rules (fixes hero + tiles still showing).
+   */
+  .pie-search-off {
+    display: none !important;
+  }
+
   .quick-order-bar {
     text-align: center;
   }
@@ -835,14 +843,6 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
         });
 
         setSearchMode(true);
-        if (!scrolledForSearch && searchBlock) {
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              searchBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-          });
-          scrolledForSearch = true;
-        }
 
         var html = '';
         html +=
@@ -891,6 +891,18 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
         html += '</ul>';
         resultsEl.innerHTML = html;
         resultsEl.hidden = false;
+
+        if (!scrolledForSearch && searchBlock) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              var bodyPad = parseFloat(window.getComputedStyle(document.body).paddingTop) || 0;
+              var rect = searchBlock.getBoundingClientRect();
+              var y = window.scrollY + rect.top - bodyPad;
+              window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+              scrolledForSearch = true;
+            });
+          });
+        }
       }
 
       var debounce = null;
