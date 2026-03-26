@@ -4,18 +4,30 @@ import { confirmOrderFromStripePaymentIntent } from '../../lib/order';
 import { sendOrderConfirmationEmails } from '../../lib/email';
 
 import { getEnv } from '../../lib/env';
+import { supabaseAdmin } from '../../lib/supabase-server';
 
 const stripe = new Stripe(getEnv('STRIPE_SECRET_KEY'));
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { payment_intent } = await request.json();
+    const body = await request.json();
+    let paymentIntentId: string | undefined =
+      typeof body.payment_intent === 'string' ? body.payment_intent.trim() : undefined;
 
-    if (!payment_intent) {
-      return json({ error: 'Missing payment_intent' }, 400);
+    if (!paymentIntentId && typeof body.reference === 'string' && body.reference.trim()) {
+      const { data: row } = await supabaseAdmin
+        .from('orders')
+        .select('stripe_payment_intent_id')
+        .eq('reference', body.reference.trim())
+        .maybeSingle();
+      paymentIntentId = row?.stripe_payment_intent_id ?? undefined;
     }
 
-    const pi = await stripe.paymentIntents.retrieve(payment_intent);
+    if (!paymentIntentId) {
+      return json({ error: 'Missing payment_intent or unknown order reference' }, 400);
+    }
+
+    const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     if (pi.status !== 'succeeded') {
       return json({ error: 'Payment not yet succeeded', status: pi.status }, 400);
@@ -24,9 +36,19 @@ export const POST: APIRoute = async ({ request }) => {
     const result = await confirmOrderFromStripePaymentIntent(pi);
 
     if (result) {
-      console.log(`Order ${result.reference} confirmed, sending emails...`);
-      await sendOrderConfirmationEmails(result.reference);
-      return json({ confirmed: true, reference: result.reference });
+      console.log(`Order ${result.reference} confirmed via confirm-payment, sending emails...`);
+      try {
+        await sendOrderConfirmationEmails(result.reference);
+        return json({ confirmed: true, reference: result.reference, emailsSent: true });
+      } catch (emailErr: any) {
+        console.error('[confirm-payment] Email send failed:', emailErr);
+        return json({
+          confirmed: true,
+          reference: result.reference,
+          emailsSent: false,
+          emailError: emailErr?.message || 'Email failed',
+        });
+      }
     }
 
     return json({ confirmed: false, message: 'Order already confirmed or not found' });

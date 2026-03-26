@@ -996,10 +996,14 @@ const deliveryFeeOuterPence = Number(import.meta.env.PUBLIC_DELIVERY_FEE_OUTER_P
         } else if (result.paymentIntent) {
           var st = result.paymentIntent.status;
           if (st === 'succeeded' || st === 'processing') {
+            // Include payment_intent so /order-confirmed can call confirm-payment and send emails
+            // when no Stripe redirect occurs (most card payments). Without this, emails relied only on webhooks.
             window.location.href =
               window.location.origin +
               '/order-confirmed?ref=' +
-              encodeURIComponent(state.orderRef);
+              encodeURIComponent(state.orderRef) +
+              '&payment_intent=' +
+              encodeURIComponent(result.paymentIntent.id);
           }
         }
       } catch (err) {

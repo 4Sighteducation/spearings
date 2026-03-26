@@ -2,10 +2,20 @@ import { Resend } from 'resend';
 import { getEnv } from './env';
 import { supabaseAdmin } from './supabase-server';
 
-const resend = new Resend(getEnv('RESEND_API_KEY'));
-const notificationEmail = getEnv('ORDER_NOTIFICATION_EMAIL') || 'pies@spearings.co.uk';
-const siteUrl = getEnv('PUBLIC_SITE_URL') || 'https://www.spearings.co.uk';
+let resendClient: Resend | null = null;
 
+function getResend(): Resend {
+  const key = getEnv('RESEND_API_KEY');
+  if (!key) {
+    throw new Error('RESEND_API_KEY is not set (check Vercel env / .env)');
+  }
+  if (!resendClient) {
+    resendClient = new Resend(key);
+  }
+  return resendClient;
+}
+
+const notificationEmail = () => getEnv('ORDER_NOTIFICATION_EMAIL') || 'pies@spearings.co.uk';
 interface OrderForEmail {
   reference: string;
   customer_name: string;
@@ -125,36 +135,45 @@ function buildShopNotificationHtml(order: OrderForEmail): string {
 export async function sendOrderConfirmationEmails(reference: string): Promise<void> {
   const order = await getOrderForEmail(reference);
   if (!order) {
-    console.error(`Could not load order ${reference} for email`);
-    return;
+    throw new Error(`Could not load order ${reference} for email (DB)`);
   }
 
   const fromAddr = 'Spearings Butchers <orders@spearings.co.uk>';
 
   try {
+    const shopTo = notificationEmail();
     console.log(`[email] Sending to customer: ${order.customer_email}`);
-    console.log(`[email] Sending to shop: ${notificationEmail}`);
-    console.log(`[email] Resend API key: ${getEnv('RESEND_API_KEY').slice(0, 8)}...`);
+    console.log(`[email] Sending to shop: ${shopTo}`);
 
-    const [customerResult, shopResult] = await Promise.all([
-      resend.emails.send({
-        from: fromAddr,
-        replyTo: 'pies@spearings.co.uk',
-        to: [order.customer_email],
-        subject: `Your Spearings order ${order.reference}`,
-        html: buildCustomerEmailHtml(order),
-      }),
-      resend.emails.send({
-        from: fromAddr,
-        replyTo: order.customer_email,
-        to: [notificationEmail],
-        subject: `New Order: ${order.reference} — ${order.customer_name}`,
-        html: buildShopNotificationHtml(order),
-      }),
-    ]);
-    console.log(`[email] Customer result:`, JSON.stringify(customerResult));
-    console.log(`[email] Shop result:`, JSON.stringify(shopResult));
+    const resend = getResend();
+
+    const customerResult = await resend.emails.send({
+      from: fromAddr,
+      replyTo: 'pies@spearings.co.uk',
+      to: [order.customer_email],
+      subject: `Your Spearings order ${order.reference}`,
+      html: buildCustomerEmailHtml(order),
+    });
+    if (customerResult.error) {
+      throw new Error(
+        `[email] customer: ${customerResult.error.message} (${customerResult.error.name})`,
+      );
+    }
+
+    const shopResult = await resend.emails.send({
+      from: fromAddr,
+      replyTo: order.customer_email,
+      to: [shopTo],
+      subject: `New Order: ${order.reference} — ${order.customer_name}`,
+      html: buildShopNotificationHtml(order),
+    });
+    if (shopResult.error) {
+      throw new Error(`[email] shop: ${shopResult.error.message} (${shopResult.error.name})`);
+    }
+
+    console.log(`[email] Sent ok (customer id=${customerResult.data?.id}, shop id=${shopResult.data?.id})`);
   } catch (err) {
     console.error('[email] Sending failed:', err);
+    throw err;
   }
 }

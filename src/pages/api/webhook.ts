@@ -30,7 +30,11 @@ export const POST: APIRoute = async ({ request }) => {
       const result = await confirmOrderFromStripePaymentIntent(pi);
       if (result) {
         console.log(`Order ${result.reference} confirmed for ${result.email}`);
-        await sendOrderConfirmationEmails(result.reference);
+        try {
+          await sendOrderConfirmationEmails(result.reference);
+        } catch (emailErr) {
+          console.error('[webhook] Order confirmed in DB but confirmation email failed:', emailErr);
+        }
       }
       break;
     }

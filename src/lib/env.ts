@@ -23,5 +23,17 @@ export function getEnv(key: string): string {
     } catch { /* .env not found */ }
   }
 
-  return cache.get(key) ?? import.meta.env[key] ?? process.env[key] ?? '';
+  const fromFile = cache?.get(key);
+  if (fromFile !== undefined && fromFile !== '') {
+    return fromFile;
+  }
+  const fromMeta = import.meta.env[key];
+  if (typeof fromMeta === 'string' && fromMeta !== '') {
+    return fromMeta;
+  }
+  const fromProc = process.env[key];
+  if (typeof fromProc === 'string' && fromProc !== '') {
+    return fromProc;
+  }
+  return '';
 }

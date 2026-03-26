@@ -145,17 +145,26 @@ import Layout from '../layouts/Layout.astro';
     var badge = document.getElementById('cartBadge');
     if (badge) { badge.hidden = true; badge.textContent = '0'; }
 
-    // Confirm payment and trigger emails server-side
+    // Confirm payment + send emails (backup if Stripe webhook is delayed or misconfigured)
+    var payload = null;
     if (paymentIntent) {
+      payload = { payment_intent: paymentIntent };
+    } else if (ref) {
+      payload = { reference: ref };
+    }
+    if (payload) {
       fetch('/api/confirm-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payment_intent: paymentIntent }),
+        credentials: 'same-origin',
+        body: JSON.stringify(payload),
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
-          if (data.confirmed) {
-            console.log('Order confirmed and emails sent');
+          if (data.confirmed && data.emailsSent === false) {
+            console.warn('Order confirmed but confirmation email failed:', data.emailError || '');
+          } else if (data.confirmed) {
+            console.log('Order confirmed and confirmation emails sent');
           }
         })
         .catch(function (err) {
