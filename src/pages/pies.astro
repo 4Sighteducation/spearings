@@ -814,9 +814,25 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
       }
 
       function setSearchMode(on) {
-        if (intro) intro.hidden = on;
-        if (pieRange) pieRange.hidden = on;
+        if (pageHero) {
+          pageHero.hidden = on;
+          pageHero.classList.toggle('pie-search-off', on);
+        }
+        if (quickIntro) {
+          quickIntro.hidden = on;
+          quickIntro.classList.toggle('pie-search-off', on);
+        }
+        if (intro) {
+          intro.hidden = on;
+          intro.classList.toggle('pie-search-off', on);
+        }
+        if (pieRange) {
+          pieRange.hidden = on;
+          pieRange.classList.toggle('pie-search-off', on);
+        }
         if (status) status.hidden = true;
+        if (quickOrder) quickOrder.classList.toggle('pie-search-compact', on);
+        document.body.classList.toggle('pies-page-searching', on);
       }
 
       function resetCards() {
