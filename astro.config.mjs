@@ -3,8 +3,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
-/** Used for canonical URLs, Open Graph, and sitemap.xml (set PUBLIC_SITE_URL on Vercel, e.g. https://spearings.co.uk) */
-const site = (process.env.PUBLIC_SITE_URL || 'https://spearings.co.uk').replace(/\/$/, '');
+/** Used for canonical URLs, Open Graph, and sitemap.xml (set PUBLIC_SITE_URL on Vercel, e.g. https://www.spearings.co.uk) */
+const site = (process.env.PUBLIC_SITE_URL || 'https://www.spearings.co.uk').replace(/\/$/, '');
 
 /** Lets Astro trust Host / X-Forwarded-* on Vercel so request.url matches the browser Origin (fixes admin POST / CSRF on *.vercel.app). */
 const allowedDomains = [{ hostname: '**.vercel.app', protocol: 'https' }];

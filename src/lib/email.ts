@@ -4,7 +4,7 @@ import { supabaseAdmin } from './supabase-server';
 
 const resend = new Resend(getEnv('RESEND_API_KEY'));
 const notificationEmail = getEnv('ORDER_NOTIFICATION_EMAIL') || 'pies@spearings.co.uk';
-const siteUrl = getEnv('PUBLIC_SITE_URL') || 'https://spearings.co.uk';
+const siteUrl = getEnv('PUBLIC_SITE_URL') || 'https://www.spearings.co.uk';
 
 interface OrderForEmail {
   reference: string;

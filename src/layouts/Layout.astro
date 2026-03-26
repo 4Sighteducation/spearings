@@ -17,7 +17,7 @@ const {
 	ogImage = '/images/site-logo-banner.png',
 } = Astro.props;
 
-const siteBase = Astro.site ?? new URL('https://spearings.co.uk');
+const siteBase = Astro.site ?? new URL('https://www.spearings.co.uk');
 const canonicalURL = new URL(Astro.url.pathname, siteBase);
 const ogImageUrl = ogImage.startsWith('http')
 	? ogImage
