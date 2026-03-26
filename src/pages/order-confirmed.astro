@@ -17,6 +17,8 @@ import Layout from '../layouts/Layout.astro';
             Thank you for your order. We're preparing your pies now.
           </p>
 
+          <p class="confirm-debug-banner" id="confirmDebugBanner" hidden></p>
+
           <div class="confirmation-details" id="confirmDetails">
             <div class="confirm-row">
               <span class="confirm-label">Reference</span>
@@ -24,7 +26,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
 
-          <p class="confirm-email-note">
+          <p class="confirm-email-note" id="confirmEmailNote">
             A confirmation email will be sent to your email address shortly.
           </p>
 
@@ -104,6 +106,17 @@ import Layout from '../layouts/Layout.astro';
     margin-bottom: 2rem;
   }
 
+  .confirm-debug-banner {
+    font-size: 0.88rem;
+    color: #7a2e12;
+    background: rgba(255, 220, 200, 0.55);
+    border: 1px solid rgba(122, 46, 18, 0.25);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    margin: 0 0 1.25rem;
+    text-align: left;
+  }
+
   .confirm-actions {
     display: flex;
     gap: 1rem;
@@ -159,12 +172,57 @@ import Layout from '../layouts/Layout.astro';
         credentials: 'same-origin',
         body: JSON.stringify(payload),
       })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data.confirmed && data.emailsSent === false) {
-            console.warn('Order confirmed but confirmation email failed:', data.emailError || '');
+        .then(function (r) {
+          return r.json().then(function (data) {
+            return { ok: r.ok, status: r.status, data: data };
+          });
+        })
+        .then(function (res) {
+          var data = res.data;
+          var banner = document.getElementById('confirmDebugBanner');
+          var note = document.getElementById('confirmEmailNote');
+
+          if (!res.ok) {
+            console.error('[confirm-payment] HTTP', res.status, data);
+            if (banner) {
+              banner.hidden = false;
+              banner.textContent =
+                'Could not verify payment with the server (HTTP ' +
+                res.status +
+                '). Your payment may still be OK — check your email or contact us with reference ' +
+                (ref || '') +
+                '.';
+            }
+            return;
+          }
+
+          if (data.confirmed && data.emailsSent === false && data.emailError) {
+            console.warn('Order confirmed but confirmation email failed:', data.emailError);
+            if (banner) {
+              banner.hidden = false;
+              banner.textContent =
+                'Your order is confirmed, but we could not send the confirmation email automatically. ' +
+                'Please save your reference above. If you need a receipt, contact us — error: ' +
+                data.emailError;
+            }
+            if (note) {
+              note.textContent =
+                'If you do not see an email, contact Spearings with your reference — we still have your order.';
+            }
           } else if (data.confirmed) {
-            console.log('Order confirmed and confirmation emails sent');
+            console.log('[confirm-payment]', data.path || '', data.emailOutcome || '');
+            if (note && data.emailOutcome === 'skipped_already_sent') {
+              note.textContent = 'Your confirmation email was already sent — please check your inbox.';
+            } else if (note) {
+              note.textContent = 'A confirmation email has been sent to your address.';
+            }
+          } else if (data.phase === 'no_transition') {
+            console.warn('[confirm-payment] No DB transition:', data);
+            if (banner) {
+              banner.hidden = false;
+              banner.textContent =
+                'We could not link this page to your order in our system. If you were charged, contact us with your bank reference and date.';
+            }
           }
         })
         .catch(function (err) {

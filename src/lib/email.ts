@@ -49,7 +49,14 @@ async function getOrderForEmail(reference: string): Promise<OrderForEmail | null
     .eq('reference', reference)
     .single();
 
-  if (error || !data) return null;
+  if (error) {
+    console.error(`[email] getOrderForEmail failed for ${reference}:`, error.message, error);
+    return null;
+  }
+  if (!data) {
+    console.warn(`[email] getOrderForEmail: no row for ${reference}`);
+    return null;
+  }
   return { ...data, items: data.order_items ?? [] } as OrderForEmail;
 }
 
@@ -132,7 +139,31 @@ function buildShopNotificationHtml(order: OrderForEmail): string {
   `;
 }
 
-export async function sendOrderConfirmationEmails(reference: string): Promise<void> {
+/**
+ * Sends customer + shop confirmation emails once per order (tracked in DB).
+ * Returns `skipped_already_sent` when a previous send succeeded (webhook vs browser race).
+ */
+export async function sendOrderConfirmationEmails(
+  reference: string,
+): Promise<'sent' | 'skipped_already_sent'> {
+  const { data: row, error: rowErr } = await supabaseAdmin
+    .from('orders')
+    .select('reference, confirmation_emails_sent_at')
+    .eq('reference', reference)
+    .maybeSingle();
+
+  if (rowErr) {
+    console.error(`[email] could not read order ${reference} for idempotency:`, rowErr.message, rowErr);
+    throw new Error(`Could not load order ${reference} for email (DB)`);
+  }
+  if (!row) {
+    throw new Error(`Could not load order ${reference} for email (DB)`);
+  }
+  if (row.confirmation_emails_sent_at) {
+    console.log(`[email] skipped — already sent at ${row.confirmation_emails_sent_at} (${reference})`);
+    return 'skipped_already_sent';
+  }
+
   const order = await getOrderForEmail(reference);
   if (!order) {
     throw new Error(`Could not load order ${reference} for email (DB)`);
@@ -172,6 +203,16 @@ export async function sendOrderConfirmationEmails(reference: string): Promise<vo
     }
 
     console.log(`[email] Sent ok (customer id=${customerResult.data?.id}, shop id=${shopResult.data?.id})`);
+
+    const { error: stampErr } = await supabaseAdmin
+      .from('orders')
+      .update({ confirmation_emails_sent_at: new Date().toISOString() })
+      .eq('reference', reference);
+
+    if (stampErr) {
+      console.error(`[email] Sent via Resend but failed to set confirmation_emails_sent_at for ${reference}:`, stampErr);
+    }
+    return 'sent';
   } catch (err) {
     console.error('[email] Sending failed:', err);
     throw err;

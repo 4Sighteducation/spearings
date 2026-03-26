@@ -31,7 +31,10 @@ export const POST: APIRoute = async ({ request }) => {
       if (result) {
         console.log(`Order ${result.reference} confirmed for ${result.email}`);
         try {
-          await sendOrderConfirmationEmails(result.reference);
+          const emailOutcome = await sendOrderConfirmationEmails(result.reference);
+          if (emailOutcome === 'skipped_already_sent') {
+            console.log(`[webhook] confirmation emails already sent for ${result.reference}`);
+          }
         } catch (emailErr) {
           console.error('[webhook] Order confirmed in DB but confirmation email failed:', emailErr);
         }
