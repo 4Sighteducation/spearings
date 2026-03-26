@@ -2108,6 +2108,11 @@ p {
     --header-offset: 5rem;
   }
 
+  /* Pies page: marketing dual-panels — hide on mobile/small tablet (global id, not Astro-scoped) */
+  #pieIntroSections {
+    display: none !important;
+  }
+
   .brand-logo {
     height: 2.5rem;
   }

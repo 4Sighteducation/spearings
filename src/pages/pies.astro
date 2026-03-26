@@ -257,12 +257,7 @@ const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
     display: none !important;
   }
 
-  /** Desktop: dual cards sit directly under hero (above quick order + search). Hidden on small screens. */
-  @media (max-width: 768px) {
-    .pie-intro-panels {
-      display: none !important;
-    }
-  }
+  /** Mobile hide for #pieIntroSections is global in site.css (860px) — scoped rules missed when markup was absent. */
 
   .quick-order-bar {
     text-align: center;
