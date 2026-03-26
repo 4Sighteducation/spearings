@@ -5,6 +5,13 @@ import { formatPrice, getCatalog, getProductsByCategory } from '../lib/catalog';
 
 const { products } = await getCatalog();
 const pieProducts = getProductsByCategory(products, 'pies');
+
+/** Shown as one-tap “Quick add” chips above the grid (edit this list anytime). */
+const QUICK_PICK_SLUGS = ['meat-potato', 'beef-pie-small', 'pork-pie-small', 'special-occasion-pies'];
+const pieBySlug = new Map(pieProducts.map((p) => [p.slug, p]));
+const quickPickPies = QUICK_PICK_SLUGS.map((s) => pieBySlug.get(s)).filter(
+  (p): p is (typeof pieProducts)[number] => p != null && p.price !== null
+);
 ---
 
 <Layout
@@ -96,6 +103,27 @@ const pieProducts = getProductsByCategory(products, 'pies');
           </p>
         </div>
 
+        {quickPickPies.length > 0 && (
+          <div class="pie-quick-picks reveal-up">
+            <p class="pie-quick-picks-label">Quick add favourites</p>
+            <div class="pie-quick-picks-row" role="group" aria-label="Quick add popular pies">
+              {quickPickPies.map((product) => (
+                <button
+                  type="button"
+                  class="btn btn-gold btn-sm btn-add-to-cart pie-quick-pick-btn"
+                  data-slug={product.slug}
+                  data-name={product.name}
+                  data-price={Math.round(product.price! * 100)}
+                  data-size={product.size ?? ''}
+                  data-image={product.imageUrl ?? ''}
+                >
+                  {product.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div class="catalog-grid">
           {pieProducts.map((product) => (
             <article class="catalog-card reveal-scale">
@@ -162,6 +190,34 @@ const pieProducts = getProductsByCategory(products, 'pies');
 </Layout>
 
 <style>
+  .pie-quick-picks {
+    margin: 0 0 2rem;
+    max-width: 52rem;
+  }
+
+  .pie-quick-picks-label {
+    margin: 0 0 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(26, 26, 24, 0.55);
+  }
+
+  .pie-quick-picks-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .pie-quick-pick-btn {
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .page-image-frame {
     border-radius: var(--radius-xl);
     overflow: hidden;
