@@ -22,6 +22,21 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
   if (!product || product.price === null) return null;
   return { product, label };
 }).filter((x): x is { product: (typeof pieProducts)[number]; label: string } => x !== null);
+
+/** Client-side search + inline results (JSON embedded safely in page). */
+const pieSearchPayload = pieProducts
+  .filter((p) => p.price !== null)
+  .map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    nameLc: p.name.toLowerCase(),
+    descLc: (p.shortDescription ?? '').toLowerCase(),
+    pricePence: Math.round(p.price * 100),
+    size: p.size ?? '',
+    image: p.imageUrl ?? '',
+    priceLabel: formatPrice(p),
+  }));
+const pieSearchJson = JSON.stringify(pieSearchPayload).replace(/</g, '\\u003c');
 ---
 
 <Layout
@@ -30,6 +45,7 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
   path="/pies"
 >
   <main>
+    <script type="application/json" id="pie-search-data" is:inline set:html={pieSearchJson}></script>
     <!-- PWA install banner (shown when app is not installed) -->
     <div class="pwa-install-bar" id="pwaInstallBar" hidden>
       <div class="container pwa-install-inner">
@@ -122,14 +138,16 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
               class="pie-search-input"
               placeholder="Search all pies..."
               autocomplete="off"
+              enterkeyhint="search"
             />
           </div>
+          <div id="pieSearchResults" class="pie-search-results" hidden aria-live="polite"></div>
         </div>
       </div>
     </section>
     )}
 
-    <section class="section section-cream">
+    <section id="pieIntroSections" class="section section-cream">
       <div class="container dual-panels">
         <article class="detail-card reveal-left">
           <p class="eyebrow">Handmade Daily</p>
@@ -372,6 +390,97 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E")
       center / contain no-repeat;
     cursor: pointer;
+  }
+
+  .pie-search-results {
+    margin-top: 1rem;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .pie-search-results[hidden] {
+    display: none !important;
+  }
+
+  .pie-search-results-meta {
+    font-size: 0.88rem;
+    color: rgba(245, 237, 216, 0.65);
+    margin: 0 0 0.65rem;
+  }
+
+  .pie-search-results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-height: min(50vh, 22rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pie-search-result-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.55rem 0.65rem;
+    background: rgba(255, 253, 247, 0.06);
+    border: 1px solid rgba(201, 154, 26, 0.2);
+    border-radius: var(--radius-md);
+  }
+
+  .pie-search-result-row-media {
+    flex-shrink: 0;
+  }
+
+  .pie-search-result-row-media img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    display: block;
+  }
+
+  .pie-search-result-row-info {
+    flex: 1 1 140px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .pie-search-result-name {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--gold-lt);
+    line-height: 1.2;
+  }
+
+  .pie-search-result-size {
+    font-size: 0.72rem;
+    color: rgba(245, 237, 216, 0.45);
+  }
+
+  .pie-search-result-price {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--cream);
+    white-space: nowrap;
+  }
+
+  .pie-search-result-add {
+    margin-left: auto;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.75rem;
+    min-width: 3.75rem;
+  }
+
+  .pie-search-result-add.added {
+    pointer-events: none;
   }
 
   .pie-filter-status {
@@ -646,52 +755,135 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
   (function () {
     function initPieSearch() {
       var searchInput = document.getElementById('pieSearch');
+      var dataEl = document.getElementById('pie-search-data');
+      var resultsEl = document.getElementById('pieSearchResults');
       var grid = document.getElementById('pieGrid');
+      var intro = document.getElementById('pieIntroSections');
+      var pieRange = document.getElementById('pie-range');
       var status = document.getElementById('pieFilterStatus');
-      if (!searchInput || !grid) return;
+      var quickOrder = document.getElementById('quickOrder');
 
-      var cards = Array.from(grid.querySelectorAll('.catalog-card'));
+      if (!searchInput || !dataEl || !resultsEl) return;
 
-      function filterCards(query) {
-        var q = (query || '').toLowerCase().trim();
-        var shown = 0;
+      var pies = [];
+      try {
+        pies = JSON.parse(dataEl.textContent || '[]');
+      } catch (e) {
+        pies = [];
+      }
 
+      var cards = grid ? Array.from(grid.querySelectorAll('.catalog-card')) : [];
+      var scrolledForSearch = false;
+
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function imgSrc(url) {
+        var u = url || '/images/shop-interior.jpg';
+        return esc(u);
+      }
+
+      function setSearchMode(on) {
+        if (intro) intro.hidden = on;
+        if (pieRange) pieRange.hidden = on;
+        if (status) status.hidden = true;
+      }
+
+      function resetCards() {
         cards.forEach(function (card) {
-          var name = card.getAttribute('data-pie-name') || '';
-          var desc = card.getAttribute('data-pie-desc') || '';
-          var match = !q || name.indexOf(q) !== -1 || desc.indexOf(q) !== -1;
-          card.style.display = match ? '' : 'none';
-          if (match) {
-            shown++;
-            card.classList.add('visible');
-          }
+          card.style.display = '';
+        });
+      }
+
+      function renderResults(raw) {
+        var q = (raw || '').trim();
+        var qLower = q.toLowerCase();
+
+        if (!qLower) {
+          resultsEl.hidden = true;
+          resultsEl.innerHTML = '';
+          setSearchMode(false);
+          resetCards();
+          scrolledForSearch = false;
+          return;
+        }
+
+        var matches = pies.filter(function (p) {
+          return p.nameLc.indexOf(qLower) !== -1 || p.descLc.indexOf(qLower) !== -1;
         });
 
-        if (q && status) {
-          status.hidden = false;
-          status.textContent =
-            shown + ' pie' + (shown !== 1 ? 's' : '') + ' matching \u201C' + query + '\u201D';
-          if (shown === 0) {
-            status.textContent =
-              'No pies found for \u201C' + query + '\u201D \u2014 try another search.';
-          }
-        } else if (status) {
-          status.hidden = true;
+        setSearchMode(true);
+        if (!scrolledForSearch && quickOrder) {
+          quickOrder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          scrolledForSearch = true;
         }
+
+        var html = '';
+        html +=
+          '<p class="pie-search-results-meta">' +
+          (matches.length
+            ? matches.length + ' match' + (matches.length !== 1 ? 'es' : '')
+            : 'No matches') +
+          ' for &quot;' +
+          esc(q) +
+          '&quot;</p>';
+        html += '<ul class="pie-search-results-list" role="list">';
+
+        matches.slice(0, 40).forEach(function (p) {
+          html += '<li class="pie-search-result-row">';
+          html += '<div class="pie-search-result-row-media">';
+          html +=
+            '<img src="' +
+            imgSrc(p.image) +
+            '" alt="' +
+            esc(p.name) +
+            '" width="48" height="48" loading="lazy" />';
+          html += '</div>';
+          html += '<div class="pie-search-result-row-info">';
+          html += '<span class="pie-search-result-name">' + esc(p.name) + '</span>';
+          if (p.size) {
+            html += '<span class="pie-search-result-size">' + esc(p.size) + '</span>';
+          }
+          html += '</div>';
+          html += '<span class="pie-search-result-price">' + esc(p.priceLabel) + '</span>';
+          html +=
+            '<button type="button" class="btn btn-gold btn-add-to-cart pie-search-result-add" ' +
+            'data-slug="' +
+            esc(p.slug) +
+            '" data-name="' +
+            esc(p.name) +
+            '" data-price="' +
+            p.pricePence +
+            '" data-size="' +
+            esc(p.size) +
+            '" data-image="' +
+            esc(p.image) +
+            '">Add</button>';
+          html += '</li>';
+        });
+
+        html += '</ul>';
+        resultsEl.innerHTML = html;
+        resultsEl.hidden = false;
       }
 
       var debounce = null;
       searchInput.addEventListener('input', function () {
         clearTimeout(debounce);
         debounce = setTimeout(function () {
-          filterCards(searchInput.value);
+          renderResults(searchInput.value);
         }, 150);
       });
 
       searchInput.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
           searchInput.value = '';
-          filterCards('');
+          renderResults('');
           searchInput.blur();
         }
       });
@@ -850,30 +1042,33 @@ const quickPickItems = PIE_QUICK_GRID.map(({ slug, label }) => {
       }
     }
 
-    // Add-to-cart buttons
-    document.querySelectorAll('.btn-add-to-cart').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var product = {
-          slug: btn.dataset.slug,
-          name: btn.dataset.name,
-          price: parseInt(btn.dataset.price, 10),
-          size: btn.dataset.size || null,
-          imageUrl: btn.dataset.image || null,
-        };
-        addToCart(product, 1);
+    function handleAddToCartClick(btn) {
+      var product = {
+        slug: btn.dataset.slug,
+        name: btn.dataset.name,
+        price: parseInt(btn.dataset.price, 10),
+        size: btn.dataset.size || null,
+        imageUrl: btn.dataset.image || null,
+      };
+      addToCart(product, 1);
 
-        // Visual feedback
-        var original = btn.textContent;
-        btn.textContent = 'Added!';
-        btn.classList.add('added');
-        setTimeout(function () {
-          btn.textContent = original;
-          btn.classList.remove('added');
-        }, 1200);
+      var original = btn.textContent;
+      btn.textContent = 'Added!';
+      btn.classList.add('added');
+      setTimeout(function () {
+        btn.textContent = original;
+        btn.classList.remove('added');
+      }, 1200);
 
-        updateBadge();
-        openDrawer();
-      });
+      updateBadge();
+      openDrawer();
+    }
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.btn-add-to-cart');
+      if (!btn) return;
+      e.preventDefault();
+      handleAddToCartClick(btn);
     });
 
     document.querySelectorAll('.quick-tile').forEach(function (tile) {
