@@ -48,9 +48,10 @@ export function getAdminFromRequest(request: Request): { email: string } | null 
 export function adminLoginHeaders(email: string): Headers {
   const token = createAdminToken(email);
   const headers = new Headers();
+  // Path must be / so the cookie is sent to /api/admin/* (not only /admin/* pages).
   headers.set(
     'Set-Cookie',
-    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/admin; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}`
+    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}`
   );
   return headers;
 }
